@@ -70,104 +70,101 @@ class _HomepageState extends State<Homepage> {
               );
             }).toList()),
           ),
-          body: Container(
-            height: size.height,
-            width: size.width,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Container(
-                    height: size.height * 0.4,
-                    width: size.width,
-                    child: GridView.builder(
-                      padding: EdgeInsets.all(10),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4, childAspectRatio: 1,crossAxisSpacing: 8,mainAxisSpacing: 8),
-                      itemCount: img.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => Category(title: img[index]["name"],)));
-                          },
-                          child: Container(
-                            alignment: Alignment.bottomCenter,
-                            decoration: BoxDecoration(
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  height: size.height * 0.3,
+                  width: size.width,
+                  child: GridView.builder(
+                    padding: EdgeInsets.all(10),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, childAspectRatio: 1,crossAxisSpacing: 8,mainAxisSpacing: 8),
+                    itemCount: img.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => Category(title: img[index]["name"],)));
+                        },
+                        child: Container(
+                          alignment: Alignment.bottomCenter,
+                          decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
-                                image: AssetImage(img[index]['image']),
-                                fit: BoxFit.fill
+                                  image: AssetImage(img[index]['image']),
+                                  fit: BoxFit.fill
                               )
-                            ),
-                            child : Text(img[index]["name"],style: TextStyle(color: Colors.white),),
                           ),
-                        );
-                      },
+                          child : Text(img[index]["name"],style: TextStyle(color: Colors.white),),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      height: 150.0,
+                      width: size.width*0.4,
+                      decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.black),
+                          image: DecorationImage(
+                            image: new AssetImage("assets/images/offer1.jpg"),
+                            fit: BoxFit.fill,
+                          )
+                      ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        height: 150.0,
-                        width: size.width*0.4,
-                        decoration: new BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.black),
-                            image: DecorationImage(
-                              image: new AssetImage("assets/images/offer1.jpg"),
-                              fit: BoxFit.fill,
-                            )
-                        ),
+                    Container(
+                      height: 150.0,
+                      width: size.width*0.4,
+                      decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.black),
+                          image: DecorationImage(
+                            image: new AssetImage("assets/images/offer2.png"),
+                            fit: BoxFit.fill,
+                          )
                       ),
-                      Container(
-                        height: 150.0,
-                        width: size.width*0.4,
-                        decoration: new BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.black),
-                            image: DecorationImage(
-                              image: new AssetImage("assets/images/offer2.png"),
-                              fit: BoxFit.fill,
-                            )
-                        ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      height: 150.0,
+                      width: size.width*0.4,
+                      decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.black),
+                          image: DecorationImage(
+                            image: new AssetImage("assets/images/offer3.jpg"),
+                            fit: BoxFit.fill,
+                          )
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 20,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        height: 150.0,
-                        width: size.width*0.4,
-                        decoration: new BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.black),
-                            image: DecorationImage(
-                              image: new AssetImage("assets/images/offer3.jpg"),
-                              fit: BoxFit.fill,
-                            )
-                        ),
-                      ),
-                      Container(
-                        height: 150.0,
-                        width: size.width*0.4,
-                        decoration: new BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.black),
+                    ),
+                    Container(
+                      height: 150.0,
+                      width: size.width*0.4,
+                      decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.black),
                           image: DecorationImage(
                             image: new AssetImage("assets/images/offer4.jpg"),
                             fit: BoxFit.fill,
                           )
-                        ),
                       ),
+                    ),
 
-                    ],
-                  ),
+                  ],
+                ),
 
-                ],
-              ),
+              ],
             ),
           ),
         )
