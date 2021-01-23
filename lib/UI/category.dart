@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:e_commerce/UI/cart.dart';
+import 'package:e_commerce/UI/filter_list.dart';
 import 'package:e_commerce/UI/product_description.dart';
+import 'package:e_commerce/UI/sort_by.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -70,7 +73,7 @@ class _CategoryState extends State<Category>
           appBarIconButton(
               imagePath: "assets/icons/heart.png", onPressed: () {}),
           appBarIconButton(
-              imagePath: "assets/icons/shopping-cart.png", onPressed: () {}),
+              imagePath: "assets/icons/shopping-cart.png", onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Cart()))),
         ],
       ),
       backgroundColor: Colors.grey[100],
@@ -189,7 +192,7 @@ class _CategoryState extends State<Category>
                   children: [
                     Expanded(
                       child: FlatButton.icon(
-                        onPressed: () {},
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SortBy())),
                         icon: ImageIcon(AssetImage("assets/icons/sort.png")),
                         label: Text(
                           "SORT",
@@ -206,7 +209,7 @@ class _CategoryState extends State<Category>
                     ),
                     Expanded(
                       child: FlatButton.icon(
-                        onPressed: () {},
+                        onPressed: ()  => Navigator.push(context, MaterialPageRoute(builder: (_) => FilterList())),
                         icon: ImageIcon(AssetImage("assets/icons/education.png")),
                         label: Text(
                           "FILTER",
@@ -229,13 +232,13 @@ class _CategoryState extends State<Category>
 }
 
 IconButton appBarIconButton(
-    {@required String imagePath, @required VoidCallback onPressed}) {
+    {@required String imagePath, @required VoidCallback onPressed, Color color}) {
   return IconButton(
     onPressed: onPressed,
     splashRadius: 25,
     icon: ImageIcon(
       AssetImage(imagePath),
-      color: Colors.black,
+      color: color ?? Colors.black,
     ),
   );
 }
