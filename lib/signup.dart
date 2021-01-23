@@ -1,3 +1,4 @@
+import 'package:e_commerce/otp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 class signup extends StatefulWidget {
@@ -82,7 +83,7 @@ class _signupState extends State<signup> {
                       ),
                     ],
                   ),
-                  child: FlatButton(onPressed: () {},
+                  child: FlatButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => OTP())),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)
                       ),

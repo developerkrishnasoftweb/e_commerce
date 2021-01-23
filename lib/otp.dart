@@ -1,3 +1,4 @@
+import 'package:e_commerce/Homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -79,7 +80,7 @@ class _OTPState extends State<OTP> {
             child: FlatButton(
               child: Text("LOGIN", style: TextStyle(color: Colors.white, fontSize: 20),),
               color: Color(0xff4E72D4),
-              onPressed: () {},
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Homepage())),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10)
               ),

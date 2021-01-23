@@ -59,7 +59,7 @@ class _CategoryState extends State<Category>
       appBar: AppBar(
         elevation: 0,
         leading: appBarIconButton(
-            imagePath: "assets/icons/left-arrow.png", onPressed: () {}),
+            imagePath: "assets/icons/left-arrow.png", onPressed: () => Navigator.pop(context)),
         title: Text(
           widget.title ?? "Category",
           style: TextStyle(
@@ -117,10 +117,10 @@ class _CategoryState extends State<Category>
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           crossAxisSpacing: 10,
-                          childAspectRatio: 0.8,
+                          childAspectRatio: 0.85,
                           mainAxisSpacing: 10),
                       itemCount: products.length,
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      padding: EdgeInsets.only(top: 20, bottom: 60),
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(

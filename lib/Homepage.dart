@@ -1,3 +1,4 @@
+import 'package:e_commerce/UI/category.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -85,16 +86,21 @@ class _HomepageState extends State<Homepage> {
                           crossAxisCount: 4, childAspectRatio: 1,crossAxisSpacing: 8,mainAxisSpacing: 8),
                       itemCount: img.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          alignment: Alignment.bottomCenter,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: AssetImage(img[index]['image']),
-                              fit: BoxFit.fill
-                            )
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => Category(title: img[index]["name"],)));
+                          },
+                          child: Container(
+                            alignment: Alignment.bottomCenter,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: AssetImage(img[index]['image']),
+                                fit: BoxFit.fill
+                              )
+                            ),
+                            child : Text(img[index]["name"],style: TextStyle(color: Colors.white),),
                           ),
-                          child : Text(img[index]["name"],style: TextStyle(color: Colors.white),),
                         );
                       },
                     ),
