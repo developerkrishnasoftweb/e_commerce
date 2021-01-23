@@ -1,4 +1,5 @@
 import 'package:e_commerce/UI/category.dart';
+import 'package:e_commerce/otp.dart';
 import 'package:e_commerce/signup.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,8 @@ class _MyappState extends State<Myapp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Category(title: "Saree",),
+      home: OTP(),
+      // home: Category(title: "Saree",),
       theme: ThemeData(
         // fontFamily: "Segoe UI"
       ),

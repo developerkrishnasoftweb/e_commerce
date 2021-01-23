@@ -140,7 +140,7 @@ class _CategoryState extends State<Category>
                                   height: size.height * 0.21,
                                   width: size.width * 0.41,
                                 ),
-                                // SizedBox(height: 5,),
+                                SizedBox(height: 5,),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Padding(
