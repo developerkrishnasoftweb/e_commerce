@@ -13,9 +13,9 @@ class Category extends StatefulWidget {
   _CategoryState createState() => _CategoryState();
 }
 
-class _CategoryState extends State<Category> with SingleTickerProviderStateMixin{
+class _CategoryState extends State<Category>
+    with SingleTickerProviderStateMixin {
   AnimationController animationController;
-
 
   List<String> categories = [
     "Georgette Saree",
@@ -37,7 +37,8 @@ class _CategoryState extends State<Category> with SingleTickerProviderStateMixin
   void initState() {
     // TODO: implement initState
     super.initState();
-    animationController = AnimationController(duration: Duration(seconds: 1), vsync: this);
+    animationController =
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
     animationController.repeat();
   }
 
@@ -47,6 +48,7 @@ class _CategoryState extends State<Category> with SingleTickerProviderStateMixin
     super.dispose();
     animationController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -72,104 +74,154 @@ class _CategoryState extends State<Category> with SingleTickerProviderStateMixin
         ],
       ),
       backgroundColor: Colors.grey[100],
-      body: Column(
+      body: Stack(
         children: [
-          Container(
-            width: size.width,
-            height: 60,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: ListView.separated(
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: 10,
-                );
-              },
-              itemBuilder: (BuildContext context, int index) {
-                return FlatButton(
-                  onPressed: () {},
-                  child: Text(
-                    categories[index],
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(color: Colors.black),
-                  ),
-                );
-              },
-              itemCount: categories.length,
-              scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
-            ),
-          ),
-          Expanded(
-              child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 2 / 3,
-                      mainAxisSpacing: 10),
-                  itemCount: products.length,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  physics: BouncingScrollPhysics(),
+          Column(
+            children: [
+              Container(
+                width: size.width,
+                height: 60,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: ListView.separated(
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      width: 10,
+                    );
+                  },
                   itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => ProductDescription(
-                                    heroTag: products[index],
-                                  ))),
-                      child: Hero(
-                        tag: products[index],
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              products[index],
-                              fit: BoxFit.fill,
-                              height: size.height * 0.21,
-                              width: size.width * 0.41,
-                            ),
-                            // SizedBox(height: 5,),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 25),
-                                child: Text(
-                                  "Yellow Printed Saree",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 25),
-                                child: Text(
-                                  "\$120.0",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xff4E72D4)),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                    return FlatButton(
+                      onPressed: () {},
+                      child: Text(
+                        categories[index],
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(color: Colors.black),
                       ),
                     );
-                  }))
+                  },
+                  itemCount: categories.length,
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                ),
+              ),
+              Expanded(
+                  child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 0.8,
+                          mainAxisSpacing: 10),
+                      itemCount: products.length,
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => ProductDescription(
+                                        heroTag: products[index],
+                                      ))),
+                          child: Hero(
+                            tag: products[index],
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  products[index],
+                                  fit: BoxFit.fill,
+                                  height: size.height * 0.21,
+                                  width: size.width * 0.41,
+                                ),
+                                // SizedBox(height: 5,),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 25),
+                                    child: Text(
+                                      "Yellow Printed Saree",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 25),
+                                    child: Text(
+                                      "\$120.0",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff4E72D4)),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      }))
+            ],
+          ),
+          Positioned(
+              bottom: 0,
+              child: Container(
+                height: 80,
+                width: size.width,
+                color: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: FlatButton.icon(
+                        onPressed: () {},
+                        icon: ImageIcon(AssetImage("assets/icons/sort.png")),
+                        label: Text(
+                          "SORT",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(color: Colors.black)),
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: FlatButton.icon(
+                        onPressed: () {},
+                        icon: ImageIcon(AssetImage("assets/icons/education.png")),
+                        label: Text(
+                          "FILTER",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(color: Colors.black)
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                      ),
+                    ),
+                  ],
+                ),
+              ))
         ],
       ),
     );

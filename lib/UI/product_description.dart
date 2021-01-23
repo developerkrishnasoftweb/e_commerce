@@ -150,7 +150,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                     borderRadius: BorderRadius.circular(7),
                     borderSide: BorderSide(color: Color(0xffBBBBBB))),
                 hintText: "CASH ON DELIVERY AVAILABLE",
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 hintStyle: TextStyle(color: Color(0xffBBBBBB), fontSize: 19),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(7),
@@ -166,11 +166,11 @@ class _ProductDescriptionState extends State<ProductDescription> {
                   child: FlatButton(
                     onPressed: () {},
                     child: Text("ADD TO CART", style: TextStyle(color: Color(0xff4E72D4)),),
-                    height: 60,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                       side: BorderSide(color: Color(0xff4E72D4))
                     ),
+                    padding: EdgeInsets.symmetric(vertical: 20),
                   ),
                 ),
                 SizedBox(width: 10,),
@@ -178,14 +178,17 @@ class _ProductDescriptionState extends State<ProductDescription> {
                   child: FlatButton(
                     onPressed: () {},
                     child: Text("BUY NOW", style: TextStyle(color: Colors.white),),
-                    height: 60,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7),
                     ),
                     color: Color(0xff4E72D4),
+                    padding: EdgeInsets.symmetric(vertical: 20),
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 20,
             ),
           ],
         ),
