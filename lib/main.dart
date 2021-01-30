@@ -1,15 +1,10 @@
-import 'package:e_commerce/Homepage.dart';
-import 'package:e_commerce/UI/category.dart';
-import 'package:e_commerce/otp.dart';
-import 'package:e_commerce/signup.dart';
+import 'package:e_commerce/UI/Homepage.dart';
 import 'package:flutter/material.dart';
 
-import 'otp_screen.dart';
-
-void main()
-{
+void main() {
   runApp(Myapp());
 }
+
 class Myapp extends StatefulWidget {
   @override
   _MyappState createState() => _MyappState();
@@ -20,11 +15,11 @@ class _MyappState extends State<Myapp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: signup(),
+      home: Homepage(),
       // home: Category(title: "Saree",),
       theme: ThemeData(
-        // fontFamily: "Segoe UI"
-      ),
+          // fontFamily: "Segoe UI"
+          ),
     );
   }
 }

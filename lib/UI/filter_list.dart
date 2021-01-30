@@ -122,6 +122,7 @@ class _FilterListState extends State<FilterList> {
       ]
     },
   ];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -219,8 +220,7 @@ class _FilterListState extends State<FilterList> {
                         ),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(color: Colors.black)
-                        ),
+                            side: BorderSide(color: Colors.black)),
                         padding: EdgeInsets.symmetric(vertical: 20),
                       ),
                     ),

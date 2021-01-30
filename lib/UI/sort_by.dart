@@ -19,6 +19,7 @@ class _SortByState extends State<SortBy> {
     "Trending",
     "Most Ordered",
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +37,23 @@ class _SortByState extends State<SortBy> {
         centerTitle: false,
         backgroundColor: Color(0xff4E72D4),
       ),
-      body: ListView.separated(separatorBuilder: (_, index) {
-        return Divider(height: 1,);
-      }, itemBuilder: (_, index) {
-        return ListTile(title: Text(sortList[index], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),), onTap: (){},);
-      }, itemCount: sortList.length,),
+      body: ListView.separated(
+        separatorBuilder: (_, index) {
+          return Divider(
+            height: 1,
+          );
+        },
+        itemBuilder: (_, index) {
+          return ListTile(
+            title: Text(
+              sortList[index],
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            onTap: () {},
+          );
+        },
+        itemCount: sortList.length,
+      ),
     );
   }
 }
