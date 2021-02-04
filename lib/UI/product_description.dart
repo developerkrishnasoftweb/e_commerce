@@ -12,6 +12,8 @@ class ProductDescription extends StatefulWidget {
   _ProductDescriptionState createState() => _ProductDescriptionState();
 }
 
+List _list = [Colors.green, Colors.indigoAccent, Colors.blueAccent];
+
 class _ProductDescriptionState extends State<ProductDescription> {
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                 child: Hero(
                     tag: widget.heroTag,
                     child: Image.asset(widget.heroTag,
-                        height: size.height * 0.4, width: size.width * 0.7, fit: BoxFit.fill)),
+                        height: size.height * 0.4, width: size.width * 0.7, fit: BoxFit.fitHeight)),
               ),
               SizedBox(height: 15),
               Text("Beige printed art silk saree with blouse",
@@ -72,6 +74,44 @@ class _ProductDescriptionState extends State<ProductDescription> {
                       children: [
                     TextSpan(text: "9 JAN 2021", style: TextStyle(color: Color(0xff212121), fontSize: 14))
                   ])),
+              SizedBox(height: 10),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Size: S, M, XL",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style:
+                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey))),
+              SizedBox(height: 10),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                          height: 30,
+                          width: double.maxFinite,
+                          child: Row(mainAxisSize: MainAxisSize.min, children: [
+                            Text("Colors: ",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey)),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: _list.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int i) {
+                                  return Padding(
+                                      padding: EdgeInsets.only(right: 3),
+                                      child: Container(
+                                          width: 20,
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle, color: _list[i])));
+                                })
+                          ])))),
               SizedBox(height: 10),
               RatingBuilder(onChanged: (_) {}, iconSize: 30, itemExtent: 27),
               Padding(

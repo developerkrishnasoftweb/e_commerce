@@ -1,5 +1,6 @@
 // ignore: must_be_immutable
 import 'package:e_commerce/UI/cart.dart';
+import 'package:e_commerce/UI/product_description.dart';
 import 'package:e_commerce/UI/sort_by.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,8 @@ class Products extends StatefulWidget {
   @override
   _ProductsState createState() => _ProductsState();
 }
+
+List _list = [Colors.amberAccent, Colors.indigoAccent, Colors.pinkAccent];
 
 class _ProductsState extends State<Products> with SingleTickerProviderStateMixin {
   AnimationController animationController;
@@ -54,54 +57,91 @@ class _ProductsState extends State<Products> with SingleTickerProviderStateMixin
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Cart()))),
             ]),
         backgroundColor: Colors.grey[100],
-        body: Column(mainAxisAlignment: MainAxisAlignment.end, mainAxisSize: MainAxisSize.max, children: [
-          // Expanded(GridView.builder(
-          //         shrinkWrap: true,
-          //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //             crossAxisCount: 2, crossAxisSpacing: 10, childAspectRatio: 0.85, mainAxisSpacing: 10),
-          //         itemCount: widget.childrenData[index].childrenData.length,
-          //         padding: EdgeInsets.only(top: 20, bottom: 60),
-          //         physics: BouncingScrollPhysics(),
-          //         itemBuilder: (BuildContext context, int index1) {
-          //           return GestureDetector(
-          //               onTap: () => Navigator.push(
-          //                   context,
-          //                   MaterialPageRoute(
-          //                       builder: (_) =>
-          //                           ProductDescription(heroTag: widget.childrenData[index].childrenData[index1].name))),
-          //               child: Hero(
-          //                   tag: widget.childrenData[index].childrenData[index1].name,
-          //                   child: Column(children: [
-          //                     Image(
-          //                         image: widget.childrenData[index].childrenData[index1].image.isEmpty
-          //                             ? AssetImage("assets/logo.jpeg")
-          //                             : NetworkImage(
-          //                             URLS.IMAGE_URL + widget.childrenData[index].childrenData[index1].image),
-          //                         fit: BoxFit.fitWidth,
-          //                         height: size.height * 0.21,
-          //                         width: size.width * 0.41),
-          //                     SizedBox(height: 5),
-          //                     Align(
-          //                         alignment: Alignment.centerLeft,
-          //                         child: Padding(
-          //                             padding: EdgeInsets.symmetric(horizontal: 25),
-          //                             child: Text(widget.childrenData[index].childrenData[index1].name,
-          //                                 maxLines: 1,
-          //                                 overflow: TextOverflow.ellipsis,
-          //                                 textAlign: TextAlign.start,
-          //                                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)))),
-          //                     Align(
-          //                         alignment: Alignment.centerLeft,
-          //                         child: Padding(
-          //                             padding: EdgeInsets.symmetric(horizontal: 25),
-          //                             child: Text("\$120.0",
-          //                                 maxLines: 1,
-          //                                 overflow: TextOverflow.ellipsis,
-          //                                 textAlign: TextAlign.start,
-          //                                 style: TextStyle(
-          //                                     fontSize: 17, fontWeight: FontWeight.bold, color: Color(0xff4E72D4)))))
-          //                   ])));
-          //         })),
+        body: Column(mainAxisAlignment: MainAxisAlignment.end, mainAxisSize: MainAxisSize.min, children: [
+          Expanded(
+              child: GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, crossAxisSpacing: 10, childAspectRatio: 0.80, mainAxisSpacing: 10),
+                  itemCount: 10,
+                  padding: EdgeInsets.only(top: 20, bottom: 60),
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index1) {
+                    return GestureDetector(
+                        onTap: () => Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => ProductDescription(heroTag: "assets/logo.jpeg"))),
+                        child: Column(children: [
+                          Image(
+                              image:
+                                  // widget.childrenData[index].childrenData[index1].image.isEmpty ?
+                                  AssetImage("assets/logo.jpeg")
+                              //  : NetworkImage(URLS.IMAGE_URL + widget.childrenData[index].childrenData[index1].image)
+                              ,
+                              fit: BoxFit.fitWidth,
+                              height: size.height * 0.21,
+                              width: size.width * 0.41),
+                          SizedBox(height: 5),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 25),
+                                  child: Text("Product Name",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)))),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 25),
+                                  child: Text("\$120.0",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 17, fontWeight: FontWeight.bold, color: Color(0xff4E72D4))))),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 25),
+                                  child: Text("Size: S, M, XL",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style:
+                                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey)))),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 25),
+                                  child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Container(
+                                          height: 30,
+                                          width: double.maxFinite,
+                                          child: Row(mainAxisSize: MainAxisSize.min, children: [
+                                            Text("Colors: ",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey)),
+                                            ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: _list.length,
+                                                scrollDirection: Axis.horizontal,
+                                                itemBuilder: (BuildContext context, int i) {
+                                                  return Padding(
+                                                      padding: EdgeInsets.only(right: 3),
+                                                      child: Container(
+                                                          width: 20,
+                                                          height: 20,
+                                                          decoration: BoxDecoration(
+                                                              shape: BoxShape.circle, color: _list[i])));
+                                                })
+                                          ])))))
+                        ]));
+                  })),
           Container(
               height: 80,
               width: size.width,

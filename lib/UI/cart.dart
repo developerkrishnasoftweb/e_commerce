@@ -149,19 +149,16 @@ class _CartState extends State<Cart> {
                             Text("\$12.00", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
                           ]),
                           SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Total",
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "\$137.00",
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                              )
-                            ]
-                          )
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                            Text(
+                              "Total",
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "\$137.00",
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            )
+                          ])
                         ],
                       ),
                     ],
