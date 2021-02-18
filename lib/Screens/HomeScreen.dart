@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/Screens/CartScreen.dart';
+import 'package:e_commerce/Screens/SubCategoryDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +18,14 @@ final List<String> imgList = [
   'https://images.indianexpress.com/2020/10/Untitled-design-2020-10-15T171350.830.jpg',
   'http://hotelakshaya.in/blog/wp-content/uploads/2018/03/special-offers-Hotel-Deals.jpg',
   'https://images.moneycontrol.com/static-mcnews/2020/09/MC-SUPERPRO-offer-770x433.jpg'
+];
+
+final List<String> grocerySlider = [
+  'https://cdn.static-zoutons.com/images/originals/coupon-category/Grocery_Deals_1588267949.jpg',
+  'https://i.ytimg.com/vi/nf06gJ4hg60/maxresdefault.jpg',
+  'https://lh3.googleusercontent.com/proxy/xodWvKSiQif7Q9avxmkx3FKCi84RQLvN0asgJliURgCu4EFz3xn2WH12pDJk05pf72cwd0TnOn1ARvMPkMkvemZntw',
+  'https://images-eu.ssl-images-amazon.com/images/G/31/img17/Pantry/ITC/New/750x375.jpg',
+  'https://hotdealszone.com/wp-content/uploads/2019/02/Flipkart-Grocery-Offers.png'
 ];
 
 // ignore: non_constant_identifier_names
@@ -45,11 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SingleChildScrollView(
                       child: Column(children: [
             CategoriesListHorizontal(),
-            FreeHomeDeliverySlider(),
-            TopCategories(),
-            TopDeals(),
+            FreeHomeDeliverySlider(imgList),
+            topCategories(),
+            topDeals(),
             ShopGroceries(),
-            FreeHomeDeliverySlider(),
+            offerListWithCategories(),
           ]))))
         ]));
   }
@@ -106,34 +115,36 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-  FreeHomeDeliverySlider() {
+  FreeHomeDeliverySlider(List<String> imgList) {
     return CarouselSlider(
       options: CarouselOptions(
         autoPlay: true,
         aspectRatio: 2.0,
         enlargeCenterPage: true,
       ),
-      items: imageSliders,
+      items: imageSlideView(imgList),
     );
   }
 
-  final List<Widget> imageSliders = imgList
-      .map((item) => Container(
-          child: Container(
-              margin: EdgeInsets.all(5.0),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  child: Stack(children: <Widget>[
-                    Image.network(
-                      item,
-                      fit: BoxFit.cover,
-                      width: 800.sp,
-                      height: 500.sp,
-                    ),
-                  ])))))
-      .toList();
+  imageSlideView(List<String> imgList) {
+    return imgList
+        .map((item) => Container(
+            child: Container(
+                margin: EdgeInsets.all(5.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    child: Stack(children: <Widget>[
+                      Image.network(
+                        item,
+                        fit: BoxFit.cover,
+                        width: 800.sp,
+                        height: 500.sp,
+                      ),
+                    ])))))
+        .toList();
+  }
 
-  TopCategories() {
+  topCategories() {
     List<String> litems = [
       "ATTA, Flours & Sooji",
       "Edible Oils",
@@ -178,29 +189,33 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                          child: Stack(children: [
-                        Container(
-                            alignment: Alignment.bottomCenter,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
-                            child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                    height: 30.sp,
-                                    width: double.infinity,
-                                    color: Colors.white70,
-                                    child: Center(
-                                      child: Text(
-                                        litems[index],
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
-                                      ),
-                                    ))))
-                      ]));
+                      return GestureDetector(
+                        onTap: () =>
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
+                        child: Container(
+                            child: Stack(children: [
+                          Container(
+                              alignment: Alignment.bottomCenter,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                      height: 30.sp,
+                                      width: double.infinity,
+                                      color: Colors.white70,
+                                      child: Center(
+                                        child: Text(
+                                          litems[index],
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                                        ),
+                                      ))))
+                        ])),
+                      );
                     }),
               ),
             ],
@@ -208,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-  TopDeals() {
+  topDeals() {
     List<String> litems = [
       "Lotte Choco Pie Creamfilled Biscuit 336",
       "Dove Nutritive Solutions Intense",
@@ -240,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
               ),
               Container(
-                  height: 230.h,
+                  height: 210.h,
                   child: ListView.builder(
                       itemCount: litems.length,
                       shrinkWrap: true,
@@ -251,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 110.h,
                             height: 200.h,
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 10.h),
+                              padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
                               child: Column(children: [
                                 Container(
                                     width: 100.h,
@@ -347,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 170.h,
                             height: 90.h,
                             child: Padding(
-                                padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 10.h),
+                                padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
                                 child: Container(
                                     decoration: BoxDecoration(
                                         color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.h))),
@@ -373,5 +388,136 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ])))));
                       }))
             ])));
+  }
+
+  offerListWithCategories() {
+    List<String> litems = [
+      "ATTA, Flours & Sooji",
+      "Edible Oils",
+      "Biscuits",
+      "Hair Care",
+      "Soaps",
+      "Kid's Wear",
+      "Men's Wear",
+      "Women's Wear"
+    ];
+
+    List<String> images = [
+      "https://www.abeautifulplate.com/wp-content/uploads/2017/03/bread-flour-differnet-types-of-flour.jpg",
+      "https://2.imimg.com/data2/OW/NJ/MY-3998144/2006020900280402-500x500.jpg",
+      "https://bsmedia.business-standard.com/_media/bs/img/article/2018-02/18/full/1518965938-4605.jpg",
+      "https://i.pinimg.com/736x/3e/71/86/3e7186bd207e26279a8d17d320532238.jpg",
+      "https://dropbasket.in/wp-content/uploads/2020/10/lux.jpg",
+      "https://i1.wp.com/www.wholesalecatalog.in/wp-content/uploads/formidable/6/291.jpg?w=936&h=1405&ssl=1",
+      "https://st.depositphotos.com/1007995/1274/i/950/depositphotos_12746726-stock-photo-fashion-man-wearing-sunglasses-thinking.jpg",
+      "https://ae01.alicdn.com/kf/HTB17NWQh5FTMKJjSZFAq6AkJpXa1/Winter-Big-Pendulum-Purple-Velvet-Dresses-Woman-Dress-2020-Lotus-Leaf-Long-Sleeve-Ladies-Dresses-Kleider.jpg_q50.jpg"
+    ];
+
+    return ListView.builder(
+        itemCount: 6,
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+              color: Colors.grey[200],
+              child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.sp),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.sp),
+                      child: Text("Top Deals for you",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                    ),
+                    FreeHomeDeliverySlider(grocerySlider),
+                    Container(
+                      color: Colors.blueAccent,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(30.h), bottomRight: Radius.circular(30.h))),
+                              child: Padding(
+                                padding: EdgeInsets.all(10.sp),
+                                child: Text(
+                                  "Offers on daily essentials".toUpperCase(),
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: Colors.red),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10.sp),
+                            child: GridView.builder(
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 0.85,
+                                    crossAxisSpacing: 30.sp,
+                                    mainAxisSpacing: 30.sp),
+                                itemCount: litems.length,
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                      child: Stack(children: [
+                                    Container(
+                                        alignment: Alignment.bottomCenter,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            image:
+                                                DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
+                                        child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Container(
+                                                height: 40.sp,
+                                                width: double.infinity,
+                                                // color: Colors.white70,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.only(
+                                                        bottomLeft: Radius.circular(10),
+                                                        bottomRight: Radius.circular(10))),
+                                                child: Center(
+                                                    child: RichText(
+                                                        maxLines: 4,
+                                                        textAlign: TextAlign.center,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        text: TextSpan(
+                                                            text: 'UP TO ',
+                                                            style: TextStyle(
+                                                                color: Colors.blueAccent,
+                                                                fontWeight: FontWeight.bold,
+                                                                fontSize: 15.sp),
+                                                            children: [
+                                                              TextSpan(
+                                                                  text: '30% OFF\n',
+                                                                  style: TextStyle(
+                                                                      color: Colors.red,
+                                                                      fontSize: 15.sp,
+                                                                      fontWeight: FontWeight.bold)),
+                                                              TextSpan(
+                                                                  text: litems[index],
+                                                                  style: TextStyle(
+                                                                      color: Colors.black,
+                                                                      fontSize: 12.sp,
+                                                                      fontWeight: FontWeight.bold))
+                                                            ]))))))
+                                  ]));
+                                }),
+                          ),
+                        ],
+                      ),
+                    )
+                  ])));
+        });
   }
 }
