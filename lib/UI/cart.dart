@@ -84,7 +84,7 @@ class _CartState extends State<Cart> {
               GestureDetector(
                 onTap: () {},
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   color: Colors.grey[100],
                   width: size.width,
                   child: Row(
@@ -126,16 +126,14 @@ class _CartState extends State<Cart> {
                 separatorBuilder: (_, index) {
                   return Divider(
                     color: Colors.grey,
+                    endIndent: 20,
+                    indent: 20,
                   );
                 },
                 itemCount: cartItems.length,
                 shrinkWrap: true,
               ),
-              Container(
-                height: 20,
-                width: double.infinity,
-                color: Colors.grey[100],
-              ),
+              greyStrip(),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
@@ -170,11 +168,7 @@ class _CartState extends State<Cart> {
                   ],
                 ),
               ),
-              Container(
-                height: 20,
-                width: double.infinity,
-                color: Colors.grey[100],
-              ),
+              greyStrip(),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
@@ -209,11 +203,7 @@ class _CartState extends State<Cart> {
                   ],
                 ),
               ),
-              Container(
-                height: 20,
-                width: double.infinity,
-                color: Colors.grey[100],
-              ),
+              greyStrip()
             ])),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(
@@ -324,7 +314,7 @@ class _CartState extends State<Cart> {
                                 "\t\tYou Save \u20b9${item.discount * item.quantity}",
                             style: TextStyle(
                                 color: Colors.green,
-                                fontSize: 18,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold)),
                       ]),
                 ),
@@ -392,6 +382,13 @@ class _CartState extends State<Cart> {
           )
         ],
       ),
+    );
+  }
+  Widget greyStrip () {
+    return Container(
+      height: 20,
+      width: double.infinity,
+      color: Colors.grey[100],
     );
   }
 }
