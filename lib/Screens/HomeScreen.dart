@@ -41,9 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           SearchBarView(),
           Expanded(
-            child: SingleChildScrollView(
-                child: Column(children: [CategoriesListHorizontal(), FreeHomeDeliverySlider(), TopCategories(), TopDeals()])),
-          ),
+              child: Container(
+                  child: SingleChildScrollView(
+                      child: Column(children: [
+            CategoriesListHorizontal(),
+            FreeHomeDeliverySlider(),
+            TopCategories(),
+            TopDeals(),
+            ShopGroceries(),
+            FreeHomeDeliverySlider(),
+          ]))))
         ]));
   }
 
@@ -127,7 +134,17 @@ class _HomeScreenState extends State<HomeScreen> {
       .toList();
 
   TopCategories() {
-    List<String> litems = ["ATTA, Flours & Sooji", "Edible Oils", "Biscuits", "Hair Care", "Soaps", "Kid's Wear", "Men's Wear", "Women's Wear"];
+    List<String> litems = [
+      "ATTA, Flours & Sooji",
+      "Edible Oils",
+      "Biscuits",
+      "Hair Care",
+      "Soaps",
+      "Kid's Wear",
+      "Men's Wear",
+      "Women's Wear"
+    ];
+
     List<String> images = [
       "https://www.abeautifulplate.com/wp-content/uploads/2017/03/bread-flour-differnet-types-of-flour.jpg",
       "https://2.imimg.com/data2/OW/NJ/MY-3998144/2006020900280402-500x500.jpg",
@@ -192,6 +209,169 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   TopDeals() {
+    List<String> litems = [
+      "Lotte Choco Pie Creamfilled Biscuit 336",
+      "Dove Nutritive Solutions Intense",
+      "Surf Excel Easy wash Detergent Powder 4 kg",
+      "Dabour Honey 500 g",
+      "Lux Lotus Soap 200 g + 10% Extra",
+      "Laxmi Bhog Besan"
+    ];
+    List<String> images = [
+      "https://cdn.shopify.com/s/files/1/2649/4616/products/21.2_Lotte_Choco_Pie_336_gm_PRICE_140_1024x1024@2x.jpg?v=1608186737",
+      "https://www.bigbasket.com/media/uploads/p/xxl/40141852_5-dove-hair-fall-rescue-shampoo.jpg",
+      "https://5.imimg.com/data5/KS/UI/MY-47131030/surf-excel-quickwash-500x500.jpg",
+      "https://www.cureka.com/wp-content/uploads/2019/12/Dabur-Honey-100g-600x600.jpg",
+      "https://dropbasket.in/wp-content/uploads/2020/10/lux.jpg",
+      "https://5.imimg.com/data5/FU/UD/MY-16520432/laxmi-bhog-besan-500x500.png"
+    ];
 
+    return Container(
+        color: Colors.white,
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.sp),
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Padding(
+                padding: EdgeInsets.only(left: 10.sp),
+                child: Text("Top Deals",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                  height: 230.h,
+                  child: ListView.builder(
+                      itemCount: litems.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                            width: 110.h,
+                            height: 200.h,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 10.h),
+                              child: Column(children: [
+                                Container(
+                                    width: 100.h,
+                                    height: 100.h,
+                                    alignment: Alignment.bottomCenter,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover))),
+                                Expanded(
+                                    child: Center(
+                                  child: RichText(
+                                      maxLines: 4,
+                                      overflow: TextOverflow.ellipsis,
+                                      text: TextSpan(
+                                          text: '₹ 22.50 ',
+                                          style: TextStyle(
+                                              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
+                                          children: [
+                                            TextSpan(
+                                                text: '₹ 45.00 \n',
+                                                style: TextStyle(
+                                                    decoration: TextDecoration.lineThrough,
+                                                    color: Colors.black,
+                                                    fontSize: 10.sp)),
+                                            TextSpan(
+                                                text: "Save ₹ 22.50 \n",
+                                                style: TextStyle(
+                                                    fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green)),
+                                            TextSpan(
+                                                text: litems[index],
+                                                style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold))
+                                          ])),
+                                )),
+                                RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5.sp),
+                                        side: BorderSide(color: Myapp.primaryColor)),
+                                    onPressed: () {},
+                                    elevation: 0,
+                                    color: Myapp.primaryColor,
+                                    textColor: Colors.white,
+                                    padding: EdgeInsets.all(0.h),
+                                    child: SizedBox(
+                                        width: double.infinity,
+                                        child: Text("Add".toUpperCase(),
+                                            style: TextStyle(fontSize: 12.sp), textAlign: TextAlign.center)))
+                              ]),
+                            ));
+                      }))
+            ])));
+  }
+
+  ShopGroceries() {
+    List<String> litems = [
+      "Lotte Choco Pie Creamfilled Biscuit 336",
+      "Dove Nutritive Solutions Intense",
+      "Surf Excel Easy wash Detergent Powder 4 kg",
+      "Dabour Honey 500 g",
+      "Lux Lotus Soap 200 g + 10% Extra",
+      "Laxmi Bhog Besan"
+    ];
+    List<String> images = [
+      "https://cdn.shopify.com/s/files/1/2649/4616/products/21.2_Lotte_Choco_Pie_336_gm_PRICE_140_1024x1024@2x.jpg?v=1608186737",
+      "https://www.bigbasket.com/media/uploads/p/xxl/40141852_5-dove-hair-fall-rescue-shampoo.jpg",
+      "https://5.imimg.com/data5/KS/UI/MY-47131030/surf-excel-quickwash-500x500.jpg",
+      "https://www.cureka.com/wp-content/uploads/2019/12/Dabur-Honey-100g-600x600.jpg",
+      "https://dropbasket.in/wp-content/uploads/2020/10/lux.jpg",
+      "https://5.imimg.com/data5/FU/UD/MY-16520432/laxmi-bhog-besan-500x500.png"
+    ];
+
+    return Container(
+        color: Colors.grey[200],
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.sp),
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Padding(
+                padding: EdgeInsets.only(left: 10.sp),
+                child: Text("Shop Groceries",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                  height: 70.h,
+                  child: ListView.builder(
+                      itemCount: litems.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                            width: 170.h,
+                            height: 90.h,
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 10.h),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.h))),
+                                    child: Padding(
+                                        padding: EdgeInsets.all(5.h),
+                                        child: Row(children: [
+                                          Container(
+                                              width: 50.h,
+                                              height: 50.h,
+                                              alignment: Alignment.bottomCenter,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(3.h),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(images[index]), fit: BoxFit.cover))),
+                                          Expanded(
+                                              child: Center(
+                                                  child: Padding(
+                                                      padding: EdgeInsets.symmetric(horizontal: 10.h),
+                                                      child: Text(litems[index],
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: TextStyle(fontSize: 12.sp)))))
+                                        ])))));
+                      }))
+            ])));
   }
 }
