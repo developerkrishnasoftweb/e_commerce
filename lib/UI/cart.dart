@@ -117,6 +117,7 @@ class _CartState extends State<Cart> {
                   ),
                 ),
               ),
+              SizedBox(height: 10),
               ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (_, index) {
