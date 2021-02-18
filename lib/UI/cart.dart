@@ -1,3 +1,4 @@
+import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -12,39 +13,52 @@ class _CartState extends State<Cart> {
   List<CartItem> cartItems = [
     CartItem(
         image: "assets/images/products/product1.png",
-        category: "By Classiques",
-        price: "120.0",
-        name: "Maroon Printed Art Silk Saree With blouse",
+        category: "Groccery",
+        price: 12,
+        name: "Aashirvaad Multigrain Atta 5 kg",
         quantity: 1,
-        shippingCharge: "12.0"),
+        discount: 10,
+        maxQuantity: 5),
     CartItem(
         image: "assets/images/products/product2.png",
-        category: "By Classiques",
-        price: "120.0",
-        name: "Maroon Printed Art Silk Saree With blouse",
+        category: "Groccery",
+        price: 200,
+        name: "Tata Lite Free Flow Iodised Salt 1 kg",
         quantity: 1,
-        shippingCharge: "12.0"),
+        discount: 30,
+        maxQuantity: 1),
     CartItem(
         image: "assets/images/products/product3.png",
-        category: "By Classiques",
-        price: "120.0",
-        name: "Maroon Printed Art Silk Saree With blouse",
-        quantity: 1,
-        shippingCharge: "12.0"),
+        category: "Groccery",
+        price: 121.0,
+        name: "Good Life Tur Dal 1 kg",
+        quantity: 5,
+        discount: 20,
+        maxQuantity: 20),
     CartItem(
         image: "assets/images/products/product4.png",
-        category: "By Classiques",
-        price: "120.0",
-        name: "Maroon Printed Art Silk Saree With blouse",
+        category: "Groccery",
+        price: 123,
+        name: "Good Life Almonds 500 g",
         quantity: 1,
-        shippingCharge: "12.0"),
+        discount: 15,
+        maxQuantity: 10),
     CartItem(
-        image: "assets/images/products/product5.png",
-        category: "By Classiques",
-        price: "120.0",
-        name: "Maroon Printed Art Silk Saree With blouse",
+        image: "assets/images/products/product2.png",
+        category: "Groccery",
+        price: 200,
+        name: "Tata Lite Free Flow Iodised Salt 1 kg",
         quantity: 1,
-        shippingCharge: "12.0"),
+        discount: 30,
+        maxQuantity: 1),
+    CartItem(
+        image: "assets/images/products/product1.png",
+        category: "Groccery",
+        price: 12,
+        name: "Aashirvaad Multigrain Atta 5 kg",
+        quantity: 1,
+        discount: 10,
+        maxQuantity: 5),
   ];
 
   @override
@@ -54,108 +68,344 @@ class _CartState extends State<Cart> {
         appBar: AppBar(
             elevation: 0,
             leading: appBarIconButton(
-                imagePath: "assets/icons/left-arrow.png", color: Colors.white, onPressed: () => Navigator.pop(context)),
-            title: Text("Cart", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+                imagePath: "assets/icons/left-arrow.png",
+                color: Colors.white,
+                onPressed: () => Navigator.pop(context)),
+            title: Text("Cart",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white)),
             centerTitle: false,
-            backgroundColor: Color(0xff4E72D4)),
-        body: Column(children: [
+            backgroundColor: Myapp.primaryColor),
+        body: SingleChildScrollView(
+            padding: EdgeInsets.only(bottom: 85),
+            child: Column(children: [
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  color: Colors.grey[100],
+                  width: size.width,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.location_on_rounded,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(width: 10),
+                      RichText(
+                        text: TextSpan(
+                            text: "Deliver to\t\t",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                  text: "394221",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold))
+                            ]),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  return card(cartItems[index]);
+                },
+                separatorBuilder: (_, index) {
+                  return Divider(
+                    color: Colors.grey,
+                  );
+                },
+                itemCount: cartItems.length,
+                shrinkWrap: true,
+              ),
+              Container(
+                height: 20,
+                width: double.infinity,
+                color: Colors.grey[100],
+              ),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Apply Coupon",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 20),
+                    RichText(
+                        text: TextSpan(
+                            text: "Log in",
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                            children: [
+                          TextSpan(
+                              text: " to see best offers and cashback deals",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500))
+                        ])),
+                    Container(
+                      color: Colors.blue,
+                      width: 48,
+                      height: 2,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 20,
+                width: double.infinity,
+                color: Colors.grey[100],
+              ),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Payment Details",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 20),
+                    amountRow(title: "MRP Total", amount: "900.00"),
+                    Divider(color: Colors.grey),
+                    amountRow(title: "Product Discount", amount: "-90.00"),
+                    Divider(color: Colors.grey),
+                    amountRow(
+                        title: "Total Amount",
+                        amount: "810.00",
+                        titleColor: Colors.black,
+                        amountColor: Colors.black),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text("You Save \u20b9232.00",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.green)),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 20,
+                width: double.infinity,
+                color: Colors.grey[100],
+              ),
+            ])),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border:
+                  Border.symmetric(horizontal: BorderSide(color: Colors.grey))),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          height: 75,
+          child: Row(
+            children: [
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text("Payable Amount",
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)),
+                  Text("\u20b94603.00",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)),
+                ],
+              )),
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.only(left: 30),
+                child: FlatButton(
+                  child: Text("Place Order",
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                  onPressed: () {},
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7)),
+                  color: Myapp.primaryColor,
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                ),
+              ))
+            ],
+          ),
+        ));
+  }
+
+  Widget amountRow(
+      {String title, String amount, Color titleColor, Color amountColor}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title ?? "N/A",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 16, color: titleColor ?? Colors.grey)),
+        Text("\u20b9$amount",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: amountColor ?? Colors.black87)),
+      ],
+    );
+  }
+
+  Widget card(CartItem item) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            item.image,
+            width: 70,
+            height: 70,
+            fit: BoxFit.contain,
+          ),
           Expanded(
-              child: ListView.builder(
-                  itemBuilder: (_, index) {
-                    return Container(
-                        height: 400,
-                        width: size.width,
-                        margin: EdgeInsets.all(10),
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Image.asset(cartItems[index].image, height: 180, width: size.width * 0.4, fit: BoxFit.fill),
-                            Expanded(
-                                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Text(cartItems[index].name,
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis),
-                              SizedBox(height: 10),
-                              Text(cartItems[index].category,
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis),
-                              SizedBox(height: 10),
-                              Row(children: [
-                                Text("Quantity",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis),
-                                SizedBox(width: 10),
-                                Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(8)),
-                                    child: DropdownButton(
-                                        isDense: true,
-                                        onChanged: (value) => setState(() => cartItems[index].quantity = value),
-                                        value: cartItems[index].quantity,
-                                        items: [1, 2, 3, 4, 5]
-                                            .map((e) => DropdownMenuItem(child: Text("$e"), value: e))
-                                            .toList(),
-                                        underline: SizedBox.shrink()))
-                              ]),
-                              SizedBox(height: 20),
-                              Text("\$" + cartItems[index].price,
-                                  style: TextStyle(color: Color(0xff4E72D4), fontWeight: FontWeight.bold, fontSize: 25),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis)
-                            ]))
-                          ]),
-                          SizedBox(height: 20),
-                          Row(children: [
-                            Expanded(
-                                child: FlatButton(
-                                    onPressed: () {},
-                                    child: Text("Remove", style: TextStyle(color: Colors.grey)),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10), side: BorderSide(color: Colors.grey)),
-                                    padding: EdgeInsets.symmetric(vertical: 20))),
-                            SizedBox(width: 10),
-                            Expanded(
-                                child: FlatButton(
-                                    onPressed: () {},
-                                    child: Text("MOVE TO WISHLIST", style: TextStyle(color: Colors.grey)),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10), side: BorderSide(color: Colors.grey)),
-                                    padding: EdgeInsets.symmetric(vertical: 20)))
-                          ]),
-                          SizedBox(height: 10),
-                          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text("PRICE DETAILS", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                            SizedBox(height: 10),
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text("Items Total",
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey)),
-                              Text("\$125.00", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
-                            ]),
-                            SizedBox(height: 5),
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text("Shipping Charge*",
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey)),
-                              Text("\$12.00", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
-                            ]),
-                            SizedBox(height: 10),
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text("Total", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                              Text("\$137.00", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
-                            ])
-                          ])
-                        ]));
-                  },
-                  itemCount: cartItems.length,
-                  physics: BouncingScrollPhysics()))
-        ]));
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.name,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 15),
+                RichText(
+                  text: TextSpan(
+                      text:
+                          "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t\t",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                            text: "\u20b9${item.price * item.quantity}",
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                decoration: TextDecoration.lineThrough,
+                                fontWeight: FontWeight.bold)),
+                        TextSpan(
+                            text:
+                                "\t\tYou Save \u20b9${item.discount * item.quantity}",
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold)),
+                      ]),
+                ),
+                SizedBox(
+                  height: 7,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 35,
+                      width: 35,
+                      child: FlatButton(
+                        child: Icon(Icons.remove, color: Colors.white),
+                        onPressed: () {
+                          if (item.quantity != 1) {
+                            setState(() {
+                              item.quantity--;
+                            });
+                          } else {
+                            setState(() {
+                              cartItems.remove(item);
+                            });
+                          }
+                        },
+                        color: Myapp.primaryColor,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      item.quantity.toString(),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    SizedBox(width: 10),
+                    SizedBox(
+                      height: 35,
+                      width: 35,
+                      child: FlatButton(
+                        child: Icon(Icons.add, color: Colors.white),
+                        onPressed: item.quantity <= item.maxQuantity
+                            ? () {
+                                if (item.quantity != item.maxQuantity) {
+                                  setState(() {
+                                    item.quantity++;
+                                  });
+                                }
+                              }
+                            : () {},
+                        color: item.quantity >= item.maxQuantity
+                            ? Myapp.primaryColor.withOpacity(0.7)
+                            : Myapp.primaryColor,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
 class CartItem {
-  final String image, name, category, price, shippingCharge;
+  final String image, name, category;
+  final double price, maxQuantity, discount;
   int quantity;
-  CartItem({this.category, this.image, this.name, this.price, this.quantity, this.shippingCharge});
+
+  CartItem(
+      {this.image,
+      this.name,
+      this.category,
+      this.price,
+      this.maxQuantity,
+      this.discount,
+      this.quantity});
 }
