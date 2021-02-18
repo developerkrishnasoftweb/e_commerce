@@ -31,13 +31,8 @@ class _RatingBuilderState extends State<RatingBuilder> {
   void initState() {
     super.initState();
     setState(() {
-      icon = widget.iconList ??
-          List.generate(widget.itemCount ?? 5, (index) {
-            return widget.iconList ?? Icons.star_border;
-          });
-      colorList = List.generate(widget.itemCount ?? 5, (index) {
-        return widget.inactiveColor ?? inactiveColor;
-      });
+      icon = widget.iconList ?? List.generate(widget.itemCount ?? 5, (index) => widget.iconList ?? Icons.star_border);
+      colorList = List.generate(widget.itemCount ?? 5, (index) => widget.inactiveColor ?? inactiveColor);
     });
   }
 
@@ -52,42 +47,41 @@ class _RatingBuilderState extends State<RatingBuilder> {
             itemExtent: widget.itemExtent ?? 40,
             itemBuilder: (BuildContext context, int index) {
               return IconButton(
-                padding: EdgeInsets.zero,
-                splashRadius: 25,
-                onPressed: () {
-                  if (index == 0 && (colorList[0] == widget.activeColor ?? Colors.yellow)) {
-                    widget.onChanged(index);
-                    for (int i = 0; i < icon.length; i++) {
-                      setState(() {
-                        colorList[i] = widget.inactiveColor ?? inactiveColor;
-                        if (icon[i] == Icons.star) {
-                          icon[i] = Icons.star_border;
-                        }
-                      });
+                  padding: EdgeInsets.zero,
+                  splashRadius: 25,
+                  onPressed: () {
+                    if (index == 0 && (colorList[0] == widget.activeColor ?? Colors.yellow)) {
+                      widget.onChanged(index);
+                      for (int i = 0; i < icon.length; i++) {
+                        setState(() {
+                          colorList[i] = widget.inactiveColor ?? inactiveColor;
+                          if (icon[i] == Icons.star) {
+                            icon[i] = Icons.star_border;
+                          }
+                        });
+                      }
+                    } else {
+                      widget.onChanged(index + 1);
+                      for (int i = 0; i < icon.length; i++) {
+                        setState(() {
+                          colorList[i] = widget.inactiveColor ?? inactiveColor;
+                          if (icon[i] == Icons.star) {
+                            icon[i] = Icons.star_border;
+                          }
+                        });
+                      }
+                      for (int i = 0; i <= index; i++) {
+                        setState(() {
+                          colorList[i] = widget.activeColor ?? Colors.yellow;
+                          if (icon[i] == Icons.star_border) {
+                            icon[i] = Icons.star;
+                          }
+                        });
+                      }
                     }
-                  } else {
-                    widget.onChanged(index + 1);
-                    for (int i = 0; i < icon.length; i++) {
-                      setState(() {
-                        colorList[i] = widget.inactiveColor ?? inactiveColor;
-                        if (icon[i] == Icons.star) {
-                          icon[i] = Icons.star_border;
-                        }
-                      });
-                    }
-                    for (int i = 0; i <= index; i++) {
-                      setState(() {
-                        colorList[i] = widget.activeColor ?? Colors.yellow;
-                        if (icon[i] == Icons.star_border) {
-                          icon[i] = Icons.star;
-                        }
-                      });
-                    }
-                  }
-                },
-                color: colorList[index],
-                icon: Icon(icon[index] ?? Icons.star_border, size: widget.iconSize ?? 35),
-              );
+                  },
+                  color: colorList[index],
+                  icon: Icon(icon[index] ?? Icons.star_border, size: widget.iconSize ?? 35));
             }));
   }
 }

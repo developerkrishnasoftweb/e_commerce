@@ -2,22 +2,20 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:e_commerce/Models/Categories.dart';
+import 'package:e_commerce/Models/SubCategories.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/UI/cart.dart';
 import 'package:e_commerce/UI/filter_list.dart';
-import 'package:e_commerce/UI/product_description.dart';
 import 'package:e_commerce/UI/products.dart';
 import 'package:e_commerce/UI/sort_by.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-// ignore: must_be_immutable
 class Category extends StatefulWidget {
-  final String title;
-  List<ChildrenData> childrenData;
+  final String categoryId, departmentId;
 
-  Category({this.childrenData, this.title});
+  Category({this.categoryId, this.departmentId});
 
   @override
   _CategoryState createState() => _CategoryState();
@@ -43,201 +41,126 @@ class _CategoryState extends State<Category> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return DefaultTabController(
-        length: widget.childrenData.length,
-        child: Scaffold(
-            appBar: AppBar(
-                elevation: 0,
-                leading:
-                    appBarIconButton(imagePath: "assets/icons/left-arrow.png", onPressed: () => Navigator.pop(context)),
-                title: Text(
-                  widget.title ?? "Category",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
-                ),
-                centerTitle: false,
-                backgroundColor: Colors.white,
-                actions: [
-                  appBarIconButton(imagePath: "assets/icons/loupe.png", onPressed: () {}),
-                  appBarIconButton(imagePath: "assets/icons/heart.png", onPressed: () {}),
-                  appBarIconButton(
-                      imagePath: "assets/icons/shopping-cart.png",
-                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Cart()))),
-                ],
-                bottom: TabBar(
-                    isScrollable: true,
-                    tabs: widget.childrenData.map((e) {
-                      return Tab(
-                          child: Text(e.name, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)));
-                    }).toList())),
-            backgroundColor: Colors.grey[100],
-            body: Column(mainAxisAlignment: MainAxisAlignment.end, mainAxisSize: MainAxisSize.max, children: [
-              Expanded(
-                  child: TabBarView(children: List<Widget>.generate(widget.childrenData.length, (int index) {
-                return GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, crossAxisSpacing: 10, childAspectRatio: 0.85, mainAxisSpacing: 10),
-                    itemCount: widget.childrenData[index].childrenData.length,
-                    padding: EdgeInsets.only(top: 20, bottom: 60),
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index1) {
-                      return GestureDetector(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => Products(title: widget.childrenData[index].childrenData[index1].name,
-                                    id: widget.childrenData[index].childrenData[index1].id.toString())//ProductDescription(heroTag: widget.childrenData[index].childrenData[index1].name)
-                              )),
-                          child: Hero(
-                              tag: widget.childrenData[index].childrenData[index1].name,
-                              child: Column(children: [
-                                Image(
-                                    image: widget.childrenData[index].childrenData[index1].image.isEmpty
-                                        ? AssetImage("assets/logo.jpeg")
-                                        : NetworkImage(URLS.IMAGE_URL + widget.childrenData[index].childrenData[index1].image),
-                                    fit: BoxFit.fitWidth,
-                                    height: size.height * 0.21,
-                                    width: size.width * 0.41),
-                                SizedBox(height: 5),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 25),
-                                        child: Text(widget.childrenData[index].childrenData[index1].name,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)))),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 25),
-                                        child: Text("\$120.0",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontSize: 17, fontWeight: FontWeight.bold, color: Color(0xff4E72D4)))))
-                              ])));
-                    });
-              }))),
-              Container(
-                  height: 80,
-                  width: size.width,
-                  color: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Row(children: [
-                    Expanded(
-                        child: FlatButton.icon(
-                            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SortBy())),
-                            icon: ImageIcon(AssetImage("assets/icons/sort.png")),
-                            label: Text("SORT", style: TextStyle(color: Colors.black)),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), side: BorderSide(color: Colors.black)),
-                            padding: EdgeInsets.symmetric(vertical: 16))),
-                    SizedBox(width: 10),
-                    Expanded(
-                        child: FlatButton.icon(
-                            onPressed: () =>
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => FilterList())),
-                            icon: ImageIcon(AssetImage("assets/icons/education.png")),
-                            label: Text("FILTER", style: TextStyle(color: Colors.black)),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), side: BorderSide(color: Colors.black)),
-                            padding: EdgeInsets.symmetric(vertical: 16)))
-                  ]))
-            ])
-            // body: Stack(
-            //   children: [
-            //     Column(
-            //       children: [
-            //         // Container(
-            //         //   width: size.width,
-            //         //   height: 60,
-            //         //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //         //   child: ListView.separated(
-            //         //     separatorBuilder: (BuildContext context, int index) {
-            //         //       return SizedBox(
-            //         //         width: 10,
-            //         //       );
-            //         //     },
-            //         //     itemBuilder: (BuildContext context, int index) {
-            //         //       return FlatButton(
-            //         //         onPressed: () {
-            //         //
-            //         //         },
-            //         //         child: Text(
-            //         //           categories[index],
-            //         //           style: TextStyle(
-            //         //               color: Colors.black,
-            //         //               fontWeight: FontWeight.bold,
-            //         //               fontSize: 15),
-            //         //         ),
-            //         //         shape: RoundedRectangleBorder(
-            //         //           borderRadius: BorderRadius.circular(10),
-            //         //           side: BorderSide(color: Colors.black),
-            //         //         ),
-            //         //       );
-            //         //     },
-            //         //     itemCount: categories.length,
-            //         //     scrollDirection: Axis.horizontal,
-            //         //     physics: BouncingScrollPhysics(),
-            //         //   ),
-            //         // ),
-            //
-            //
-            //
-            //       ],
-            //     ),
-            //     Positioned(
-            //         bottom: 0,
-            //         child: Container(
-            //           height: 80,
-            //           width: size.width,
-            //           color: Colors.white,
-            //           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //           child: Row(
-            //             children: [
-            //               Expanded(
-            //                 child: FlatButton.icon(
-            //                   onPressed: () => Navigator.push(context,
-            //                       MaterialPageRoute(builder: (_) => SortBy())),
-            //                   icon: ImageIcon(AssetImage("assets/icons/sort.png")),
-            //                   label: Text(
-            //                     "SORT",
-            //                     style: TextStyle(color: Colors.black),
-            //                   ),
-            //                   shape: RoundedRectangleBorder(
-            //                       borderRadius: BorderRadius.circular(10),
-            //                       side: BorderSide(color: Colors.black)),
-            //                   padding: EdgeInsets.symmetric(vertical: 16),
-            //                 ),
-            //               ),
-            //               SizedBox(
-            //                 width: 10,
-            //               ),
-            //               Expanded(
-            //                 child: FlatButton.icon(
-            //                   onPressed: () => Navigator.push(context,
-            //                       MaterialPageRoute(builder: (_) => FilterList())),
-            //                   icon:
-            //                       ImageIcon(AssetImage("assets/icons/education.png")),
-            //                   label: Text(
-            //                     "FILTER",
-            //                     style: TextStyle(color: Colors.black),
-            //                   ),
-            //                   shape: RoundedRectangleBorder(
-            //                       borderRadius: BorderRadius.circular(10),
-            //                       side: BorderSide(color: Colors.black)),
-            //                   padding: EdgeInsets.symmetric(vertical: 16),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ))
-            //   ],
-            // ),
-            ));
+
+    return FutureBuilder(
+        future: ApiService.getCategories(widget.categoryId, widget.departmentId),
+        builder: (context, snapshot) {
+          final SubCategory data = snapshot.data;
+          print("data" + data.toString());
+          if (snapshot.connectionState == ConnectionState.done && data != null) {
+            return DefaultTabController(
+                length: data.data.subCategories.length,
+                child: Scaffold(
+                    appBar: AppBar(
+                        elevation: 0,
+                        leading: appBarIconButton(
+                            imagePath: "assets/icons/left-arrow.png", onPressed: () => Navigator.pop(context)),
+                        title: Text(
+                          data.data.title ?? "Category",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
+                        ),
+                        centerTitle: false,
+                        backgroundColor: Colors.white,
+                        actions: [
+                          appBarIconButton(imagePath: "assets/icons/loupe.png", onPressed: () {}),
+                          appBarIconButton(imagePath: "assets/icons/heart.png", onPressed: () {}),
+                          appBarIconButton(
+                              imagePath: "assets/icons/shopping-cart.png",
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Cart())))
+                        ],
+                        bottom: TabBar(
+                            isScrollable: true,
+                            tabs: data.data.subCategories.map((e) {
+                              return Tab(
+                                  child: Text(e.title,
+                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)));
+                            }).toList())),
+                    backgroundColor: Colors.grey[100],
+                    body: data.data.subCategories.isNotEmpty
+                        ? Column(mainAxisAlignment: MainAxisAlignment.end, mainAxisSize: MainAxisSize.max, children: [
+                            Expanded(
+                                child: TabBarView(
+                                    children: List<Widget>.generate(data.data.subCategories.length, (int index) {
+                              return GridView.builder(
+                                  shrinkWrap: true,
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 10,
+                                      childAspectRatio: (size.width * 0.2/ 100.h),
+                                      mainAxisSpacing: 10),
+                                  itemCount: data.data.subCategories[index].brands.length,
+                                  padding: EdgeInsets.only(top: 0, bottom: 10, left:10, right: 10),
+                                  physics: BouncingScrollPhysics(),
+                                  itemBuilder: (BuildContext context, int index1) {
+                                    return GestureDetector(
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) => ProductScreen(
+                                                    manufacturerId: data.data.subCategories[index].brands[index1].id.toString(),
+                                                    subCategoryId: data.data.subCategories[index].id.toString(),
+                                                    title: data.data.subCategories[index].brands[index1].title))),
+                                        child: Column(children: [
+                                          AspectRatio(
+                                            aspectRatio: 1 / 1,
+                                            child: Image(
+                                                image:
+                                                // data.data.subCategories[index].brands[index1].image.isEmpty ?
+                                                    AssetImage("assets/logo.jpeg")
+                                                // : NetworkImage(URLS.IMAGE_URL + widget.childrenData[index].childrenData[index1].image)
+                                                ,
+                                                fit: BoxFit.contain),
+                                          ),
+                                          Align(
+                                              alignment: Alignment.center,
+                                              child: Text(data.data.subCategories[index].brands[index1].title,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)))
+                                        ]));
+                                  });
+                            }))),
+                            Container(
+                                height: 80,
+                                width: size.width,
+                                color: Colors.white,
+                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                child: Row(children: [
+                                  Expanded(
+                                      child: FlatButton.icon(
+                                          onPressed: () =>
+                                              Navigator.push(context, MaterialPageRoute(builder: (_) => SortBy())),
+                                          icon: ImageIcon(AssetImage("assets/icons/sort.png")),
+                                          label: Text("SORT", style: TextStyle(color: Colors.black)),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              side: BorderSide(color: Colors.black)),
+                                          padding: EdgeInsets.symmetric(vertical: 16))),
+                                  SizedBox(width: 10),
+                                  Expanded(
+                                      child: FlatButton.icon(
+                                          onPressed: () =>
+                                              Navigator.push(context, MaterialPageRoute(builder: (_) => FilterList())),
+                                          icon: ImageIcon(AssetImage("assets/icons/education.png")),
+                                          label: Text("FILTER", style: TextStyle(color: Colors.black)),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              side: BorderSide(color: Colors.black)),
+                                          padding: EdgeInsets.symmetric(vertical: 16)))
+                                ]))
+                          ])
+                        : Container(
+                            color: Colors.white,
+                            child: Center(
+                                child: Text("Data not found!",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal))))));
+          } else
+            return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
+        });
   }
 }
 

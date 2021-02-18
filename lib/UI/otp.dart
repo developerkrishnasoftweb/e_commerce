@@ -11,7 +11,7 @@ class OTP extends StatefulWidget {
 }
 
 class _OTPState extends State<OTP> {
-  FocusNode textFocusNode = new FocusNode();
+  FocusNode textFocusNode = FocusNode();
   String otp = "";
 
   @override
@@ -44,16 +44,16 @@ class _OTPState extends State<OTP> {
                 for (int i = 0; i < 4; i++) ...[buildOtpTextField()]
               ]))),
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40),
+              padding: EdgeInsets.symmetric(vertical: 40),
               child: GestureDetector(
                   onTap: () {},
-                  child: Text("RESEND OTP",
-                      style: TextStyle(color: Color(0xff4E72D4), fontSize: 17, fontWeight: FontWeight.bold)))),
+                  child: Text("Resend OTP",
+                      style: TextStyle(color: Color(0xff4E72D4), fontSize: 20, fontWeight: FontWeight.bold)))),
           SizedBox(
             height: 70,
             width: size.width * 0.9,
             child: FlatButton(
-                child: Text("LOGIN", style: TextStyle(color: Colors.white, fontSize: 20)),
+                child: Text("LogIn", style: TextStyle(color: Colors.white, fontSize: 20)),
                 color: Color(0xff4E72D4),
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Homepage())),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
@@ -75,17 +75,13 @@ class _OTPState extends State<OTP> {
             onChanged: (value) {
               if (value.isEmpty) {
                 if (otp != null && otp.length > 0) {
-                  setState(() {
-                    otp = otp.substring(0, otp.length - 1);
-                  });
+                  setState(() => otp = otp.substring(0, otp.length - 1));
                 }
                 FocusScope.of(context).previousFocus();
               }
               if (value.length == 1) {
                 FocusScope.of(context).nextFocus();
-                setState(() {
-                  otp += value;
-                });
+                setState(() => otp += value);
               }
             },
             cursorColor: Color(0xff4E72D4),

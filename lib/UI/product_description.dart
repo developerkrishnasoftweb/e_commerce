@@ -1,12 +1,14 @@
 import 'package:e_commerce/COMMON/rating_builder.dart';
+import 'package:e_commerce/Models/Products.dart';
+import 'package:e_commerce/Models/rest_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'category.dart';
 
 class ProductDescription extends StatefulWidget {
-  final String heroTag;
+  final Data data;
 
-  ProductDescription({this.heroTag});
+  ProductDescription({this.data});
 
   @override
   _ProductDescriptionState createState() => _ProductDescriptionState();
@@ -37,22 +39,25 @@ class _ProductDescriptionState extends State<ProductDescription> {
               SizedBox(height: 20),
               Align(
                 alignment: Alignment.center,
-                child: Hero(
-                    tag: widget.heroTag,
-                    child: Image.asset(widget.heroTag,
-                        height: size.height * 0.4, width: size.width * 0.7, fit: BoxFit.fitHeight)),
+                child: Image(
+                    image: widget.data.image.isEmpty ? AssetImage("assets/logo.jpeg") : NetworkImage(URLS.IMAGE_URL + widget.data.image),
+                    height: size.height * 0.4,
+                    width: size.width * 0.7,
+                    fit: BoxFit.contain),
               ),
               SizedBox(height: 15),
-              Text("Beige printed art silk saree with blouse",
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20)),
-              SizedBox(height: 20),
+              Text(widget.data.name, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20)),
+              SizedBox(height: 5),
+              Text(widget.data.productDesc,
+                  style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w400, fontSize: 14)),
+              SizedBox(height: 5),
               RichText(
                   text: TextSpan(
-                      text: "\$125.00 \t",
+                      text: '₹' + widget.data.specialPrice.toString() + ' \t',
                       style: TextStyle(color: Color(0xff4E72D4), fontWeight: FontWeight.bold, fontSize: 22),
                       children: [
                     TextSpan(
-                        text: "\$150.00",
+                        text: '₹' + widget.data.mrp.toString(),
                         style:
                             TextStyle(decoration: TextDecoration.lineThrough, color: Color(0xff212121), fontSize: 16)),
                     WidgetSpan(child: SizedBox(width: 10)),
@@ -81,8 +86,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
-                      style:
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey))),
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey))),
               SizedBox(height: 10),
               Align(
                   alignment: Alignment.centerLeft,
@@ -96,8 +100,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey)),
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey)),
                             ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: _list.length,
@@ -108,14 +111,13 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                       child: Container(
                                           width: 20,
                                           height: 20,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle, color: _list[i])));
+                                          decoration: BoxDecoration(shape: BoxShape.circle, color: _list[i])));
                                 })
                           ])))),
               SizedBox(height: 10),
               RatingBuilder(onChanged: (_) {}, iconSize: 30, itemExtent: 27),
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   child: RichText(
                       text: TextSpan(
                           text: "4.2 / 5.0 ",
@@ -123,7 +125,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           children: [
                         TextSpan(
                             text: "Rating",
-                            style: TextStyle(color: Color(0xff212121), fontSize: 14, fontWeight: FontWeight.bold)),
+                            style: TextStyle(color: Color(0xff212121), fontSize: 14, fontWeight: FontWeight.bold))
                       ]))),
               SizedBox(height: 10),
               TextField(
@@ -139,13 +141,12 @@ class _ProductDescriptionState extends State<ProductDescription> {
               SizedBox(height: 20),
               Row(children: [
                 Expanded(
-                  child: FlatButton(
-                      onPressed: () {},
-                      child: Text("ADD TO CART", style: TextStyle(color: Color(0xff4E72D4))),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7), side: BorderSide(color: Color(0xff4E72D4))),
-                      padding: EdgeInsets.symmetric(vertical: 20))
-                ),
+                    child: FlatButton(
+                        onPressed: () {},
+                        child: Text("ADD TO CART", style: TextStyle(color: Color(0xff4E72D4))),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7), side: BorderSide(color: Color(0xff4E72D4))),
+                        padding: EdgeInsets.symmetric(vertical: 20))),
                 SizedBox(width: 10),
                 Expanded(
                     child: FlatButton(
