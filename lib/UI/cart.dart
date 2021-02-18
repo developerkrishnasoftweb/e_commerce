@@ -301,7 +301,7 @@ class _CartState extends State<Cart> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 10),
                 RichText(
                   text: TextSpan(
                       text:
@@ -328,14 +328,14 @@ class _CartState extends State<Cart> {
                       ]),
                 ),
                 SizedBox(
-                  height: 7,
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SizedBox(
-                      height: 35,
-                      width: 35,
+                      height: 30,
+                      width: 30,
                       child: FlatButton(
                         child: Icon(Icons.remove, color: Colors.white),
                         onPressed: () {
@@ -363,8 +363,8 @@ class _CartState extends State<Cart> {
                     ),
                     SizedBox(width: 10),
                     SizedBox(
-                      height: 35,
-                      width: 35,
+                      height: 30,
+                      width: 30,
                       child: FlatButton(
                         child: Icon(Icons.add, color: Colors.white),
                         onPressed: item.quantity <= item.maxQuantity
