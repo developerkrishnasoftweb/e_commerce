@@ -1,7 +1,7 @@
 // ignore: must_be_immutable
 import 'package:e_commerce/Models/Products.dart';
 import 'package:e_commerce/Models/rest_api.dart';
-import 'package:e_commerce/UI/cart.dart';
+import 'package:e_commerce/Screens/CartScreen.dart';
 import 'package:e_commerce/UI/product_description.dart';
 import 'package:e_commerce/UI/sort_by.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,7 @@ class _ProductScreenState extends State<ProductScreen> with SingleTickerProvider
                       appBarIconButton(imagePath: "assets/icons/heart.png", onPressed: () {}),
                       appBarIconButton(
                           imagePath: "assets/icons/shopping-cart.png",
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Cart())))
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen())))
                     ]),
                 backgroundColor: Colors.grey[100],
                 body: Column(mainAxisAlignment: MainAxisAlignment.end, mainAxisSize: MainAxisSize.min, children: [

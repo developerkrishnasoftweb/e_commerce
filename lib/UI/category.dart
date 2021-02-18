@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'package:e_commerce/Models/SubCategories.dart';
 import 'package:e_commerce/Models/rest_api.dart';
-import 'package:e_commerce/UI/cart.dart';
+import 'package:e_commerce/Screens/CartScreen.dart';
 import 'package:e_commerce/UI/filter_list.dart';
 import 'package:e_commerce/UI/products.dart';
 import 'package:e_commerce/UI/sort_by.dart';
@@ -66,7 +66,7 @@ class _CategoryState extends State<Category> with SingleTickerProviderStateMixin
                           appBarIconButton(imagePath: "assets/icons/heart.png", onPressed: () {}),
                           appBarIconButton(
                               imagePath: "assets/icons/shopping-cart.png",
-                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Cart())))
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen())))
                         ],
                         bottom: TabBar(
                             isScrollable: true,
