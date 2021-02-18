@@ -11,7 +11,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   List<CartItem> cartItems = [
     CartItem(
-        image: "assets/images/products/product1.png",
+        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
         category: "Groccery",
         price: 12,
         name: "Aashirvaad Multigrain Atta 5 kg",
@@ -19,7 +19,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 10,
         maxQuantity: 5),
     CartItem(
-        image: "assets/images/products/product2.png",
+        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
         category: "Groccery",
         price: 200,
         name: "Tata Lite Free Flow Iodised Salt 1 kg",
@@ -27,7 +27,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 30,
         maxQuantity: 1),
     CartItem(
-        image: "assets/images/products/product3.png",
+        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
         category: "Groccery",
         price: 121.0,
         name: "Good Life Tur Dal 1 kg",
@@ -35,7 +35,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 20,
         maxQuantity: 20),
     CartItem(
-        image: "assets/images/products/product4.png",
+        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
         category: "Groccery",
         price: 123,
         name: "Good Life Almonds 500 g",
@@ -43,7 +43,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 15,
         maxQuantity: 10),
     CartItem(
-        image: "assets/images/products/product2.png",
+        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
         category: "Groccery",
         price: 200,
         name: "Tata Lite Free Flow Iodised Salt 1 kg",
@@ -51,7 +51,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 30,
         maxQuantity: 1),
     CartItem(
-        image: "assets/images/products/product1.png",
+        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
         category: "Groccery",
         price: 12,
         name: "Aashirvaad Multigrain Atta 5 kg",
@@ -72,7 +72,7 @@ class _CartScreenState extends State<CartScreen> {
       // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
       drawer: navigationDrawer(),
       body: SingleChildScrollView(
-          padding: EdgeInsets.only(bottom: 85),
+          padding: EdgeInsets.only(bottom: 80),
           child: Column(children: [
             GestureDetector(
               onTap: () {},
@@ -128,7 +128,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
             greyStrip(),
             Container(
-              width: double.infinity,
+              width: size.width,
               padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,7 +163,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
             greyStrip(),
             Container(
-              width: double.infinity,
+              width: size.width,
               padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,111 +265,114 @@ class _CartScreenState extends State<CartScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
+          Image.network(
             item.image,
             width: 70,
             height: 70,
             fit: BoxFit.contain,
           ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.name,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 10),
-                RichText(
-                  text: TextSpan(
-                      text:
-                      "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t\t",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      children: [
-                        TextSpan(
-                            text: "\u20b9${item.price * item.quantity}",
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 16,
-                                decoration: TextDecoration.lineThrough,
-                                fontWeight: FontWeight.bold)),
-                        TextSpan(
-                            text:
-                            "\t\tYou Save \u20b9${item.discount * item.quantity}",
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold)),
-                      ]),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: FlatButton(
-                        child: Icon(Icons.remove, color: Colors.white),
-                        onPressed: () {
-                          if (item.quantity != 1) {
-                            setState(() {
-                              item.quantity--;
-                            });
-                          } else {
-                            setState(() {
-                              cartItems.remove(item);
-                            });
-                          }
-                        },
-                        color: Myapp.primaryColor,
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 10),
+                  RichText(
+                    text: TextSpan(
+                        text:
+                        "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t\t",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                              text: "\u20b9${item.price * item.quantity}",
+                              style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                  decoration: TextDecoration.lineThrough,
+                                  fontWeight: FontWeight.bold)),
+                          TextSpan(
+                              text:
+                              "\t\tYou Save \u20b9${item.discount * item.quantity}",
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold)),
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: FlatButton(
+                          child: Icon(Icons.remove, color: Colors.white),
+                          onPressed: () {
+                            if (item.quantity != 1) {
+                              setState(() {
+                                item.quantity--;
+                              });
+                            } else {
+                              setState(() {
+                                cartItems.remove(item);
+                              });
+                            }
+                          },
+                          color: Myapp.primaryColor,
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      item.quantity.toString(),
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    SizedBox(width: 10),
-                    SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: FlatButton(
-                        child: Icon(Icons.add, color: Colors.white),
-                        onPressed: item.quantity <= item.maxQuantity
-                            ? () {
-                          if (item.quantity != item.maxQuantity) {
-                            setState(() {
-                              item.quantity++;
-                            });
-                          }
-                        }
-                            : () {},
-                        color: item.quantity >= item.maxQuantity
-                            ? Myapp.primaryColor.withOpacity(0.7)
-                            : Myapp.primaryColor,
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)),
+                      SizedBox(width: 10),
+                      Text(
+                        item.quantity.toString(),
+                        style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                       ),
-                    ),
-                  ],
-                )
-              ],
+                      SizedBox(width: 10),
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: FlatButton(
+                          child: Icon(Icons.add, color: Colors.white),
+                          onPressed: item.quantity <= item.maxQuantity
+                              ? () {
+                            if (item.quantity != item.maxQuantity) {
+                              setState(() {
+                                item.quantity++;
+                              });
+                            }
+                          }
+                              : () {},
+                          color: item.quantity >= item.maxQuantity
+                              ? Myapp.primaryColor.withOpacity(0.7)
+                              : Myapp.primaryColor,
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           )
         ],
@@ -378,9 +381,9 @@ class _CartScreenState extends State<CartScreen> {
   }
   Widget greyStrip () {
     return Container(
-      height: 20,
+      height: 25,
       width: double.infinity,
-      color: Colors.grey[100],
+      color: Color.fromRGBO(0, 0, 0, 0.2),
     );
   }
 }

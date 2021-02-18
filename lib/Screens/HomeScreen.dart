@@ -191,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () =>
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
                         child: Container(
                             child: Stack(children: [
                           Container(
