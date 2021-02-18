@@ -19,7 +19,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 10,
         maxQuantity: 5),
     CartItem(
-        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
+        image: "https://www.jiomart.com/images/product/75x75/491504124/super-sarvottam-physicaly-refined-100-rice-bran-oil-1-l-pouch-0-20201021.jpg",
         category: "Groccery",
         price: 200,
         name: "Tata Lite Free Flow Iodised Salt 1 kg",
@@ -27,7 +27,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 30,
         maxQuantity: 1),
     CartItem(
-        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
+        image: "https://www.jiomart.com/images/product/75x75/491076026/oleev-active-ricebran-based-blended-oil-5-l-jar-0-20200825.jpg",
         category: "Groccery",
         price: 121.0,
         name: "Good Life Tur Dal 1 kg",
@@ -35,7 +35,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 20,
         maxQuantity: 20),
     CartItem(
-        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
+        image: "https://www.jiomart.com/images/product/75x75/491278308/priya-fortified-with-vitamin-a-d-refined-sunflower-oil-1-l-0-20210119.jpg",
         category: "Groccery",
         price: 123,
         name: "Good Life Almonds 500 g",
@@ -43,21 +43,13 @@ class _CartScreenState extends State<CartScreen> {
         discount: 15,
         maxQuantity: 10),
     CartItem(
-        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
+        image: "https://www.jiomart.com/images/product/75x75/491076025/oleev-active-ricebran-based-blended-oil-1-l-pouch-0-20200805.jpg",
         category: "Groccery",
         price: 200,
         name: "Tata Lite Free Flow Iodised Salt 1 kg",
         quantity: 1,
         discount: 30,
         maxQuantity: 1),
-    CartItem(
-        image: "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
-        category: "Groccery",
-        price: 12,
-        name: "Aashirvaad Multigrain Atta 5 kg",
-        quantity: 1,
-        discount: 10,
-        maxQuantity: 5),
   ];
   @override
   Widget build(BuildContext context) {
