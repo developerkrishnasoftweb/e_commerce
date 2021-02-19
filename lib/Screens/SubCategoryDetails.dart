@@ -8,6 +8,50 @@ class SubcategoryDetails extends StatefulWidget {
 
 class _SubcategoryDetailsState extends State<SubcategoryDetails> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  FilterList filter;
+  FilterItems filterItem;
+  List<FilterList> filterList = [
+    FilterList(
+        title: "Availability",
+        isMultipleSelection: true,
+        filterItems: [
+          FilterItems(title: "\u20b90 - \u20b9100"),
+          FilterItems(title: "\u20b9100 - \u20b9200"),
+          FilterItems(title: "\u20b9200 - \u20b9300"),
+          FilterItems(title: "\u20b9400 - \u20b9500"),
+        ],
+        isSelected: true),
+    FilterList(
+      title: "Categories",
+      isMultipleSelection: false,
+      filterItems: [
+        FilterItems(title: "\u20b90 - \u20b9100"),
+        FilterItems(title: "\u20b9100 - \u20b9200"),
+        FilterItems(title: "\u20b9200 - \u20b9300"),
+        FilterItems(title: "\u20b9400 - \u20b9500"),
+      ],
+    ),
+    FilterList(
+      title: "Brands",
+      isMultipleSelection: false,
+      filterItems: [
+        FilterItems(title: "\u20b90 - \u20b9100"),
+        FilterItems(title: "\u20b9100 - \u20b9200"),
+        FilterItems(title: "\u20b9200 - \u20b9300"),
+        FilterItems(title: "\u20b9400 - \u20b9500"),
+      ],
+    ),
+    FilterList(
+      title: "Price",
+      isMultipleSelection: true,
+      filterItems: [
+        FilterItems(title: "\u20b90 - \u20b9100"),
+        FilterItems(title: "\u20b9100 - \u20b9200"),
+        FilterItems(title: "\u20b9200 - \u20b9300"),
+        FilterItems(title: "\u20b9400 - \u20b9500"),
+      ],
+    ),
+  ];
   List<Category> categories = [
     Category(
         title: "Atta, Flours & Sooji",
@@ -236,8 +280,11 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                             });
                           },
                           child: Container(
-                            margin:
-                                EdgeInsets.only(left: index == 0 ? 10 : 0, bottom: 7, top: 7, right: 10),
+                            margin: EdgeInsets.only(
+                                left: index == 0 ? 10 : 0,
+                                bottom: 7,
+                                top: 7,
+                                right: 10),
                             padding: EdgeInsets.symmetric(horizontal: 5),
                             width: 130,
                             height: 76,
@@ -296,108 +343,174 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                         context: context,
                         isScrollControlled: true,
                         builder: (_) {
-                          return BottomSheet(
-                            onClosing: () {},
-                            builder: (_) {
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                      height:
-                                          MediaQuery.of(context).padding.top),
-                                  ListTile(
-                                    title: Text(
-                                      "Sort & Filter By",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    trailing: IconButton(
-                                      icon: Icon(Icons.close),
-                                      onPressed: () => Navigator.pop(context),
-                                      splashRadius: 25,
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 45,
-                                    width: size.width,
-                                    padding: EdgeInsets.symmetric(vertical: 5),
-                                    child: ListView.builder(
-                                      itemBuilder: (_, index) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              left: index == 0 ? 10 : 0,
-                                              right: 10),
-                                          child: FlatButton(
-                                            onPressed: () {},
-                                            child: Text(filterTabs[index]),
-                                            color: Colors.grey[200],
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(7),
-                                                side: BorderSide(
-                                                    color: Colors.grey)),
-                                          ),
-                                        );
-                                      },
-                                      physics: BouncingScrollPhysics(),
-                                      itemCount: filterTabs.length,
-                                      scrollDirection: Axis.horizontal,
-                                    ),
-                                  ),
-                                  Expanded(
-                                      child: Row(
+                          return StatefulBuilder(
+                            builder: (_, state) {
+                              return BottomSheet(
+                                onClosing: () {},
+                                builder: (_) {
+                                  return Column(
                                     children: [
-                                      Flexible(
-                                        flex: 1,
-                                        child: ListView.separated(
-                                          separatorBuilder: (_, index) {
-                                            return Divider(
-                                              height: 0.5,
-                                              color: Colors.grey,
-                                            );
-                                          },
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                              .padding
+                                              .top),
+                                      ListTile(
+                                        title: Text(
+                                          "Sort & Filter By",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        trailing: IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          splashRadius: 25,
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 45,
+                                        width: size.width,
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 5),
+                                        child: ListView.builder(
                                           itemBuilder: (_, index) {
-                                            return GestureDetector(
-                                              child: Container(
-                                                height: 50,
-                                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                                alignment: Alignment.centerLeft,
-                                                decoration: BoxDecoration(
-                                                  color: index == 0 ? Colors.white : Colors.grey[200]
-                                                ),
-                                                child: Text("Availability"),
+                                            return Container(
+                                              margin: EdgeInsets.only(
+                                                  left: index == 0 ? 10 : 0,
+                                                  right: 10),
+                                              child: FlatButton(
+                                                onPressed: () {},
+                                                child: Text(filterTabs[index]),
+                                                color: Colors.grey[200],
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7),
+                                                    side: BorderSide(
+                                                        color: Colors.grey)),
                                               ),
                                             );
                                           },
-                                          itemCount: 5,
                                           physics: BouncingScrollPhysics(),
+                                          itemCount: filterTabs.length,
+                                          scrollDirection: Axis.horizontal,
                                         ),
                                       ),
-                                      Flexible(
-                                        flex: 2,
-                                        child: ListView.separated(
-                                          separatorBuilder: (_, index) {
-                                            return Divider(
-                                              height: 0.5,
-                                              color: Colors.grey,
-                                            );
-                                          },
-                                          itemBuilder: (_, index) {
-                                            return CheckboxListTile(value: true, onChanged: (value) {
-
-                                            }, title: Text("0 - 100"),);
-                                          },
-                                          itemCount: 10,
-                                          physics: BouncingScrollPhysics(),
-                                        )
-                                      ),
+                                      Expanded(
+                                          child: Row(
+                                        children: [
+                                          Flexible(
+                                            flex: 1,
+                                            child: ListView.separated(
+                                              separatorBuilder: (_, index) {
+                                                return Divider(
+                                                  height: 0.5,
+                                                  color: Colors.grey,
+                                                );
+                                              },
+                                              itemBuilder: (_, index) {
+                                                return GestureDetector(
+                                                  child: Container(
+                                                    height: 50,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10),
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    decoration: BoxDecoration(
+                                                        color: filterList[index]
+                                                                .isSelected
+                                                            ? Colors.white
+                                                            : Colors.grey[200]),
+                                                    child: Text(
+                                                        filterList[index]
+                                                            .title),
+                                                  ),
+                                                  onTap: () {
+                                                    filterList
+                                                        .forEach((element) {
+                                                      state(() {
+                                                        element.isSelected =
+                                                            false;
+                                                      });
+                                                    });
+                                                    state(() {
+                                                      filterList[index]
+                                                          .isSelected = true;
+                                                      filter =
+                                                          filterList[index];
+                                                      filterItem = filter.filterItems[0];
+                                                    });
+                                                  },
+                                                );
+                                              },
+                                              itemCount: filterList.length,
+                                              physics: BouncingScrollPhysics(),
+                                            ),
+                                          ),
+                                          Flexible(
+                                              flex: 2,
+                                              child: filter != null
+                                                  ? ListView.separated(
+                                                      separatorBuilder:
+                                                          (_, index) {
+                                                        return Divider(
+                                                          height: 0.5,
+                                                          color: Colors.grey,
+                                                        );
+                                                      },
+                                                      itemBuilder: (_, index) {
+                                                        return filter
+                                                                .isMultipleSelection
+                                                            ? CheckboxListTile(
+                                                                value: filter
+                                                                    .filterItems[
+                                                                        index]
+                                                                    .isSelected,
+                                                                onChanged:
+                                                                    (value) {
+                                                                  state(() {
+                                                                    filter.filterItems[index].isSelected = !filter
+                                                                        .filterItems[
+                                                                            index]
+                                                                        .isSelected;
+                                                                  });
+                                                                },
+                                                                title: Text(filter
+                                                                    .filterItems[index].title),
+                                                              )
+                                                            : RadioListTile<
+                                                                    FilterItems>(
+                                                                value:
+                                                                    filterItem,
+                                                                groupValue:
+                                                                    filter.filterItems[
+                                                                        index],
+                                                                title: Text(filter.filterItems[index].title),
+                                                                onChanged:
+                                                                    (value) {
+                                                                  print(value.title);
+                                                                  state(() {
+                                                                    value = filterItem;
+                                                                  });
+                                                                }, controlAffinity: ListTileControlAffinity.trailing,);
+                                                      },
+                                                      itemCount: filter
+                                                          .filterItems.length,
+                                                      physics:
+                                                          BouncingScrollPhysics(),
+                                                    )
+                                                  : SizedBox()),
+                                        ],
+                                      )),
                                     ],
-                                  )),
-                                ],
+                                  );
+                                },
+                                backgroundColor: Colors.white,
+                                enableDrag: true,
                               );
                             },
-                            backgroundColor: Colors.white,
-                            enableDrag: true,
                           );
                         });
                   },
@@ -619,4 +732,22 @@ class Item {
       this.discount,
       this.inCart: false,
       this.quantity});
+}
+
+class FilterList {
+  final String title;
+  final bool isMultipleSelection;
+  bool isSelected;
+  final List<FilterItems> filterItems;
+  FilterList(
+      {this.title,
+      this.isMultipleSelection,
+      this.filterItems,
+      this.isSelected: false});
+}
+
+class FilterItems {
+  bool isSelected;
+  final String title;
+  FilterItems({this.title, this.isSelected: false});
 }
