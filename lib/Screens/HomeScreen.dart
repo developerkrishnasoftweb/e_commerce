@@ -23,7 +23,6 @@ final List<String> imgList = [
 final List<String> grocerySlider = [
   'https://cdn.static-zoutons.com/images/originals/coupon-category/Grocery_Deals_1588267949.jpg',
   'https://i.ytimg.com/vi/nf06gJ4hg60/maxresdefault.jpg',
-  'https://lh3.googleusercontent.com/proxy/xodWvKSiQif7Q9avxmkx3FKCi84RQLvN0asgJliURgCu4EFz3xn2WH12pDJk05pf72cwd0TnOn1ARvMPkMkvemZntw',
   'https://images-eu.ssl-images-amazon.com/images/G/31/img17/Pantry/ITC/New/750x375.jpg',
   'https://hotdealszone.com/wp-content/uploads/2019/02/Flipkart-Grocery-Offers.png'
 ];
@@ -48,82 +47,72 @@ class _HomeScreenState extends State<HomeScreen> {
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
         drawer: navigationDrawer(),
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SearchBarView(),
+          searchBarView(),
           Expanded(
               child: Container(
                   child: SingleChildScrollView(
                       child: Column(children: [
-            CategoriesListHorizontal(),
-            FreeHomeDeliverySlider(imgList),
+            categoriesListHorizontal(),
+            freeHomeDeliverySlider(imgList),
             topCategories(),
             topDeals(),
-            ShopGroceries(),
+            shopGroceries(),
             offerListWithCategories(),
+            collectionWithBestOffers(),
+            kidsFashion()
           ]))))
         ]));
   }
 
-  Widget CategoriesListHorizontal() {
+  Widget categoriesListHorizontal() {
     List<String> litems = ["All Categories", "Fashion", "Grocery", "Men's Wear", "Women's Wear", "Kid's Wear"];
 
     return Container(
-      height: 100.h,
-      child: ListView.builder(
-          itemCount: litems.length,
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          primary: false,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              width: 70.h,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 30.h,
-                    backgroundImage: NetworkImage("https://assets.grab.com/wp-content/uploads/sites/10/2020/05/"
-                        "27153527/GrabGroceries_Tile_Icon_501x501.png"),
-                    backgroundColor: Colors.transparent,
-                  ),
-                  Center(
-                      child: Text(litems[index],
-                          maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
-                ],
-              ),
-            );
-          }),
-    );
+        height: 100.h,
+        child: ListView.builder(
+            itemCount: litems.length,
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            primary: false,
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                  width: 70.h,
+                  child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                            radius: 30.h,
+                            backgroundImage: NetworkImage("https://assets.grab.com/wp-content/uploads/sites/10/2020/05/"
+                                "27153527/GrabGroceries_Tile_Icon_501x501.png"),
+                            backgroundColor: Colors.transparent),
+                        Center(
+                            child: Text(litems[index],
+                                maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center))
+                      ]));
+            }));
   }
 
-  Widget SearchBarView() {
+  Widget searchBarView() {
     return Container(
         color: Myapp.primaryColor,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(10.ssp, 0, 10.ssp, 10.ssp),
-          child: TextField(
-              decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  isDense: true,
-                  // Added this
-                  contentPadding: EdgeInsets.all(10.sp),
-                  border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(5.ssp)),
-                  hintText: "Search for Products and Brand")),
-        ));
+            padding: EdgeInsets.fromLTRB(10.ssp, 0, 10.ssp, 10.ssp),
+            child: TextField(
+                decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    isDense: true,
+                    // Added this
+                    contentPadding: EdgeInsets.all(10.sp),
+                    border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(5.ssp)),
+                    hintText: "Search for Products and Brand"))));
   }
 
-  FreeHomeDeliverySlider(List<String> imgList) {
+  freeHomeDeliverySlider(List<String> imgList) {
     return CarouselSlider(
-      options: CarouselOptions(
-        autoPlay: true,
-        aspectRatio: 2.0,
-        enlargeCenterPage: true,
-      ),
-      items: imageSlideView(imgList),
-    );
+        options: CarouselOptions(autoPlay: true, aspectRatio: 2.0, enlargeCenterPage: true),
+        items: imageSlideView(imgList));
   }
 
   imageSlideView(List<String> imgList) {
@@ -133,14 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: EdgeInsets.all(5.0),
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(children: <Widget>[
-                      Image.network(
-                        item,
-                        fit: BoxFit.cover,
-                        width: 800.sp,
-                        height: 500.sp,
-                      ),
-                    ])))))
+                    child: Stack(
+                        children: <Widget>[Image.network(item, fit: BoxFit.cover, width: 800.sp, height: 500.sp)])))))
         .toList();
   }
 
@@ -170,9 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
         color: Colors.white,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.sp),
-          child: Column(
-            children: [
+            padding: EdgeInsets.symmetric(vertical: 10.sp),
+            child: Column(children: [
               Align(
                   alignment: Alignment.bottomCenter,
                   child: Text("Shop from Top Categories",
@@ -181,46 +163,39 @@ class _HomeScreenState extends State<HomeScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
               Padding(
-                padding: EdgeInsets.all(10.sp),
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, childAspectRatio: 0.85, crossAxisSpacing: 10.sp, mainAxisSpacing: 10.sp),
-                    itemCount: litems.length,
-                    shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () =>
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
-                        child: Container(
-                            child: Stack(children: [
-                          Container(
-                              alignment: Alignment.bottomCenter,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
-                              child: Align(
+                  padding: EdgeInsets.all(10.sp),
+                  child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, childAspectRatio: 0.85, crossAxisSpacing: 10.sp, mainAxisSpacing: 10.sp),
+                      itemCount: litems.length,
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () =>
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
+                            child: Container(
+                                child: Stack(children: [
+                              Container(
                                   alignment: Alignment.bottomCenter,
-                                  child: Container(
-                                      height: 30.sp,
-                                      width: double.infinity,
-                                      color: Colors.white70,
-                                      child: Center(
-                                        child: Text(
-                                          litems[index],
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
-                                        ),
-                                      ))))
-                        ])),
-                      );
-                    }),
-              ),
-            ],
-          ),
-        ));
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
+                                  child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Container(
+                                          height: 30.sp,
+                                          width: double.infinity,
+                                          color: Colors.white70,
+                                          child: Center(
+                                              child: Text(litems[index],
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold))))))
+                            ])));
+                      }))
+            ])));
   }
 
   topDeals() {
@@ -247,13 +222,12 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.symmetric(vertical: 10.sp),
             child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
-                padding: EdgeInsets.only(left: 10.sp),
-                child: Text("Top Deals",
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
-              ),
+                  padding: EdgeInsets.only(left: 10.sp),
+                  child: Text("Top Deals",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
               Container(
                   height: 210.h,
                   child: ListView.builder(
@@ -319,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ])));
   }
 
-  ShopGroceries() {
+  shopGroceries() {
     List<String> litems = [
       "Lotte Choco Pie Creamfilled Biscuit 336",
       "Dove Nutritive Solutions Intense",
@@ -343,13 +317,12 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.symmetric(vertical: 10.sp),
             child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
-                padding: EdgeInsets.only(left: 10.sp),
-                child: Text("Shop Groceries",
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
-              ),
+                  padding: EdgeInsets.only(left: 10.sp),
+                  child: Text("Shop Groceries",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
               Container(
                   height: 70.h,
                   child: ListView.builder(
@@ -391,6 +364,33 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   offerListWithCategories() {
+    List<String> titles = [
+      "Top deals for you",
+      "Best deals for you",
+      "Exclusive deals for you",
+      "Top deals for you",
+      "Best deals for you",
+      "Exclusive deals for you"
+    ];
+
+    List<Color> colors = [
+      Colors.blueAccent,
+      Colors.deepOrangeAccent[100],
+      Colors.yellow[200],
+      Colors.greenAccent[100],
+      Colors.redAccent[100],
+      Colors.deepPurple[200]
+    ];
+
+    List<Color> textcolors = [
+      Colors.blueAccent[700],
+      Colors.deepOrangeAccent[700],
+      Colors.yellow[900],
+      Colors.greenAccent[700],
+      Colors.redAccent[700],
+      Colors.deepPurple[700]
+    ];
+
     List<String> litems = [
       "ATTA, Flours & Sooji",
       "Edible Oils",
@@ -414,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return ListView.builder(
-        itemCount: 6,
+        itemCount: titles.length,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
@@ -424,100 +424,249 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.symmetric(vertical: 10.sp),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 10.sp),
-                      child: Text("Top Deals for you",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
-                    ),
-                    FreeHomeDeliverySlider(grocerySlider),
+                        padding: EdgeInsets.only(left: 10.sp),
+                        child: Text(titles[index],
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
+                    freeHomeDeliverySlider(grocerySlider),
                     Container(
-                      color: Colors.blueAccent,
-                      child: Column(
-                        children: [
+                        color: colors[index],
+                        child: Column(children: [
                           Padding(
-                            padding: EdgeInsets.all(10.h),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(30.h), bottomRight: Radius.circular(30.h))),
-                              child: Padding(
-                                padding: EdgeInsets.all(10.sp),
-                                child: Text(
-                                  "Offers on daily essentials".toUpperCase(),
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: Colors.red),
-                                ),
-                              ),
-                            ),
-                          ),
+                              padding: EdgeInsets.all(10.h),
+                              child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(30.h), bottomRight: Radius.circular(30.h))),
+                                  child: Padding(
+                                      padding: EdgeInsets.all(10.sp),
+                                      child: Text("Offers on daily essentials".toUpperCase(),
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 20.sp, fontWeight: FontWeight.bold, color: Colors.red))))),
                           Padding(
-                            padding: EdgeInsets.all(10.sp),
-                            child: GridView.builder(
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 0.85,
-                                    crossAxisSpacing: 30.sp,
-                                    mainAxisSpacing: 30.sp),
-                                itemCount: litems.length,
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                      child: Stack(children: [
-                                    Container(
-                                        alignment: Alignment.bottomCenter,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            image:
-                                                DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
-                                        child: Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Container(
-                                                height: 40.sp,
-                                                width: double.infinity,
-                                                // color: Colors.white70,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.only(
-                                                        bottomLeft: Radius.circular(10),
-                                                        bottomRight: Radius.circular(10))),
-                                                child: Center(
-                                                    child: RichText(
-                                                        maxLines: 4,
-                                                        textAlign: TextAlign.center,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        text: TextSpan(
-                                                            text: 'UP TO ',
-                                                            style: TextStyle(
-                                                                color: Colors.blueAccent,
-                                                                fontWeight: FontWeight.bold,
-                                                                fontSize: 15.sp),
-                                                            children: [
-                                                              TextSpan(
-                                                                  text: '30% OFF\n',
-                                                                  style: TextStyle(
-                                                                      color: Colors.red,
-                                                                      fontSize: 15.sp,
-                                                                      fontWeight: FontWeight.bold)),
-                                                              TextSpan(
-                                                                  text: litems[index],
-                                                                  style: TextStyle(
-                                                                      color: Colors.black,
-                                                                      fontSize: 12.sp,
-                                                                      fontWeight: FontWeight.bold))
-                                                            ]))))))
-                                  ]));
-                                }),
-                          ),
-                        ],
-                      ),
-                    )
+                              padding: EdgeInsets.all(10.sp),
+                              child: GridView.builder(
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 0.85,
+                                      crossAxisSpacing: 30.sp,
+                                      mainAxisSpacing: 30.sp),
+                                  itemCount: litems.length,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemBuilder: (BuildContext context, int index1) {
+                                    return Container(
+                                        child: Stack(children: [
+                                      Container(
+                                          alignment: Alignment.bottomCenter,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(images[index1]), fit: BoxFit.cover)),
+                                          child: Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Container(
+                                                  height: 40.sp,
+                                                  width: double.infinity,
+                                                  // color: Colors.white70,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.only(
+                                                          bottomLeft: Radius.circular(10),
+                                                          bottomRight: Radius.circular(10))),
+                                                  child: Center(
+                                                      child: RichText(
+                                                          maxLines: 4,
+                                                          textAlign: TextAlign.center,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          text: TextSpan(
+                                                              text: 'UP TO ',
+                                                              style: TextStyle(
+                                                                  color: textcolors[index],
+                                                                  fontWeight: FontWeight.bold,
+                                                                  fontSize: 15.sp),
+                                                              children: [
+                                                                TextSpan(
+                                                                    text: '30% OFF\n',
+                                                                    style: TextStyle(
+                                                                        color: Colors.red,
+                                                                        fontSize: 15.sp,
+                                                                        fontWeight: FontWeight.bold)),
+                                                                TextSpan(
+                                                                    text: litems[index1],
+                                                                    style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontSize: 12.sp,
+                                                                        fontWeight: FontWeight.bold))
+                                                              ]))))))
+                                    ]));
+                                  }))
+                        ]))
                   ])));
         });
+  }
+
+  collectionWithBestOffers() {
+    List<String> litems = [
+      "T-Shirts",
+      "T-Shirts",
+      "Biscuits",
+      "Hair Care",
+      "Soaps",
+      "Kid's Wear",
+      "Men's Wear",
+      "Women's Wear"
+    ];
+
+    List<String> images = [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR55GHn90kw0F_QRPULPEM-0S-ZUwYaWzaNsQ&usqp=CAU",
+      "http://static1.squarespace.com/static/5272b4d3e4b0acc66cb2ced3/562bee8de4b0b7066cf7a2bb/56410b1fe4b0250517e7fc1f/1447103265312/Todder+Fine+Jersey+Tee+Model.jpg?format=1500w",
+      "https://bsmedia.business-standard.com/_media/bs/img/article/2018-02/18/full/1518965938-4605.jpg",
+      "https://i.pinimg.com/736x/3e/71/86/3e7186bd207e26279a8d17d320532238.jpg",
+      "https://dropbasket.in/wp-content/uploads/2020/10/lux.jpg",
+      "https://i1.wp.com/www.wholesalecatalog.in/wp-content/uploads/formidable/6/291.jpg?w=936&h=1405&ssl=1",
+      "https://st.depositphotos.com/1007995/1274/i/950/depositphotos_12746726-stock-photo-fashion-man-wearing-sunglasses-thinking.jpg",
+      "https://ae01.alicdn.com/kf/HTB17NWQh5FTMKJjSZFAq6AkJpXa1/Winter-Big-Pendulum-Purple-Velvet-Dresses-Woman-Dress-2020-Lotus-Leaf-Long-Sleeve-Ladies-Dresses-Kleider.jpg_q50.jpg"
+    ];
+
+    return Container(
+        color: Colors.white,
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.sp),
+            child: Column(children: [
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text("Collection With Best Offers",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
+              Padding(
+                  padding: EdgeInsets.all(10.sp),
+                  child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, childAspectRatio: 0.85, crossAxisSpacing: 10.sp, mainAxisSpacing: 10.sp),
+                      itemCount: litems.length,
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () =>
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
+                            child: Container(
+                                child: Stack(children: [
+                              Container(
+                                  alignment: Alignment.bottomCenter,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.sp),
+                                      image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
+                                  child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                                        Divider(height: 0.5.sp, color: Colors.black, thickness: 0.5.sp),
+                                        Container(
+                                            height: 20.sp,
+                                            width: double.infinity,
+                                            color: Colors.white70,
+                                            child: Center(
+                                                child: Text(litems[index],
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold)))),
+                                        Divider(height: 0.5.sp, color: Colors.black, thickness: 0.5.sp),
+                                        Container(
+                                            height: 20.sp,
+                                            width: double.infinity,
+                                            color: Colors.white70,
+                                            child: Center(
+                                                child: RichText(
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.center,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    text: TextSpan(
+                                                        text: 'Starting at ',
+                                                        style: TextStyle(color: Colors.black, fontSize: 11.sp),
+                                                        children: [
+                                                          TextSpan(
+                                                              text: '₹145',
+                                                              style: TextStyle(
+                                                                  fontSize: 11.sp, fontWeight: FontWeight.bold))
+                                                        ])))),
+                                        SizedBox(height: 10.sp)
+                                      ])))
+                            ])));
+                      }))
+            ])));
+  }
+
+  kidsFashion() {
+    List<String> litems = [
+      "Leggings",
+      "Track Pants",
+      'Shorts',
+      'Tshirts',
+      'Shirts',
+    ];
+
+    List<String> images = [
+      "https://www.jiomart.com/images/cms/section/category/246/587.png?v=1612275415",
+      "https://www.jiomart.com/images/cms/section/category/246/501.png?v=1612275415",
+      'https://www.jiomart.com/images/cms/section/category/246/533.png?v=1612275415',
+      'https://www.jiomart.com/images/cms/section/category/246/507.png?v=1612275415',
+      'https://www.jiomart.com/images/cms/section/category/246/549.png?v=1612275415',
+    ];
+
+    return Container(
+        color: Colors.white,
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.sp),
+            child: Column(children: [
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text("Kid's fashion",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
+              Padding(
+                  padding: EdgeInsets.all(10.sp),
+                  child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, childAspectRatio: 0.80, crossAxisSpacing: 10.sp, mainAxisSpacing: 10.sp),
+                      itemCount: litems.length,
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () =>
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
+                            child: Column(children: [
+                              Expanded(
+                                  child: Container(
+                                      width: double.infinity,
+                                      alignment: Alignment.bottomCenter,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5.sp),
+                                          image:
+                                              DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)))),
+                              Container(
+                                  height: 20.sp,
+                                  width: double.infinity,
+                                  child: Center(
+                                      child: Text(litems[index],
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold))))
+                            ]));
+                      }))
+            ])));
   }
 }
