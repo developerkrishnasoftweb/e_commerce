@@ -15,40 +15,52 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
         title: "Availability",
         isMultipleSelection: true,
         filterItems: [
-          FilterItems(title: "\u20b90 - \u20b9100"),
-          FilterItems(title: "\u20b9100 - \u20b9200"),
-          FilterItems(title: "\u20b9200 - \u20b9300"),
-          FilterItems(title: "\u20b9400 - \u20b9500"),
+          FilterItems(title: "In Stock Products"),
         ],
         isSelected: true),
     FilterList(
       title: "Categories",
       isMultipleSelection: false,
       filterItems: [
-        FilterItems(title: "\u20b90 - \u20b9100"),
-        FilterItems(title: "\u20b9100 - \u20b9200"),
-        FilterItems(title: "\u20b9200 - \u20b9300"),
-        FilterItems(title: "\u20b9400 - \u20b9500"),
+        FilterItems(title: "Exotic Vegetables"),
+        FilterItems(title: "Citrus Fruits"),
+        FilterItems(title: "Root vegetable"),
+        FilterItems(title: "Beans"),
+        FilterItems(title: "Gourd"),
+        FilterItems(title: "Vegetable Others"),
+        FilterItems(title: "Apples"),
+        FilterItems(title: "Brinjal"),
+        FilterItems(title: "Onion"),
+        FilterItems(title: "Banana"),
+        FilterItems(title: "Ginger"),
+        FilterItems(title: "Grapes"),
+        FilterItems(title: "Melons"),
+        FilterItems(title: "Others"),
+        FilterItems(title: "Berries"),
+        FilterItems(title: "Cabbage"),
+        FilterItems(title: "Capsicum"),
+        FilterItems(title: "Carrot"),
+        FilterItems(title: "Cauliflower"),
+        FilterItems(title: "Corn"),
+        FilterItems(title: "Cucumber"),
+        FilterItems(title: "Drumstick"),
+        FilterItems(title: "Exotic Fruits"),
       ],
     ),
     FilterList(
       title: "Brands",
-      isMultipleSelection: false,
+      isMultipleSelection: true,
       filterItems: [
-        FilterItems(title: "\u20b90 - \u20b9100"),
-        FilterItems(title: "\u20b9100 - \u20b9200"),
-        FilterItems(title: "\u20b9200 - \u20b9300"),
-        FilterItems(title: "\u20b9400 - \u20b9500"),
+        FilterItems(title: "Loose"),
       ],
     ),
     FilterList(
       title: "Price",
-      isMultipleSelection: true,
+      isMultipleSelection: false,
       filterItems: [
-        FilterItems(title: "\u20b90 - \u20b9100"),
+        FilterItems(title: "\u20b97 - \u20b9100"),
         FilterItems(title: "\u20b9100 - \u20b9200"),
-        FilterItems(title: "\u20b9200 - \u20b9300"),
-        FilterItems(title: "\u20b9400 - \u20b9500"),
+        FilterItems(title: "\u20b9200 - \u20b9253"),
       ],
     ),
   ];
@@ -482,17 +494,13 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                                               )
                                                             : RadioListTile<
                                                                     FilterItems>(
-                                                                value:
-                                                                    filterItem,
-                                                                groupValue:
-                                                                    filter.filterItems[
-                                                                        index],
+                                                                value: filter.filterItems[index],
+                                                                groupValue: filterItem,
                                                                 title: Text(filter.filterItems[index].title),
                                                                 onChanged:
                                                                     (value) {
-                                                                  print(value.title);
                                                                   state(() {
-                                                                    value = filterItem;
+                                                                    filterItem = value;
                                                                   });
                                                                 }, controlAffinity: ListTileControlAffinity.trailing,);
                                                       },
