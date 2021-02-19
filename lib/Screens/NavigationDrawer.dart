@@ -1,4 +1,5 @@
 import 'package:e_commerce/Screens/HomeScreen.dart';
+import 'package:e_commerce/Screens/my_account.dart';
 import 'package:e_commerce/UI/Homepage.dart';
 import 'package:e_commerce/UI/login.dart';
 import 'package:e_commerce/UI/signup.dart';
@@ -16,7 +17,9 @@ class navigationDrawer extends StatelessWidget {
         accountName: Text("Ashish Rawat"),
         accountEmail: Text("ashishrawat2911@gmail.com"),
         currentAccountPicture: CircleAvatar(
-          backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Colors.grey[350] : Colors.white,
+          backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
+              ? Colors.grey[350]
+              : Colors.white,
           child: Text(
             "A",
             style: TextStyle(fontSize: 40.0),
@@ -27,19 +30,28 @@ class navigationDrawer extends StatelessWidget {
       createDrawerBodyItem(
           icon: Icons.home,
           text: 'Home',
-          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()))),
+          onTap: () => Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => HomeScreen()))),
       createDrawerBodyItem(
           icon: Icons.home,
           text: 'Shop by Category',
-          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ShopByCategoryScreen()))),
+          onTap: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => ShopByCategoryScreen()))),
       createDrawerBodyItem(
           icon: Icons.login,
           text: 'Login/SignIn',
-          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LogIn()))),
+          onTap: () => Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => LogIn()))),
+      createDrawerBodyItem(
+          icon: Icons.person,
+          text: 'My Account',
+          onTap: () => Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => MyAccount()))),
       createDrawerBodyItem(
           icon: Icons.logout,
           text: 'Logout',
-          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => signup()))),
+          onTap: () => Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => signup()))),
       // createDrawerBodyItem(
       //   icon: Icons.account_circle,
       //   text: 'Profile',
@@ -71,9 +83,11 @@ class navigationDrawer extends StatelessWidget {
   }
 }
 
-Widget createDrawerBodyItem({IconData icon, String text, GestureTapCallback onTap}) => ListTile(
-    title: Row(children: <Widget>[
-      //Icon(icon),
-      Padding(padding: EdgeInsets.only(left: 8.0),
-        child: Text(text))]),
-    onTap: onTap);
+Widget createDrawerBodyItem(
+        {IconData icon, String text, GestureTapCallback onTap}) =>
+    ListTile(
+        title: Row(children: <Widget>[
+          //Icon(icon),
+          Padding(padding: EdgeInsets.only(left: 8.0), child: Text(text))
+        ]),
+        onTap: onTap);
