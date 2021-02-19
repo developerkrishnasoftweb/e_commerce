@@ -8,16 +8,16 @@ class SubcategoryDetails extends StatefulWidget {
 
 class _SubcategoryDetailsState extends State<SubcategoryDetails> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  FilterList filter;
-  FilterItems filterItem;
   List<FilterList> filterList = [
     FilterList(
         title: "Availability",
         isMultipleSelection: true,
         filterItems: [
           FilterItems(title: "In Stock Products"),
+          FilterItems(title: "Out of Stock Products"),
         ],
-        isSelected: true),
+      isSelected: true
+    ),
     FilterList(
       title: "Categories",
       isMultipleSelection: false,
@@ -450,9 +450,6 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                                     state(() {
                                                       filterList[index]
                                                           .isSelected = true;
-                                                      filter =
-                                                          filterList[index];
-                                                      filterItem = filter.filterItems[0];
                                                     });
                                                   },
                                                 );
@@ -463,53 +460,72 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                           ),
                                           Flexible(
                                               flex: 2,
-                                              child: filter != null
-                                                  ? ListView.separated(
-                                                      separatorBuilder:
-                                                          (_, index) {
-                                                        return Divider(
-                                                          height: 0.5,
-                                                          color: Colors.grey,
+                                              child: ListView.separated(
+                                                separatorBuilder: (_, index) {
+                                                  return Divider(
+                                                    height: 0.5,
+                                                    color: Colors.grey,
+                                                  );
+                                                },
+                                                itemBuilder: (_, index) {
+                                                  FilterList filter = filterList
+                                                      .where((element) =>
+                                                          element.isSelected)
+                                                      .first;
+                                                  return filter
+                                                          .isMultipleSelection
+                                                      ? CheckboxListTile(
+                                                          value: filter
+                                                              .filterItems[
+                                                                  index]
+                                                              .isSelected,
+                                                          onChanged: (value) {
+                                                            state(() {
+                                                              filter
+                                                                      .filterItems[
+                                                                          index]
+                                                                      .isSelected =
+                                                                  !filter
+                                                                      .filterItems[
+                                                                          index]
+                                                                      .isSelected;
+                                                            });
+                                                          },
+                                                          title: Text(filter
+                                                              .filterItems[
+                                                                  index]
+                                                              .title),
+                                                        )
+                                                      : RadioListTile<
+                                                          FilterItems>(
+                                                          value: filter
+                                                                  .filterItems[
+                                                              index],
+                                                          groupValue: filter.filterItem,
+                                                          title: Text(filter
+                                                              .filterItems[
+                                                                  index]
+                                                              .title),
+                                                          onChanged: (value) {
+                                                            state(() {
+                                                              filter.filterItem =
+                                                                  value;
+                                                            });
+                                                          },
+                                                          controlAffinity:
+                                                              ListTileControlAffinity
+                                                                  .trailing,
                                                         );
-                                                      },
-                                                      itemBuilder: (_, index) {
-                                                        return filter
-                                                                .isMultipleSelection
-                                                            ? CheckboxListTile(
-                                                                value: filter
-                                                                    .filterItems[
-                                                                        index]
-                                                                    .isSelected,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  state(() {
-                                                                    filter.filterItems[index].isSelected = !filter
-                                                                        .filterItems[
-                                                                            index]
-                                                                        .isSelected;
-                                                                  });
-                                                                },
-                                                                title: Text(filter
-                                                                    .filterItems[index].title),
-                                                              )
-                                                            : RadioListTile<
-                                                                    FilterItems>(
-                                                                value: filter.filterItems[index],
-                                                                groupValue: filterItem,
-                                                                title: Text(filter.filterItems[index].title),
-                                                                onChanged:
-                                                                    (value) {
-                                                                  state(() {
-                                                                    filterItem = value;
-                                                                  });
-                                                                }, controlAffinity: ListTileControlAffinity.trailing,);
-                                                      },
-                                                      itemCount: filter
-                                                          .filterItems.length,
-                                                      physics:
-                                                          BouncingScrollPhysics(),
-                                                    )
-                                                  : SizedBox()),
+                                                },
+                                                itemCount: filterList
+                                                    .where((element) =>
+                                                        element.isSelected)
+                                                    .first
+                                                    .filterItems
+                                                    .length,
+                                                physics:
+                                                    BouncingScrollPhysics(),
+                                              )),
                                         ],
                                       )),
                                     ],
@@ -747,9 +763,10 @@ class FilterList {
   final bool isMultipleSelection;
   bool isSelected;
   final List<FilterItems> filterItems;
+  FilterItems filterItem;
   FilterList(
       {this.title,
-      this.isMultipleSelection,
+      this.isMultipleSelection : false,
       this.filterItems,
       this.isSelected: false});
 }
