@@ -22,7 +22,7 @@ class _LogInState extends State<LogIn> {
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
         drawer: navigationDrawer(),
         body: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 25.sp),
+            padding: EdgeInsets.symmetric(horizontal: 10.sp),
             physics: BouncingScrollPhysics(),
             child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
               SizedBox(height: 15),

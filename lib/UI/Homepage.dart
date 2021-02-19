@@ -67,7 +67,10 @@ class _HomepageState extends State<Homepage> {
               primary: false,
               padding: EdgeInsets.all(10),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, childAspectRatio: (size.width * 0.4/ 250.h), crossAxisSpacing: 8, mainAxisSpacing: 8),
+                  crossAxisCount: 4,
+                  childAspectRatio: (size.width * 0.4 / 250.h),
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8),
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
@@ -90,7 +93,7 @@ class _HomepageState extends State<Homepage> {
                                           : NetworkImage(URLS.IMAGE_URL + categories[index].image),
                                       fit: BoxFit.cover)))),
                       Padding(
-                          padding:EdgeInsets.all(3.0),
+                          padding: EdgeInsets.all(3.0),
                           child: Text(categories[index].title,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -136,3 +139,4 @@ class _HomepageState extends State<Homepage> {
     ]));
   }
 }
+

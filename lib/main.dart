@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:e_commerce/Screens/HomeScreen.dart';
+import 'package:e_commerce/Screens/SignupScreen.dart';
+import 'package:e_commerce/UI/otp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
 
@@ -32,3 +36,4 @@ class _MyappState extends State<Myapp> {
     );
   }
 }
+
