@@ -157,12 +157,14 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                     onPressed: () {
                       showModalBottomSheet(
                           context: context,
+                          isScrollControlled: true,
                           builder: (_) {
                             return BottomSheet(
                               onClosing: () {},
                               builder: (_) {
                                 return Column(
                                   children: [
+                                    SizedBox(height: MediaQuery.of(context).padding.top),
                                     ListTile(
                                       title: Text(
                                         "Category",
@@ -276,18 +278,74 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             color: Colors.grey[300],
             width: size.width,
+            height: 40,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("34 products"),
+                Text("${items.length} products"),
                 FlatButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (_) {
+                          return BottomSheet(
+                            onClosing: () {},
+                            builder: (_) {
+                              return Column(
+                                children: [
+                                  SizedBox(height: MediaQuery.of(context).padding.top),
+                                  ListTile(
+                                    title: Text(
+                                      "Sort & Filter By",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    trailing: IconButton(
+                                      icon: Icon(Icons.close),
+                                      onPressed: () => Navigator.pop(context),
+                                      splashRadius: 25,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 45,
+                                    width: size.width,
+                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                    child: ListView.builder(
+                                      itemBuilder: (_, index) {
+                                        return Container(
+                                          margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
+                                          child: FlatButton(
+                                            onPressed: () {},
+                                            child: Text(products[index]),
+                                            color: Colors.grey[200],
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(7),
+                                              side: BorderSide(color: Colors.grey)
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      physics: BouncingScrollPhysics(),
+                                      itemCount: products.length,
+                                      scrollDirection: Axis.horizontal,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                            backgroundColor: Colors.white,
+                            enableDrag: true,
+                          );
+                        });
+                  },
                   label: Text("Sort | Filter"),
-                  icon: Icon(Icons.filter_alt_rounded),
+                  icon: Icon(Icons.filter_alt_outlined, size: 20,),
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7)),
@@ -356,26 +414,26 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                     item.name,
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 7),
                   RichText(
                     text: TextSpan(
                         text:
-                            "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t\t",
+                            "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t",
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold),
                         children: [
                           TextSpan(
                               text: "\u20b9${item.price * item.quantity}",
                               style: TextStyle(
                                   color: Colors.black87,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   decoration: TextDecoration.lineThrough,
                                   fontWeight: FontWeight.bold)),
                           TextSpan(
@@ -383,7 +441,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                   "\t\tYou Save \u20b9${item.discount * item.quantity}",
                               style: TextStyle(
                                   color: Colors.green,
-                                  fontSize: 15,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.bold)),
                         ]),
                   ),
