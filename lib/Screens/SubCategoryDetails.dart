@@ -28,14 +28,15 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
         image: "https://www.jiomart.com/images/category/15/thumb/0-15.png"),
   ];
   List<String> products = [
-    "ALL",
-    "Exotic Vegetables",
-    "Citrus Fruits",
-    "Root Vegetable",
-    "Beans",
-    "Guard",
-    "Vegetable Others"
-  ];
+        "ALL",
+        "Exotic Vegetables",
+        "Citrus Fruits",
+        "Root Vegetable",
+        "Beans",
+        "Guard",
+        "Vegetable Others"
+      ],
+      filterTabs = ["Popularity", "High to Low", "Low to High", "Discount"];
   List<Item> items = [
     Item(
         image:
@@ -164,7 +165,9 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                               builder: (_) {
                                 return Column(
                                   children: [
-                                    SizedBox(height: MediaQuery.of(context).padding.top),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).padding.top),
                                     ListTile(
                                       title: Text(
                                         "Category",
@@ -298,7 +301,9 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                             builder: (_) {
                               return Column(
                                 children: [
-                                  SizedBox(height: MediaQuery.of(context).padding.top),
+                                  SizedBox(
+                                      height:
+                                          MediaQuery.of(context).padding.top),
                                   ListTile(
                                     title: Text(
                                       "Sort & Filter By",
@@ -319,23 +324,75 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                     child: ListView.builder(
                                       itemBuilder: (_, index) {
                                         return Container(
-                                          margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
+                                          margin: EdgeInsets.only(
+                                              left: index == 0 ? 10 : 0,
+                                              right: 10),
                                           child: FlatButton(
                                             onPressed: () {},
-                                            child: Text(products[index]),
+                                            child: Text(filterTabs[index]),
                                             color: Colors.grey[200],
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(7),
-                                              side: BorderSide(color: Colors.grey)
-                                            ),
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                side: BorderSide(
+                                                    color: Colors.grey)),
                                           ),
                                         );
                                       },
                                       physics: BouncingScrollPhysics(),
-                                      itemCount: products.length,
+                                      itemCount: filterTabs.length,
                                       scrollDirection: Axis.horizontal,
                                     ),
                                   ),
+                                  Expanded(
+                                      child: Row(
+                                    children: [
+                                      Flexible(
+                                        flex: 1,
+                                        child: ListView.separated(
+                                          separatorBuilder: (_, index) {
+                                            return Divider(
+                                              height: 0.5,
+                                              color: Colors.grey,
+                                            );
+                                          },
+                                          itemBuilder: (_, index) {
+                                            return GestureDetector(
+                                              child: Container(
+                                                height: 50,
+                                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                                alignment: Alignment.centerLeft,
+                                                decoration: BoxDecoration(
+                                                  color: index == 0 ? Colors.white : Colors.grey[200]
+                                                ),
+                                                child: Text("Availability"),
+                                              ),
+                                            );
+                                          },
+                                          itemCount: 5,
+                                          physics: BouncingScrollPhysics(),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 2,
+                                        child: ListView.separated(
+                                          separatorBuilder: (_, index) {
+                                            return Divider(
+                                              height: 0.5,
+                                              color: Colors.grey,
+                                            );
+                                          },
+                                          itemBuilder: (_, index) {
+                                            return CheckboxListTile(value: true, onChanged: (value) {
+
+                                            }, title: Text("0 - 100"),);
+                                          },
+                                          itemCount: 10,
+                                          physics: BouncingScrollPhysics(),
+                                        )
+                                      ),
+                                    ],
+                                  )),
                                 ],
                               );
                             },
@@ -345,7 +402,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                         });
                   },
                   label: Text("Sort | Filter"),
-                  icon: Icon(Icons.filter_alt_outlined, size: 20,),
+                  icon: Icon(
+                    Icons.filter_alt_outlined,
+                    size: 20,
+                  ),
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7)),
