@@ -237,7 +237,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                           },
                           child: Container(
                             margin:
-                                EdgeInsets.only(left: 10, bottom: 7, top: 7),
+                                EdgeInsets.only(left: index == 0 ? 10 : 0, bottom: 7, top: 7, right: 10),
                             padding: EdgeInsets.symmetric(horizontal: 5),
                             width: 130,
                             height: 76,
