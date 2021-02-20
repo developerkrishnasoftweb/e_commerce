@@ -1,3 +1,4 @@
+import 'package:e_commerce/Screens/add_address.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,8 @@ class _MyAddressState extends State<MyAddress> {
             padding: const EdgeInsets.all(8.0),
             child: FlatButton.icon(
                 minWidth: double.infinity,
-                onPressed: () {},
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddAddress())),
                 height: 55,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(7),
@@ -70,7 +72,10 @@ class _MyAddressState extends State<MyAddress> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
-                                      color: Colors.grey), maxLines: 3, overflow: TextOverflow.ellipsis,),
+                                      color: Colors.grey),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                                 Text("+91 - 8758431417",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
