@@ -14,7 +14,7 @@ class _MyAccountState extends State<MyAccount> {
     return Scaffold(
         appBar: AppBar(
             title: Text("My Account",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)), automaticallyImplyLeading: true),
         body: SingleChildScrollView(
             child: Column(children: [
           GestureDetector(
