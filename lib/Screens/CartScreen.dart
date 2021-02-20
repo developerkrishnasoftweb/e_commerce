@@ -118,7 +118,7 @@ class _CartScreenState extends State<CartScreen> {
               itemCount: cartItems.length,
               shrinkWrap: true,
             ),
-            greyStrip(),
+            greyStripe(),
             Container(
               width: size.width,
               padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
@@ -153,7 +153,7 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             ),
-            greyStrip(),
+            greyStripe(),
             Container(
               width: size.width,
               padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
@@ -188,7 +188,7 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             ),
-            greyStrip()
+            greyStripe()
           ])),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(
@@ -371,7 +371,7 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
-  Widget greyStrip () {
+  Widget greyStripe () {
     return Container(
       height: 25,
       width: double.infinity,

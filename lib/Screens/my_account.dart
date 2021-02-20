@@ -91,19 +91,19 @@ class _MyAccountState extends State<MyAccount> {
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold)),
                             SizedBox(
-                              height: 5,
+                              height: 3,
                             ),
                             Text("krishnasoftweb@gmail.com",
                                 style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     color: Colors.white60,
                                     fontWeight: FontWeight.bold)),
                             SizedBox(
-                              height: 5,
+                              height: 3,
                             ),
                             Text("+91-8758431417",
                                 style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     color: Colors.white60,
                                     fontWeight: FontWeight.bold)),
                           ],
@@ -118,43 +118,58 @@ class _MyAccountState extends State<MyAccount> {
                   ),
                 ),
                 Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       children: [
-                        Row(
+                        Expanded(
+                            child: Row(
                           children: [
-                            Expanded(
-                              child: FlatButton(
-                                child: Text("Payment Methods"),
-                                onPressed: () {},
-                                color: Colors.white70,
-                              ),
-                            ),
+                            profileButton(onPressed: (){}, icon: Icons.credit_card_outlined, label: "Payment Methods"),
                             SizedBox(
                               width: 10,
                             ),
-                            Expanded(
-                              child: FlatButton(
-                                child: Text("Payment Methods"),
-                                onPressed: () {},
-                                color: Colors.white70,
-                              ),
-                            ),
+                            profileButton(onPressed: (){}, icon: Icons.history, label: "Order History"),
                           ],
-                        ),
+                        )),
                         SizedBox(
                           height: 10,
                         ),
-                        Expanded(
-                            child: FlatButton(
-                              child: Text("Payment Methods"),
-                              onPressed: () {},
-                              color: Colors.white70,
-                            ))
+                        profileButton(onPressed: (){}, icon: Icons.location_on_rounded, label: "Delivery Address"),
                       ],
-                    ))
+                    ),
+                  ),
+                ),
+
               ],
             ),
           )
         ])));
+  }
+  Widget profileButton ({IconData icon, String label, @required VoidCallback onPressed}) {
+    return Expanded(
+      child: FlatButton(
+          height: double.infinity,
+          onPressed: onPressed,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          color: Colors.white38,
+          child: Row(
+            children: [
+              Icon(icon,
+                color: Colors.white, size: 20,),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 12),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ))
+            ],
+          )),
+    );
   }
 }
