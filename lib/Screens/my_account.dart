@@ -1,3 +1,4 @@
+import 'package:e_commerce/Screens/my_addresses.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +144,7 @@ class _MyAccountState extends State<MyAccount> {
                           height: 10,
                         ),
                         profileButton(
-                            onPressed: () {},
+                            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyAddress())),
                             icon: Icons.location_on_rounded,
                             label: "Delivery Address"),
                       ],
