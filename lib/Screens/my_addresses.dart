@@ -9,6 +9,26 @@ class MyAddress extends StatefulWidget {
 }
 
 class _MyAddressState extends State<MyAddress> {
+  List<AddressDetail> addresses = [
+    AddressDetail(
+      name: "Krishna Softweb",
+      type: "work",
+      address: "208, Siddhivinayak platinum, Althan Road",
+      mobileNo: "8758431417",
+      pinCode: "394221",
+      city: "Surat",
+      state: "Gujarat"
+    ),
+    AddressDetail(
+        name: "Gaurav",
+        type: "home",
+        address: "46, Apeksha Nagar, Althan Road",
+        mobileNo: "8758431417",
+        pinCode: "394221",
+        city: "Surat",
+        state: "Gujarat"
+    )
+  ];
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -44,7 +64,7 @@ class _MyAddressState extends State<MyAddress> {
               return Container(
                 margin: EdgeInsets.symmetric(vertical: 3),
                 padding: EdgeInsets.all(10),
-                height: 160,
+                height: 180,
                 width: size.width,
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey, width: 2),
@@ -60,7 +80,7 @@ class _MyAddressState extends State<MyAddress> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Krishna Softweb",
+                                Text(addresses[index].name,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17)),
@@ -68,15 +88,33 @@ class _MyAddressState extends State<MyAddress> {
                                   height: 5,
                                 ),
                                 Text(
-                                  "208, Siddhivinayak Platinum, Althan Road, Pandesara, Surat - 394221, Gujarat.",
+                                  "${addresses[index].address}",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
                                       color: Colors.grey),
-                                  maxLines: 3,
+                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                Text("+91 - 8758431417",
+                                Text(
+                                  "${addresses[index].city} - ${addresses[index].pinCode}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                      color: Colors.grey),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  addresses[index].state,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                      color: Colors.grey),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(addresses[index].mobileNo,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 13,
@@ -87,7 +125,7 @@ class _MyAddressState extends State<MyAddress> {
                           Container(
                             padding: EdgeInsets.all(4),
                             child: Text(
-                              "Home",
+                              addresses[index].type.toUpperCase(),
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w500),
                             ),
@@ -104,14 +142,14 @@ class _MyAddressState extends State<MyAddress> {
                       child: FlatButton(
                         child: Text("Modify",
                             style: TextStyle(color: Myapp.primaryColor)),
-                        onPressed: () {},
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddress(addressDetail: addresses[index],))),
                       ),
                     )
                   ],
                 ),
               );
             },
-            itemCount: 2,
+            itemCount: addresses.length,
             padding: EdgeInsets.symmetric(horizontal: 10),
             physics: BouncingScrollPhysics(),
           )),
@@ -119,4 +157,17 @@ class _MyAddressState extends State<MyAddress> {
       ),
     );
   }
+}
+
+class AddressDetail {
+  final String name,
+      mobileNo,
+      address,
+      pinCode,
+      state,
+      city,
+      type;
+
+  AddressDetail({this.name, this.mobileNo, this.address, this.pinCode, this.state, this.city, this.type});
+
 }

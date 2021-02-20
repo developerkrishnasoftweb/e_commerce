@@ -144,7 +144,10 @@ class _MyAccountState extends State<MyAccount> {
                           height: 10,
                         ),
                         profileButton(
-                            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyAddress())),
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyAddress())),
                             icon: Icons.location_on_rounded,
                             label: "Delivery Address"),
                       ],
