@@ -14,7 +14,8 @@ class _MyAccountState extends State<MyAccount> {
     return Scaffold(
         appBar: AppBar(
             title: Text("My Account",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)), automaticallyImplyLeading: true),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+            automaticallyImplyLeading: true),
         body: SingleChildScrollView(
             child: Column(children: [
           GestureDetector(
@@ -125,28 +126,65 @@ class _MyAccountState extends State<MyAccount> {
                         Expanded(
                             child: Row(
                           children: [
-                            profileButton(onPressed: (){}, icon: Icons.credit_card_outlined, label: "Payment Methods"),
+                            profileButton(
+                                onPressed: () {},
+                                icon: Icons.credit_card_outlined,
+                                label: "Payment Methods"),
                             SizedBox(
                               width: 10,
                             ),
-                            profileButton(onPressed: (){}, icon: Icons.history, label: "Order History"),
+                            profileButton(
+                                onPressed: () {},
+                                icon: Icons.history,
+                                label: "Order History"),
                           ],
                         )),
                         SizedBox(
                           height: 10,
                         ),
-                        profileButton(onPressed: (){}, icon: Icons.location_on_rounded, label: "Delivery Address"),
+                        profileButton(
+                            onPressed: () {},
+                            icon: Icons.location_on_rounded,
+                            label: "Delivery Address"),
                       ],
                     ),
                   ),
                 ),
-
               ],
             ),
-          )
+          ),
+          ListTile(
+            title: Text("My List",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+            onTap: () {},
+          ),
+          Divider(
+            height: 0,
+            color: Colors.grey,
+          ),
+          ListTile(
+            title: Text("Contact Us",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+            onTap: () {},
+          ),
+          Divider(
+            height: 0,
+            color: Colors.grey,
+          ),
+          ListTile(
+            title: Text("Logout",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+            onTap: () {},
+          ),
+          Divider(
+            height: 0,
+            color: Colors.grey,
+          ),
         ])));
   }
-  Widget profileButton ({IconData icon, String label, @required VoidCallback onPressed}) {
+
+  Widget profileButton(
+      {IconData icon, String label, @required VoidCallback onPressed}) {
     return Expanded(
       child: FlatButton(
           height: double.infinity,
@@ -155,19 +193,21 @@ class _MyAccountState extends State<MyAccount> {
           color: Colors.white38,
           child: Row(
             children: [
-              Icon(icon,
-                color: Colors.white, size: 20,),
+              Icon(
+                icon,
+                color: Colors.white,
+                size: 20,
+              ),
               SizedBox(
                 width: 10,
               ),
               Expanded(
                   child: Text(
-                    label,
-                    style: TextStyle(
-                        color: Colors.white, fontSize: 12),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ))
+                label,
+                style: TextStyle(color: Colors.white, fontSize: 12),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ))
             ],
           )),
     );
