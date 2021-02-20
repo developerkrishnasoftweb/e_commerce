@@ -7,6 +7,8 @@ class AddAddress extends StatefulWidget {
 }
 
 class _AddAddressState extends State<AddAddress> {
+  int selectedIndex;
+  List<String> option = ['Home', 'Work', 'Other'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,14 +29,41 @@ class _AddAddressState extends State<AddAddress> {
             input(hintText: "Address *"),
             input(hintText: "Landmark Area *"),
             input(hintText: "City, State"),
-            Row(children: [
-              Text("Save as"),
-              ChoiceChip(label: Text("Home"), selected: false),
-              ChoiceChip(label: Text("Work"), selected: true, onSelected: (value) {
-                print(value);
-              },),
-              ChoiceChip(label: Text("Other"), selected: false),
-            ],)
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                "Save as",
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: option.map((e) {
+                  return Container(
+                    margin: EdgeInsets.only(right: 5),
+                    child: ChoiceChip(
+                        label: Text(e,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        selected: option.indexOf(e) == selectedIndex,
+                        onSelected: (value) {
+                          setState(() {
+                            selectedIndex = option.indexOf(e);
+                          });
+                        },
+                        pressElevation: 1),
+                  );
+                }).toList(),
+              ),
+            ]),
+            SizedBox(height: 10),
+            FlatButton(
+              onPressed: () {},
+              child: Text("Save Address", style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white
+              ),),
+              height: 50,
+              minWidth: double.infinity,
+              color: Myapp.primaryColor
+            )
           ],
         ),
       ),
@@ -45,7 +74,10 @@ class _AddAddressState extends State<AddAddress> {
       {String hintText,
       TextEditingController controller,
       ValueChanged<String> onChanged,
-      VoidCallback onEditingComplete, TextInputAction textInputAction, TextInputType keyboardType, bool readOnly : false}) {
+      VoidCallback onEditingComplete,
+      TextInputAction textInputAction,
+      TextInputType keyboardType,
+      bool readOnly: false}) {
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       child: TextField(
@@ -59,7 +91,7 @@ class _AddAddressState extends State<AddAddress> {
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(4),
-            borderSide: BorderSide(color: Colors.grey),
+            borderSide: BorderSide(color: Colors.grey, width: 2),
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
           hintText: hintText,
