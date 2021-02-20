@@ -3,6 +3,8 @@ import 'package:e_commerce/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'edit_profile.dart';
+
 class MyAccount extends StatefulWidget {
   @override
   _MyAccountState createState() => _MyAccountState();
@@ -113,7 +115,7 @@ class _MyAccountState extends State<MyAccount> {
                       )),
                       IconButton(
                         icon: Icon(Icons.edit),
-                        onPressed: () {},
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile())),
                         color: Colors.white,
                       )
                     ],

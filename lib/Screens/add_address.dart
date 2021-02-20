@@ -98,35 +98,39 @@ class _AddAddressState extends State<AddAddress> {
       ),
     );
   }
+}
 
-  Widget input(
-      {String hintText,
+Widget input(
+    {String hintText,
       TextEditingController controller,
       ValueChanged<String> onChanged,
       VoidCallback onEditingComplete,
       TextInputAction textInputAction,
       TextInputType keyboardType,
+      double width,
+      double height,
       bool readOnly: false}) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      child: TextField(
-        controller: controller,
-        onChanged: onChanged,
-        onEditingComplete: onEditingComplete,
-        textInputAction: textInputAction ?? TextInputAction.next,
-        keyboardType: keyboardType,
-        readOnly: readOnly,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4),
-            borderSide: BorderSide(color: Colors.grey, width: 2),
-          ),
-          contentPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-          hintText: hintText,
+  return Container(
+    height: height,
+    width: width,
+    margin: EdgeInsets.only(bottom: 20),
+    child: TextField(
+      controller: controller,
+      onChanged: onChanged,
+      onEditingComplete: onEditingComplete,
+      textInputAction: textInputAction ?? TextInputAction.next,
+      keyboardType: keyboardType,
+      readOnly: readOnly,
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: BorderSide(color: Colors.grey, width: 2),
         ),
-        cursorColor: Myapp.primaryColor,
+        contentPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+        hintText: hintText,
       ),
-    );
-  }
+      cursorColor: Myapp.primaryColor,
+    ),
+  );
 }
