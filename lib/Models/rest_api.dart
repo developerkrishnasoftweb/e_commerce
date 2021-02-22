@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/Products.dart';
+import 'package:e_commerce/Models/sku.dart';
 import 'package:http/http.dart' as http;
 import 'Departments.dart';
 import 'SubCategories.dart';
@@ -67,12 +68,20 @@ class ApiService {
     }
   }
 
-  static Future<Products> getProduct(String subCategoryId) async {
-    final response = await http.get(URLS.GET_CATEGORIES_PRODUCTS + subCategoryId + 'products');
-    if (response.statusCode == 200) {
-      return Products.fromJson(json.decode(response.body));
-    } else {
-      return null;
+  static Future<List<ProductSku>> getProduct(String subCategoryId) async {
+    try{
+      final response = await http.get(URLS.GET_CATEGORIES_PRODUCTS + "/" + subCategoryId + "/" + 'products');
+      if (response.statusCode == 200) {
+        List<ProductSku> sku = List();
+        json.decode(response.body).forEach((v) {
+          sku.add(ProductSku.fromJson(v));
+        });
+        return sku;
+      } else {
+        return null;
+      }
+    } catch(e) {
+      throw(e);
     }
   }
 

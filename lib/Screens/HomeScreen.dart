@@ -35,14 +35,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Pal", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          title: Text("Pal",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
           elevation: 0,
           actions: [
-            IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {}),
+            IconButton(
+                icon: Icon(Icons.account_circle, color: Colors.white),
+                onPressed: () {}),
             IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => CartScreen()));
                 })
           ],
         ),
@@ -52,10 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
           searchBarView(),
           FutureBuilder(
               future: Future.wait([ApiService.getHomeCategories()]),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data != null) {
+                  print(snapshot.data);
                   final AllCategories data = snapshot.data[0];
-                  print(data.childrenData[0].id);
                   return Expanded(
                       child: SingleChildScrollView(
                           child: Column(children: [
@@ -70,13 +75,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ])));
                 } else
                   return Expanded(
-                      child: Container(color: Colors.white, child: Center(child: CircularProgressIndicator())));
+                      child: Container(
+                          color: Colors.white,
+                          child: Center(child: CircularProgressIndicator())));
               })
         ]));
   }
 
   Widget categoriesListHorizontal([List<ChildrenData> childrenData]) {
-
     return Padding(
       padding: EdgeInsets.only(top: 10.sp),
       child: Container(
@@ -89,20 +95,28 @@ class _HomeScreenState extends State<HomeScreen> {
               physics: BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                  onTap: () =>
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails( list :childrenData[index].childrenData))),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => SubcategoryDetails(
+                              list: childrenData[index].childrenData))),
                   child: Container(
                       width: 70.h,
-                      child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
+                      child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CircleAvatar(
                                 radius: 25.h,
-                                backgroundImage: NetworkImage(URLS.IMAGE_URL + childrenData[index].image),
+                                backgroundImage: NetworkImage(
+                                    URLS.IMAGE_URL + childrenData[index].image),
                                 backgroundColor: Colors.transparent),
                             Center(
                                 child: Text(childrenData[index].name,
-                                    maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center))
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center))
                           ])),
                 );
               })),
@@ -121,13 +135,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     isDense: true,
                     // Added this
                     contentPadding: EdgeInsets.all(10.sp),
-                    border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(5.ssp)),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(5.ssp)),
                     hintText: "Search for Products and Brand"))));
   }
 
   freeHomeDeliverySlider(List<String> imgList) {
     return CarouselSlider(
-        options: CarouselOptions(autoPlay: true, aspectRatio: 2.0, enlargeCenterPage: true),
+        options: CarouselOptions(
+            autoPlay: true, aspectRatio: 2.0, enlargeCenterPage: true),
         items: imageSlideView(imgList));
   }
 
@@ -138,8 +155,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: EdgeInsets.all(5.0),
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(
-                        children: <Widget>[Image.network(item, fit: BoxFit.cover, width: 800.sp, height: 500.sp)])))))
+                    child: Stack(children: <Widget>[
+                      Image.network(item,
+                          fit: BoxFit.cover, width: 800.sp, height: 500.sp)
+                    ])))))
         .toList();
   }
 
@@ -177,26 +196,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
+                      style: TextStyle(
+                          fontSize: 15.sp, fontWeight: FontWeight.bold))),
               Padding(
                   padding: EdgeInsets.all(10.sp),
                   child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3, childAspectRatio: 0.85, crossAxisSpacing: 10.sp, mainAxisSpacing: 10.sp),
+                          crossAxisCount: 3,
+                          childAspectRatio: 0.85,
+                          crossAxisSpacing: 10.sp,
+                          mainAxisSpacing: 10.sp),
                       itemCount: litems.length,
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                            onTap: () =>
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => SubcategoryDetails())),
                             child: Container(
                                 child: Stack(children: [
                               Container(
                                   alignment: Alignment.bottomCenter,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
+                                      image: DecorationImage(
+                                          image: NetworkImage(images[index]),
+                                          fit: BoxFit.cover)),
                                   child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
@@ -206,9 +233,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: Center(
                                               child: Text(litems[index],
                                                   maxLines: 2,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold))))))
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold))))))
                             ])));
                       }))
             ])));
@@ -236,77 +267,100 @@ class _HomeScreenState extends State<HomeScreen> {
         color: Colors.white,
         child: Padding(
             padding: EdgeInsets.symmetric(vertical: 10.sp),
-            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Padding(
-                  padding: EdgeInsets.only(left: 10.sp),
-                  child: Text("Top Deals",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
-              Container(
-                  height: 210.h,
-                  child: ListView.builder(
-                      itemCount: litems.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                            width: 110.h,
-                            height: 200.h,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
-                              child: Column(children: [
-                                Container(
-                                    width: 100.h,
-                                    height: 100.h,
-                                    alignment: Alignment.bottomCenter,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover))),
-                                Expanded(
-                                    child: Center(
-                                  child: RichText(
-                                      maxLines: 4,
-                                      overflow: TextOverflow.ellipsis,
-                                      text: TextSpan(
-                                          text: '₹ 22.50 ',
-                                          style: TextStyle(
-                                              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
-                                          children: [
-                                            TextSpan(
-                                                text: '₹ 45.00 \n',
-                                                style: TextStyle(
-                                                    decoration: TextDecoration.lineThrough,
-                                                    color: Colors.black,
-                                                    fontSize: 10.sp)),
-                                            TextSpan(
-                                                text: "Save ₹ 22.50 \n",
-                                                style: TextStyle(
-                                                    fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green)),
-                                            TextSpan(
-                                                text: litems[index],
-                                                style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold))
-                                          ])),
-                                )),
-                                RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5.sp),
-                                        side: BorderSide(color: Myapp.primaryColor)),
-                                    onPressed: () {},
-                                    elevation: 0,
-                                    color: Myapp.primaryColor,
-                                    textColor: Colors.white,
-                                    padding: EdgeInsets.all(0.h),
-                                    child: SizedBox(
-                                        width: double.infinity,
-                                        child: Text("Add".toUpperCase(),
-                                            style: TextStyle(fontSize: 12.sp), textAlign: TextAlign.center)))
-                              ]),
-                            ));
-                      }))
-            ])));
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: EdgeInsets.only(left: 10.sp),
+                      child: Text("Top Deals",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 15.sp, fontWeight: FontWeight.bold))),
+                  Container(
+                      height: 210.h,
+                      child: ListView.builder(
+                          itemCount: litems.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                                width: 110.h,
+                                height: 200.h,
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      index == 0 ? 10.h : 0, 10.h, 10.h, 0),
+                                  child: Column(children: [
+                                    Container(
+                                        width: 100.h,
+                                        height: 100.h,
+                                        alignment: Alignment.bottomCenter,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                                image:
+                                                    NetworkImage(images[index]),
+                                                fit: BoxFit.cover))),
+                                    Expanded(
+                                        child: Center(
+                                      child: RichText(
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis,
+                                          text: TextSpan(
+                                              text: '₹ 22.50 ',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12.sp),
+                                              children: [
+                                                TextSpan(
+                                                    text: '₹ 45.00 \n',
+                                                    style: TextStyle(
+                                                        decoration:
+                                                            TextDecoration
+                                                                .lineThrough,
+                                                        color: Colors.black,
+                                                        fontSize: 10.sp)),
+                                                TextSpan(
+                                                    text: "Save ₹ 22.50 \n",
+                                                    style: TextStyle(
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.green)),
+                                                TextSpan(
+                                                    text: litems[index],
+                                                    style: TextStyle(
+                                                        fontSize: 11.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold))
+                                              ])),
+                                    )),
+                                    RaisedButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.sp),
+                                            side: BorderSide(
+                                                color: Myapp.primaryColor)),
+                                        onPressed: () {},
+                                        elevation: 0,
+                                        color: Myapp.primaryColor,
+                                        textColor: Colors.white,
+                                        padding: EdgeInsets.all(0.h),
+                                        child: SizedBox(
+                                            width: double.infinity,
+                                            child: Text("Add".toUpperCase(),
+                                                style:
+                                                    TextStyle(fontSize: 12.sp),
+                                                textAlign: TextAlign.center)))
+                                  ]),
+                                ));
+                          }))
+                ])));
   }
 
   shopGroceries() {
@@ -331,52 +385,72 @@ class _HomeScreenState extends State<HomeScreen> {
         color: Colors.grey[200],
         child: Padding(
             padding: EdgeInsets.symmetric(vertical: 10.sp),
-            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Padding(
-                  padding: EdgeInsets.only(left: 10.sp),
-                  child: Text("Shop Groceries",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
-              Container(
-                  height: 70.h,
-                  child: ListView.builder(
-                      itemCount: litems.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                            width: 170.h,
-                            height: 90.h,
-                            child: Padding(
-                                padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.h))),
-                                    child: Padding(
-                                        padding: EdgeInsets.all(5.h),
-                                        child: Row(children: [
-                                          Container(
-                                              width: 50.h,
-                                              height: 50.h,
-                                              alignment: Alignment.bottomCenter,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(3.h),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(images[index]), fit: BoxFit.cover))),
-                                          Expanded(
-                                              child: Center(
-                                                  child: Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10.h),
-                                                      child: Text(litems[index],
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow.ellipsis,
-                                                          style: TextStyle(fontSize: 12.sp)))))
-                                        ])))));
-                      }))
-            ])));
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: EdgeInsets.only(left: 10.sp),
+                      child: Text("Shop Groceries",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 15.sp, fontWeight: FontWeight.bold))),
+                  Container(
+                      height: 70.h,
+                      child: ListView.builder(
+                          itemCount: litems.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                                width: 170.h,
+                                height: 90.h,
+                                child: Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        index == 0 ? 10.h : 0, 10.h, 10.h, 0),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5.h))),
+                                        child: Padding(
+                                            padding: EdgeInsets.all(5.h),
+                                            child: Row(children: [
+                                              Container(
+                                                  width: 50.h,
+                                                  height: 50.h,
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              3.h),
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              images[index]),
+                                                          fit: BoxFit.cover))),
+                                              Expanded(
+                                                  child: Center(
+                                                      child: Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      10.h),
+                                                          child: Text(
+                                                              litems[index],
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      12.sp)))))
+                                            ])))));
+                          }))
+                ])));
   }
 
   offerListWithCategories() {
@@ -438,93 +512,122 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.grey[200],
               child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 10.sp),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Padding(
-                        padding: EdgeInsets.only(left: 10.sp),
-                        child: Text(titles[index],
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
-                    freeHomeDeliverySlider(grocerySlider),
-                    Container(
-                        color: colors[index],
-                        child: Column(children: [
-                          Padding(
-                              padding: EdgeInsets.all(10.h),
-                              child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(30.h), bottomRight: Radius.circular(30.h))),
-                                  child: Padding(
-                                      padding: EdgeInsets.all(10.sp),
-                                      child: Text("Offers on daily essentials".toUpperCase(),
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 20.sp, fontWeight: FontWeight.bold, color: Colors.red))))),
-                          Padding(
-                              padding: EdgeInsets.all(10.sp),
-                              child: GridView.builder(
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 0.85,
-                                      crossAxisSpacing: 30.sp,
-                                      mainAxisSpacing: 30.sp),
-                                  itemCount: litems.length,
-                                  shrinkWrap: true,
-                                  physics: BouncingScrollPhysics(),
-                                  itemBuilder: (BuildContext context, int index1) {
-                                    return Container(
-                                        child: Stack(children: [
-                                      Container(
-                                          alignment: Alignment.bottomCenter,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(images[index1]), fit: BoxFit.cover)),
-                                          child: Align(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.only(left: 10.sp),
+                            child: Text(titles[index],
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold))),
+                        freeHomeDeliverySlider(grocerySlider),
+                        Container(
+                            color: colors[index],
+                            child: Column(children: [
+                              Padding(
+                                  padding: EdgeInsets.all(10.h),
+                                  child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(30.h),
+                                              bottomRight:
+                                                  Radius.circular(30.h))),
+                                      child: Padding(
+                                          padding: EdgeInsets.all(10.sp),
+                                          child: Text(
+                                              "Offers on daily essentials"
+                                                  .toUpperCase(),
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 20.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.red))))),
+                              Padding(
+                                  padding: EdgeInsets.all(10.sp),
+                                  child: GridView.builder(
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              childAspectRatio: 0.85,
+                                              crossAxisSpacing: 30.sp,
+                                              mainAxisSpacing: 30.sp),
+                                      itemCount: litems.length,
+                                      shrinkWrap: true,
+                                      physics: BouncingScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, int index1) {
+                                        return Container(
+                                            child: Stack(children: [
+                                          Container(
                                               alignment: Alignment.bottomCenter,
-                                              child: Container(
-                                                  height: 40.sp,
-                                                  width: double.infinity,
-                                                  // color: Colors.white70,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: BorderRadius.only(
-                                                          bottomLeft: Radius.circular(10),
-                                                          bottomRight: Radius.circular(10))),
-                                                  child: Center(
-                                                      child: RichText(
-                                                          maxLines: 4,
-                                                          textAlign: TextAlign.center,
-                                                          overflow: TextOverflow.ellipsis,
-                                                          text: TextSpan(
-                                                              text: 'UP TO ',
-                                                              style: TextStyle(
-                                                                  color: textcolors[index],
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 15.sp),
-                                                              children: [
-                                                                TextSpan(
-                                                                    text: '30% OFF\n',
-                                                                    style: TextStyle(
-                                                                        color: Colors.red,
-                                                                        fontSize: 15.sp,
-                                                                        fontWeight: FontWeight.bold)),
-                                                                TextSpan(
-                                                                    text: litems[index1],
-                                                                    style: TextStyle(
-                                                                        color: Colors.black,
-                                                                        fontSize: 12.sp,
-                                                                        fontWeight: FontWeight.bold))
-                                                              ]))))))
-                                    ]));
-                                  }))
-                        ]))
-                  ])));
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          images[index1]),
+                                                      fit: BoxFit.cover)),
+                                              child: Align(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  child: Container(
+                                                      height: 40.sp,
+                                                      width: double.infinity,
+                                                      // color: Colors.white70,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius: BorderRadius.only(
+                                                              bottomLeft: Radius
+                                                                  .circular(10),
+                                                              bottomRight:
+                                                                  Radius.circular(
+                                                                      10))),
+                                                      child: Center(
+                                                          child: RichText(
+                                                              maxLines: 4,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              text: TextSpan(
+                                                                  text:
+                                                                      'UP TO ',
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          textcolors[index],
+                                                                      fontWeight: FontWeight.bold,
+                                                                      fontSize: 15.sp),
+                                                                  children: [
+                                                                    TextSpan(
+                                                                        text:
+                                                                            '30% OFF\n',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.red,
+                                                                            fontSize: 15.sp,
+                                                                            fontWeight: FontWeight.bold)),
+                                                                    TextSpan(
+                                                                        text: litems[
+                                                                            index1],
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize: 12.sp,
+                                                                            fontWeight: FontWeight.bold))
+                                                                  ]))))))
+                                        ]));
+                                      }))
+                            ]))
+                      ])));
         });
   }
 
@@ -562,61 +665,94 @@ class _HomeScreenState extends State<HomeScreen> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
+                      style: TextStyle(
+                          fontSize: 15.sp, fontWeight: FontWeight.bold))),
               Padding(
                   padding: EdgeInsets.all(10.sp),
                   child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3, childAspectRatio: 0.85, crossAxisSpacing: 10.sp, mainAxisSpacing: 10.sp),
+                          crossAxisCount: 3,
+                          childAspectRatio: 0.85,
+                          crossAxisSpacing: 10.sp,
+                          mainAxisSpacing: 10.sp),
                       itemCount: litems.length,
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                            onTap: () =>
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => SubcategoryDetails())),
                             child: Container(
                                 child: Stack(children: [
                               Container(
                                   alignment: Alignment.bottomCenter,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5.sp),
-                                      image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
+                                      image: DecorationImage(
+                                          image: NetworkImage(images[index]),
+                                          fit: BoxFit.cover)),
                                   child: Align(
                                       alignment: Alignment.bottomCenter,
-                                      child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                        Divider(height: 0.5.sp, color: Colors.black, thickness: 0.5.sp),
-                                        Container(
-                                            height: 20.sp,
-                                            width: double.infinity,
-                                            color: Colors.white70,
-                                            child: Center(
-                                                child: Text(litems[index],
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold)))),
-                                        Divider(height: 0.5.sp, color: Colors.black, thickness: 0.5.sp),
-                                        Container(
-                                            height: 20.sp,
-                                            width: double.infinity,
-                                            color: Colors.white70,
-                                            child: Center(
-                                                child: RichText(
-                                                    maxLines: 1,
-                                                    textAlign: TextAlign.center,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    text: TextSpan(
-                                                        text: 'Starting at ',
-                                                        style: TextStyle(color: Colors.black, fontSize: 11.sp),
-                                                        children: [
-                                                          TextSpan(
-                                                              text: '₹145',
-                                                              style: TextStyle(
-                                                                  fontSize: 11.sp, fontWeight: FontWeight.bold))
-                                                        ])))),
-                                        SizedBox(height: 10.sp)
-                                      ])))
+                                      child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Divider(
+                                                height: 0.5.sp,
+                                                color: Colors.black,
+                                                thickness: 0.5.sp),
+                                            Container(
+                                                height: 20.sp,
+                                                width: double.infinity,
+                                                color: Colors.white70,
+                                                child: Center(
+                                                    child: Text(litems[index],
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontSize: 11.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)))),
+                                            Divider(
+                                                height: 0.5.sp,
+                                                color: Colors.black,
+                                                thickness: 0.5.sp),
+                                            Container(
+                                                height: 20.sp,
+                                                width: double.infinity,
+                                                color: Colors.white70,
+                                                child: Center(
+                                                    child: RichText(
+                                                        maxLines: 1,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        text: TextSpan(
+                                                            text:
+                                                                'Starting at ',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize:
+                                                                    11.sp),
+                                                            children: [
+                                                              TextSpan(
+                                                                  text: '₹145',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          11.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold))
+                                                            ])))),
+                                            SizedBox(height: 10.sp)
+                                          ])))
                             ])));
                       }))
             ])));
@@ -650,28 +786,37 @@ class _HomeScreenState extends State<HomeScreen> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
+                      style: TextStyle(
+                          fontSize: 15.sp, fontWeight: FontWeight.bold))),
               Padding(
                   padding: EdgeInsets.all(10.sp),
                   child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3, childAspectRatio: 0.80, crossAxisSpacing: 10.sp, mainAxisSpacing: 10.sp),
+                          crossAxisCount: 3,
+                          childAspectRatio: 0.80,
+                          crossAxisSpacing: 10.sp,
+                          mainAxisSpacing: 10.sp),
                       itemCount: litems.length,
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                            onTap: () =>
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => SubcategoryDetails())),
                             child: Column(children: [
                               Expanded(
                                   child: Container(
                                       width: double.infinity,
                                       alignment: Alignment.bottomCenter,
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5.sp),
-                                          image:
-                                              DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)))),
+                                          borderRadius:
+                                              BorderRadius.circular(5.sp),
+                                          image: DecorationImage(
+                                              image:
+                                                  NetworkImage(images[index]),
+                                              fit: BoxFit.cover)))),
                               Container(
                                   height: 20.sp,
                                   width: double.infinity,
@@ -680,7 +825,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold))))
+                                          style: TextStyle(
+                                              fontSize: 11.sp,
+                                              fontWeight: FontWeight.bold))))
                             ]));
                       }))
             ])));
