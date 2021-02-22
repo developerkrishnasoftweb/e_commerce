@@ -71,14 +71,23 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
     ),
   ];
   List<Category> categories = [
-    Category(title: "Atta, Flours & Sooji", image: "https://www.jiomart.com/images/category/14/thumb/0-14.png"),
     Category(
-        title: "Dals & Pulses", image: "https://www.jiomart.com/images/category/17/thumb/dals-pulses-20200714.png"),
+        title: "Atta, Flours & Sooji",
+        image: "https://www.jiomart.com/images/category/14/thumb/0-14.png"),
+    Category(
+        title: "Dals & Pulses",
+        image:
+            "https://www.jiomart.com/images/category/17/thumb/dals-pulses-20200714.png"),
     Category(
         title: "Rice & Rice Products",
-        image: "https://www.jiomart.com/images/category/14/thumb/rice-rice-products-20200722.png"),
-    Category(title: "Edible Oil", image: "https://www.jiomart.com/images/category/18/thumb/0-18.png"),
-    Category(title: "Masalas Spices", image: "https://www.jiomart.com/images/category/15/thumb/0-15.png"),
+        image:
+            "https://www.jiomart.com/images/category/14/thumb/rice-rice-products-20200722.png"),
+    Category(
+        title: "Edible Oil",
+        image: "https://www.jiomart.com/images/category/18/thumb/0-18.png"),
+    Category(
+        title: "Masalas Spices",
+        image: "https://www.jiomart.com/images/category/15/thumb/0-15.png"),
   ];
   List<String> products = [
         "ALL",
@@ -147,8 +156,13 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("Product", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-        actions: [IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {})],
+        title: Text("Product",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.account_circle, color: Colors.white),
+              onPressed: () {})
+        ],
       ),
       body: Column(
         children: [
@@ -170,11 +184,17 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                   RichText(
                     text: TextSpan(
                         text: "Deliver to\t\t",
-                        style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold),
                         children: [
                           TextSpan(
                               text: "394221",
-                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold))
                         ]),
                     textAlign: TextAlign.center,
                   )
@@ -193,13 +213,19 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                   height: 76,
                   color: Colors.white,
                   child: FlatButton(
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                      Expanded(
-                        child: Text(widget.list != null ? widget.list[subCatIndex].name : "Staples",
-                            maxLines: 2, overflow: TextOverflow.ellipsis),
-                      ),
-                      Icon(Icons.arrow_drop_down_outlined)
-                    ]),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: Text(
+                                widget.list != null
+                                    ? widget.list[subCatIndex].name
+                                    : "Staples",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          Icon(Icons.arrow_drop_down_outlined)
+                        ]),
                     onPressed: () {
                       showModalBottomSheet(
                           context: context,
@@ -210,11 +236,15 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                               builder: (_) {
                                 return Column(
                                   children: [
-                                    SizedBox(height: MediaQuery.of(context).padding.top),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).padding.top),
                                     ListTile(
                                       title: Text(
                                         "Category",
-                                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       trailing: IconButton(
                                         icon: Icon(Icons.close),
@@ -233,14 +263,18 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                         return ListTile(
                                           leading: Image.network(
                                             widget.list != null
-                                                ? URLS.IMAGE_URL + widget.list[index].image
+                                                ? URLS.IMAGE_URL +
+                                                    widget.list[index].image
                                                 : "https://www.jiomart.com/images/category/141/thumb/fruits-vegetables-20200520.png",
                                             width: 40,
                                             height: 40,
                                           ),
                                           title: Text(
-                                            widget.list != null ? widget.list[index].name : "Fruits & Vegetables",
-                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                            widget.list != null
+                                                ? widget.list[index].name
+                                                : "Fruits & Vegetables",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
                                           ),
                                           // subtitle: Text(
                                           //   "Fresh Fruits,Fresh Vegetables,Herbs & Season ,Exotic Fruits & Vegetables",
@@ -255,7 +289,9 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                           },
                                         );
                                       },
-                                      itemCount: widget.list != null ? widget.list.length : 10,
+                                      itemCount: widget.list != null
+                                          ? widget.list.length
+                                          : 10,
                                     ))
                                   ],
                                 );
@@ -283,7 +319,11 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                             });
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: index == 0 ? 10 : 0, bottom: 7, top: 7, right: 10),
+                            margin: EdgeInsets.only(
+                                left: index == 0 ? 10 : 0,
+                                bottom: 7,
+                                top: 7,
+                                right: 10),
                             padding: EdgeInsets.symmetric(horizontal: 5),
                             width: 130,
                             height: 76,
@@ -291,7 +331,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                 borderRadius: BorderRadius.circular(6),
                                 color: Colors.white,
                                 border: Border.all(
-                                    color: categories[index].isSelected ? Myapp.primaryColor : Colors.white, width: 2)),
+                                    color: categories[index].isSelected
+                                        ? Myapp.primaryColor
+                                        : Colors.white,
+                                    width: 2)),
                             child: Row(
                               children: [
                                 Image.network(
@@ -306,7 +349,9 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                   maxLines: 3,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: categories[index].isSelected ? Myapp.primaryColor : Colors.black),
+                                      color: categories[index].isSelected
+                                          ? Myapp.primaryColor
+                                          : Colors.black),
                                 ))
                               ],
                             ),
@@ -344,33 +389,45 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                 builder: (_) {
                                   return Column(
                                     children: [
-                                      SizedBox(height: MediaQuery.of(context).padding.top),
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                              .padding
+                                              .top),
                                       ListTile(
                                         title: Text(
                                           "Sort & Filter By",
-                                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                         trailing: IconButton(
                                           icon: Icon(Icons.close),
-                                          onPressed: () => Navigator.pop(context),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
                                           splashRadius: 25,
                                         ),
                                       ),
                                       Container(
                                         height: 45,
                                         width: size.width,
-                                        padding: EdgeInsets.symmetric(vertical: 5),
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 5),
                                         child: ListView.builder(
                                           itemBuilder: (_, index) {
                                             return Container(
-                                              margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
+                                              margin: EdgeInsets.only(
+                                                  left: index == 0 ? 10 : 0,
+                                                  right: 10),
                                               child: FlatButton(
                                                 onPressed: () {},
                                                 child: Text(filterTabs[index]),
                                                 color: Colors.grey[200],
                                                 shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(7),
-                                                    side: BorderSide(color: Colors.grey)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7),
+                                                    side: BorderSide(
+                                                        color: Colors.grey)),
                                               ),
                                             );
                                           },
@@ -395,22 +452,31 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                                 return GestureDetector(
                                                   child: Container(
                                                     height: 50,
-                                                    padding: EdgeInsets.symmetric(horizontal: 10),
-                                                    alignment: Alignment.centerLeft,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10),
+                                                    alignment:
+                                                        Alignment.centerLeft,
                                                     decoration: BoxDecoration(
-                                                        color: filterList[index].isSelected
+                                                        color: filterList[index]
+                                                                .isSelected
                                                             ? Colors.white
                                                             : Colors.grey[200]),
-                                                    child: Text(filterList[index].title),
+                                                    child: Text(
+                                                        filterList[index]
+                                                            .title),
                                                   ),
                                                   onTap: () {
-                                                    filterList.forEach((element) {
+                                                    filterList
+                                                        .forEach((element) {
                                                       state(() {
-                                                        element.isSelected = false;
+                                                        element.isSelected =
+                                                            false;
                                                       });
                                                     });
                                                     state(() {
-                                                      filterList[index].isSelected = true;
+                                                      filterList[index]
+                                                          .isSelected = true;
                                                     });
                                                   },
                                                 );
@@ -429,37 +495,64 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                                   );
                                                 },
                                                 itemBuilder: (_, index) {
-                                                  FilterList filter =
-                                                      filterList.where((element) => element.isSelected).first;
-                                                  return filter.isMultipleSelection
+                                                  FilterList filter = filterList
+                                                      .where((element) =>
+                                                          element.isSelected)
+                                                      .first;
+                                                  return filter
+                                                          .isMultipleSelection
                                                       ? CheckboxListTile(
-                                                          value: filter.filterItems[index].isSelected,
+                                                          value: filter
+                                                              .filterItems[
+                                                                  index]
+                                                              .isSelected,
                                                           onChanged: (value) {
                                                             state(() {
-                                                              filter.filterItems[index].isSelected =
-                                                                  !filter.filterItems[index].isSelected;
+                                                              filter
+                                                                      .filterItems[
+                                                                          index]
+                                                                      .isSelected =
+                                                                  !filter
+                                                                      .filterItems[
+                                                                          index]
+                                                                      .isSelected;
                                                             });
                                                           },
-                                                          title: Text(filter.filterItems[index].title),
+                                                          title: Text(filter
+                                                              .filterItems[
+                                                                  index]
+                                                              .title),
                                                         )
-                                                      : RadioListTile<FilterItems>(
-                                                          value: filter.filterItems[index],
-                                                          groupValue: filter.filterItem,
-                                                          title: Text(filter.filterItems[index].title),
+                                                      : RadioListTile<
+                                                          FilterItems>(
+                                                          value: filter
+                                                                  .filterItems[
+                                                              index],
+                                                          groupValue:
+                                                              filter.filterItem,
+                                                          title: Text(filter
+                                                              .filterItems[
+                                                                  index]
+                                                              .title),
                                                           onChanged: (value) {
                                                             state(() {
-                                                              filter.filterItem = value;
+                                                              filter.filterItem =
+                                                                  value;
                                                             });
                                                           },
-                                                          controlAffinity: ListTileControlAffinity.trailing,
+                                                          controlAffinity:
+                                                              ListTileControlAffinity
+                                                                  .trailing,
                                                         );
                                                 },
                                                 itemCount: filterList
-                                                    .where((element) => element.isSelected)
+                                                    .where((element) =>
+                                                        element.isSelected)
                                                     .first
                                                     .filterItems
                                                     .length,
-                                                physics: BouncingScrollPhysics(),
+                                                physics:
+                                                    BouncingScrollPhysics(),
                                               )),
                                         ],
                                       )),
@@ -479,7 +572,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                     size: 20,
                   ),
                   color: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7)),
                 )
               ],
             ),
@@ -525,7 +619,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
 
   Widget card(Item item) {
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail())),
+      onTap: () => Navigator.push(
+          context, MaterialPageRoute(builder: (_) => ProductDetail())),
       child: Container(
         padding: EdgeInsets.all(20),
         child: Row(
@@ -545,15 +640,22 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                   children: [
                     Text(
                       item.name,
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 7),
                     RichText(
                       text: TextSpan(
-                          text: "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t",
-                          style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                          text:
+                              "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
                           children: [
                             TextSpan(
                                 text: "\u20b9${item.price * item.quantity}",
@@ -563,8 +665,12 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                     decoration: TextDecoration.lineThrough,
                                     fontWeight: FontWeight.bold)),
                             TextSpan(
-                                text: "\t\tYou Save \u20b9${item.discount * item.quantity}",
-                                style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold)),
+                                text:
+                                    "\t\tYou Save \u20b9${item.discount * item.quantity}",
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold)),
                           ]),
                     ),
                     SizedBox(
@@ -578,7 +684,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                 height: 30,
                                 width: 30,
                                 child: FlatButton(
-                                  child: Icon(Icons.remove, color: Colors.white),
+                                  child:
+                                      Icon(Icons.remove, color: Colors.white),
                                   onPressed: () {
                                     if (item.quantity != 1) {
                                       setState(() {
@@ -592,13 +699,15 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                   },
                                   color: Myapp.primaryColor,
                                   padding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
                                 ),
                               ),
                               SizedBox(width: 10),
                               Text(
                                 item.quantity.toString(),
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
                               ),
                               SizedBox(width: 10),
                               SizedBox(
@@ -608,7 +717,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                   child: Icon(Icons.add, color: Colors.white),
                                   onPressed: item.quantity <= item.maxQuantity
                                       ? () {
-                                          if (item.quantity != item.maxQuantity) {
+                                          if (item.quantity !=
+                                              item.maxQuantity) {
                                             setState(() {
                                               item.quantity++;
                                             });
@@ -618,9 +728,11 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                   color: item.quantity >= item.maxQuantity
                                       ? Myapp.primaryColor.withOpacity(0.7)
                                       : Myapp.primaryColor,
-                                  disabledColor: Myapp.primaryColor.withOpacity(0.7),
+                                  disabledColor:
+                                      Myapp.primaryColor.withOpacity(0.7),
                                   padding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
                                 ),
                               ),
                             ],
@@ -631,13 +743,16 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                               height: 32,
                               width: 95,
                               child: FlatButton(
-                                child: Text("ADD", style: TextStyle(color: Colors.white)),
+                                child: Text("ADD",
+                                    style: TextStyle(color: Colors.white)),
                                 onPressed: () {
                                   setState(() {
                                     item.inCart = true;
                                   });
-                                  scaffoldKey.currentState
-                                      .showSnackBar(SnackBar(content: Text("Added to cart successfully")));
+                                  scaffoldKey.currentState.showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              "Added to cart successfully")));
                                 },
                                 color: Myapp.primaryColor,
                               ),
@@ -685,7 +800,11 @@ class FilterList {
   final List<FilterItems> filterItems;
   FilterItems filterItem;
 
-  FilterList({this.title, this.isMultipleSelection: false, this.filterItems, this.isSelected: false});
+  FilterList(
+      {this.title,
+      this.isMultipleSelection: false,
+      this.filterItems,
+      this.isSelected: false});
 }
 
 class FilterItems {

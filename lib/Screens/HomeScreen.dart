@@ -55,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
                   final AllCategories data = snapshot.data[0];
+                  print(data.childrenData[0].id);
                   return Expanded(
                       child: SingleChildScrollView(
                           child: Column(children: [

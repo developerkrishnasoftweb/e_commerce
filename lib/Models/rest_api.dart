@@ -15,6 +15,7 @@ class URLS {
   static const String DEPARTMENTS = '${URLS.BASE_URL}department';
   static const String CATEGORIES = '${URLS.BASE_URL}category';
   static const String PRODUCTS = '${URLS.BASE_URL}product';
+  static const String GET_CATEGORIES_PRODUCTS = '${URLS.BASE_URL}categories';
   static const String GET_PRODUCT_LIST = '${URLS.BASE_URL}mma/categories';
 }
 
@@ -23,7 +24,6 @@ class ApiService {
   static Future<AllCategories> getHomeCategories() async {
     final response = await http.get(URLS.GET_CATEGORIES);
     if (response.statusCode == 200) {
-      print(response.body);
       return AllCategories.fromJson(json.decode(response.body));
     } else {
       return null;
@@ -33,7 +33,6 @@ class ApiService {
   static Future<Departments> getDepartments() async {
     final response = await http.get(URLS.DEPARTMENTS);
     if (response.statusCode == 200) {
-      print(response.body);
       return Departments.fromJson(json.decode(response.body));
     } else {
       return null;
@@ -48,7 +47,6 @@ class ApiService {
     String queryString = Uri(queryParameters: queryParams).query;
     final response = await http.get(URLS.CATEGORIES + '?' + queryString);
     if (response.statusCode == 200) {
-      print(response.body);
       return SubCategory.fromJson(json.decode(response.body));
     } else {
       return null;
@@ -63,7 +61,15 @@ class ApiService {
     String queryString = Uri(queryParameters: queryParams).query;
     final response = await http.get(URLS.PRODUCTS + '?' + queryString);
     if (response.statusCode == 200) {
-      print("PRODUCTS RESPONSE " + response.body);
+      return Products.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Products> getProduct(String subCategoryId) async {
+    final response = await http.get(URLS.GET_CATEGORIES_PRODUCTS + subCategoryId + 'products');
+    if (response.statusCode == 200) {
       return Products.fromJson(json.decode(response.body));
     } else {
       return null;
