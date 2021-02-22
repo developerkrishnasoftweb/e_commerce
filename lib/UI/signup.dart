@@ -1,5 +1,5 @@
-import 'package:e_commerce/UI/Homepage.dart';
-import 'package:e_commerce/UI/login.dart';
+
+import 'package:e_commerce/Screens/login.dart';
 import 'package:e_commerce/UI/otp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

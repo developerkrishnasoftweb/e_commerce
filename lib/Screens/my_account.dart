@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'edit_profile.dart';
 
+import 'NavigationDrawer.dart';
+
 class MyAccount extends StatefulWidget {
   @override
   _MyAccountState createState() => _MyAccountState();
@@ -17,8 +19,8 @@ class _MyAccountState extends State<MyAccount> {
     return Scaffold(
         appBar: AppBar(
             title: Text("My Account",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-            automaticallyImplyLeading: true),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+        drawer: navigationDrawer(),
         body: SingleChildScrollView(
             child: Column(children: [
           GestureDetector(

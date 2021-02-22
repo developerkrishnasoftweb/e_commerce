@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:e_commerce/Models/AllCategories.dart';
+import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/CartScreen.dart';
 import 'package:e_commerce/Screens/SubCategoryDetails.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,49 +50,62 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: navigationDrawer(),
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           searchBarView(),
-          Expanded(
-              child: Container(
-                  child: SingleChildScrollView(
-                      child: Column(children: [
-            categoriesListHorizontal(),
-            freeHomeDeliverySlider(imgList),
-            topCategories(),
-            topDeals(),
-            shopGroceries(),
-            offerListWithCategories(),
-            collectionWithBestOffers(),
-            kidsFashion()
-          ]))))
+          FutureBuilder(
+              future: Future.wait([ApiService.getHomeCategories()]),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+                  final AllCategories data = snapshot.data[0];
+                  return Expanded(
+                      child: SingleChildScrollView(
+                          child: Column(children: [
+                    categoriesListHorizontal(data.childrenData),
+                    freeHomeDeliverySlider(imgList),
+                    topCategories(),
+                    topDeals(),
+                    shopGroceries(),
+                    offerListWithCategories(),
+                    collectionWithBestOffers(),
+                    kidsFashion()
+                  ])));
+                } else
+                  return Expanded(
+                      child: Container(color: Colors.white, child: Center(child: CircularProgressIndicator())));
+              })
         ]));
   }
 
-  Widget categoriesListHorizontal() {
-    List<String> litems = ["All Categories", "Fashion", "Grocery", "Men's Wear", "Women's Wear", "Kid's Wear"];
+  Widget categoriesListHorizontal([List<ChildrenData> childrenData]) {
 
-    return Container(
-        height: 100.h,
-        child: ListView.builder(
-            itemCount: litems.length,
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            primary: false,
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                  width: 70.h,
-                  child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                            radius: 30.h,
-                            backgroundImage: NetworkImage("https://assets.grab.com/wp-content/uploads/sites/10/2020/05/"
-                                "27153527/GrabGroceries_Tile_Icon_501x501.png"),
-                            backgroundColor: Colors.transparent),
-                        Center(
-                            child: Text(litems[index],
-                                maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center))
-                      ]));
-            }));
+    return Padding(
+      padding: EdgeInsets.only(top: 10.sp),
+      child: Container(
+          height: 100.h,
+          child: ListView.builder(
+              itemCount: childrenData.length,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              primary: false,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () =>
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails( list :childrenData[index].childrenData))),
+                  child: Container(
+                      width: 70.h,
+                      child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                                radius: 25.h,
+                                backgroundImage: NetworkImage(URLS.IMAGE_URL + childrenData[index].image),
+                                backgroundColor: Colors.transparent),
+                            Center(
+                                child: Text(childrenData[index].name,
+                                    maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center))
+                          ])),
+                );
+              })),
+    );
   }
 
   Widget searchBarView() {

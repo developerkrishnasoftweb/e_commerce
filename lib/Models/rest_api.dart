@@ -1,14 +1,15 @@
 import 'dart:convert';
+import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/Products.dart';
 import 'package:http/http.dart' as http;
 import 'Departments.dart';
 import 'SubCategories.dart';
 
 class URLS {
-  static const String SERVER_URL = 'http://ecommerce.krishnasoftweb.com/';
- // static const String SERVER_URL = 'https://palshopie.com';
- // static const String BASE_URL = '${URLS.SERVER_URL}/rest/default/V1/';
-  static const String BASE_URL = '${URLS.SERVER_URL}api/';
+  // const String SERVER_URL = 'http://ecommerce.krishnasoftweb.com/';
+ static const String SERVER_URL = 'https://palshopie.com';
+ static const String BASE_URL = '${URLS.SERVER_URL}/rest/default/V1/';
+ // static const String BASE_URL = '${URLS.SERVER_URL}api/';
   static const String IMAGE_URL = SERVER_URL;
   static const String GET_CATEGORIES = '${URLS.BASE_URL}mma/categories';
   static const String DEPARTMENTS = '${URLS.BASE_URL}department';
@@ -18,6 +19,16 @@ class URLS {
 }
 
 class ApiService {
+
+  static Future<AllCategories> getHomeCategories() async {
+    final response = await http.get(URLS.GET_CATEGORIES);
+    if (response.statusCode == 200) {
+      print(response.body);
+      return AllCategories.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
 
   static Future<Departments> getDepartments() async {
     final response = await http.get(URLS.DEPARTMENTS);

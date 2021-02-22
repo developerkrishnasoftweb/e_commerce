@@ -59,7 +59,7 @@ class _HomepageState extends State<Homepage> {
 
   _pageData(Size size, List<Categories> categories) {
     return SingleChildScrollView(
-        child: Column(children: [
+        child: Column(children:[
       Container(
           width: size.width,
           child: GridView.builder(

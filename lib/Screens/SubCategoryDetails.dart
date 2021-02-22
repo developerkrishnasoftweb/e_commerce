@@ -1,8 +1,14 @@
+import 'package:e_commerce/Models/AllCategories.dart';
+import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/ProductDetail.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 
 class SubcategoryDetails extends StatefulWidget {
+  List<ChildrenData> list;
+
+  SubcategoryDetails({this.list});
+
   @override
   _SubcategoryDetailsState createState() => _SubcategoryDetailsState();
 }
@@ -133,6 +139,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
         maxQuantity: 1),
   ];
 
+  var subCatIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -185,9 +193,13 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                   height: 76,
                   color: Colors.white,
                   child: FlatButton(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [Text("Staples"), Icon(Icons.arrow_drop_down_outlined)]),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                      Expanded(
+                        child: Text(widget.list != null ? widget.list[subCatIndex].name : "Staples",
+                            maxLines: 2, overflow: TextOverflow.ellipsis),
+                      ),
+                      Icon(Icons.arrow_drop_down_outlined)
+                    ]),
                     onPressed: () {
                       showModalBottomSheet(
                           context: context,
@@ -220,23 +232,30 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                       itemBuilder: (_, index) {
                                         return ListTile(
                                           leading: Image.network(
-                                            "https://www.jiomart.com/images/category/141/thumb/fruits-vegetables-20200520.png",
+                                            widget.list != null
+                                                ? URLS.IMAGE_URL + widget.list[index].image
+                                                : "https://www.jiomart.com/images/category/141/thumb/fruits-vegetables-20200520.png",
                                             width: 40,
                                             height: 40,
                                           ),
                                           title: Text(
-                                            "Fruits & Vegetables",
+                                            widget.list != null ? widget.list[index].name : "Fruits & Vegetables",
                                             style: TextStyle(fontWeight: FontWeight.bold),
                                           ),
-                                          subtitle: Text(
-                                            "Fresh Fruits,Fresh Vegetables,Herbs & Season ,Exotic Fruits & Vegetables",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          onTap: () {},
+                                          // subtitle: Text(
+                                          //   "Fresh Fruits,Fresh Vegetables,Herbs & Season ,Exotic Fruits & Vegetables",
+                                          //   maxLines: 1,
+                                          //   overflow: TextOverflow.ellipsis,
+                                          // ),
+                                          onTap: () {
+                                            setState(() {
+                                              subCatIndex = index;
+                                              Navigator.of(context).pop();
+                                            });
+                                          },
                                         );
                                       },
-                                      itemCount: 10,
+                                      itemCount: widget.list != null ? widget.list.length : 10,
                                     ))
                                   ],
                                 );
