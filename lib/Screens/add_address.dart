@@ -49,12 +49,12 @@ class _AddAddressState extends State<AddAddress> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            input(hintText: "Name *", controller: name),
-            input(hintText: "Mobile No *", controller: mobile),
-            input(hintText: "Address *", controller: address),
-            input(hintText: "Pin Code *", controller: pinCode),
-            input(hintText: "State *", controller: state),
-            input(hintText: "City *", controller: city),
+            input(labelText: "Name *", controller: name),
+            input(labelText: "Mobile No *", controller: mobile),
+            input(labelText: "Address *", controller: address),
+            input(labelText: "Pin Code *", controller: pinCode),
+            input(labelText: "State *", controller: state),
+            input(labelText: "City *", controller: city),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text(
                 "Save as",
@@ -102,6 +102,7 @@ class _AddAddressState extends State<AddAddress> {
 
 Widget input(
     {String hintText,
+      String labelText,
       TextEditingController controller,
       ValueChanged<String> onChanged,
       VoidCallback onEditingComplete,
@@ -109,26 +110,30 @@ Widget input(
       TextInputType keyboardType,
       double width,
       double height,
+      GestureTapCallback onTap,
+      EdgeInsetsGeometry margin,
       bool readOnly: false}) {
   return Container(
     height: height,
     width: width,
-    margin: EdgeInsets.only(bottom: 20),
-    child: TextField(
+    margin: margin ?? EdgeInsets.only(bottom: 20),
+    child: TextFormField(
       controller: controller,
       onChanged: onChanged,
+      onTap: onTap,
       onEditingComplete: onEditingComplete,
       textInputAction: textInputAction ?? TextInputAction.next,
       keyboardType: keyboardType,
       readOnly: readOnly,
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       decoration: InputDecoration(
-        border: OutlineInputBorder(
+        border: UnderlineInputBorder(
           borderRadius: BorderRadius.circular(4),
           borderSide: BorderSide(color: Colors.grey, width: 2),
         ),
         contentPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-        hintText: hintText,
+        labelText: labelText,
+        hintText: hintText
       ),
       cursorColor: Myapp.primaryColor,
     ),

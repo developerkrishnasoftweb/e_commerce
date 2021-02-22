@@ -16,6 +16,7 @@ dependencies:
   http: ^0.12.0+2
   flutter_screenutil: ^4.0.3
   carousel_slider: 3.0.0
+  intl:
 
 dev_dependencies:
   flutter_test:
@@ -31,7 +32,6 @@ flutter:
     - assets/images/products/
     - assets/icons/
     - assets/icons/fb.png
-    -
   fonts:
     - family: Segoe UI
       fonts:
