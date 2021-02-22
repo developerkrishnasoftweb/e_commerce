@@ -3,7 +3,7 @@ import 'package:e_commerce/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../Screens/NavigationDrawer.dart';
+import 'NavigationDrawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LogIn extends StatefulWidget {
