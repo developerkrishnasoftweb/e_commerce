@@ -16,8 +16,8 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Address",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          title: Text("Edit Profile",
+              style: TextStyle(fontSize: 18)),
           automaticallyImplyLeading: true),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(10),
@@ -66,19 +66,20 @@ class _EditProfileState extends State<EditProfile> {
                     child: input(
                         labelText: "Date Of Birth",
                         margin: EdgeInsets.zero,
+                        keyboardType: TextInputType.datetime,
                         controller: dob,
-                        onTap: () async {
-                          DateTime date = DateTime.now();
-                          FocusScope.of(context).requestFocus(new FocusNode());
-                          date = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime(DateTime.now().year),
-                              firstDate: DateTime(DateTime.now().year - 100),
-                              lastDate: DateTime(DateTime.now().year));
-                          if (date != null)
-                            dob.text = DateFormat('yyyy-M-d').format(date);
-                        },
-                        readOnly: true)),
+                        // onTap: () async {
+                        //   DateTime date = DateTime.now();
+                        //   FocusScope.of(context).requestFocus(new FocusNode());
+                        //   date = await showDatePicker(
+                        //       context: context,
+                        //       initialDate: DateTime(DateTime.now().year),
+                        //       firstDate: DateTime(DateTime.now().year - 100),
+                        //       lastDate: DateTime(DateTime.now().year));
+                        //   if (date != null)
+                        //     dob.text = DateFormat('yyyy-M-d').format(date);
+                        // },
+                        readOnly: false)),
               ],
             ),
             SizedBox(
@@ -87,15 +88,24 @@ class _EditProfileState extends State<EditProfile> {
             input(
                 labelText: "Email",
                 textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.emailAddress,
                 onEditingComplete: () => FocusScope.of(context).nextFocus()),
             input(
                 labelText: "Mobile No",
                 textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.phone,
                 onEditingComplete: () => FocusScope.of(context).nextFocus()),
-            FlatButton(
-                onPressed: () {},
-                child:
-                    Text("SAVE CHANGES", style: TextStyle(color: Colors.white)), color: Myapp.primaryColor,)
+            Container(
+              width: double.infinity,
+              height: 50,
+              child: FlatButton(
+                  onPressed: () {},
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4)
+                ),
+                  child:
+                      Text("SAVE CHANGES", style: TextStyle(color: Colors.white)), color: Myapp.primaryColor,),
+            )
           ],
         ),
       ),
