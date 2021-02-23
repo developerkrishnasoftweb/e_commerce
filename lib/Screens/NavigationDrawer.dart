@@ -13,16 +13,11 @@ class navigationDrawer extends StatelessWidget {
     return Drawer(
         child: ListView(padding: EdgeInsets.zero, children: <Widget>[
       UserAccountsDrawerHeader(
-        accountName: Text("Ashish Rawat"),
-        accountEmail: Text("ashishrawat2911@gmail.com"),
-        currentAccountPicture: CircleAvatar(
-          backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Colors.grey[350] : Colors.white,
-          child: Text(
-            "A",
-            style: TextStyle(fontSize: 40.0),
-          ),
-        ),
-      ),
+          accountName: Text("Ashish Rawat"),
+          accountEmail: Text("ashishrawat2911@gmail.com"),
+          currentAccountPicture: CircleAvatar(
+              backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Colors.grey[350] : Colors.white,
+              child: Text("A", style: TextStyle(fontSize: 40.0)))),
       createDrawerBodyItem(
           icon: Icons.home,
           text: 'Home',

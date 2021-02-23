@@ -77,9 +77,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           children: [
                             TextSpan(text: 'Sold by ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
                             TextSpan(text: 'Reliance Retail', style: TextStyle(fontSize: 12.sp, color: Colors.blue)),
-                            TextSpan(
-                                text: '\n\nFree Shipping',
-                                style: TextStyle(fontSize: 16.sp, color: Colors.black)),
+                            TextSpan(text: '\n\nFree Shipping', style: TextStyle(fontSize: 16.sp, color: Colors.black))
                           ])),
                   Container(height: 10),
                   RichText(
@@ -117,15 +115,13 @@ class _ProductDetailState extends State<ProductDetail> {
                                 text: 'Country of Origin : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
                             TextSpan(text: 'India\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
                             TextSpan(text: 'Food Type : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
-                            TextSpan(text: 'Veg\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
+                            TextSpan(text: 'Veg\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey))
                           ])),
-                  Row(
-                    children: [
-                      Expanded(
+                  Row(children: [
+                    Expanded(
                         child: Text("Product Rating",
-                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
-                      ),
-                      RatingBar.builder(
+                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black))),
+                    RatingBar.builder(
                         initialRating: 3,
                         minRating: 1,
                         direction: Axis.horizontal,
@@ -133,17 +129,10 @@ class _ProductDetailState extends State<ProductDetail> {
                         itemCount: 5,
                         itemSize: 20.sp,
                         itemPadding: EdgeInsets.symmetric(horizontal: 0),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
+                        itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
                         ignoreGestures: true,
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
-                      )
-                    ],
-                  ),
+                        onRatingUpdate: (rating) => print(rating))
+                  ]),
                   Container(height: 20.h),
                   Container(
                       width: double.infinity,
