@@ -45,6 +45,7 @@ class ProductInfo {
       this.createdAt,
       this.updatedAt,
       this.weight});
+
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     sku = json['sku'];

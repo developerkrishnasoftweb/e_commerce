@@ -214,42 +214,36 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget card(CartItem item) {
     return Container(
-      padding: EdgeInsets.all(20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        padding: EdgeInsets.all(20),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Image.network(item.image, width: 70, height: 70, fit: BoxFit.contain),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(item.name,
-                      style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis),
-                  SizedBox(height: 10),
-                  RichText(
-                      text: TextSpan(
-                          text: "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t\t",
-                          style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-                          children: [
-                        TextSpan(
-                            text: "\u20b9${item.price * item.quantity}",
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 16,
-                                decoration: TextDecoration.lineThrough,
-                                fontWeight: FontWeight.bold)),
-                        TextSpan(
-                            text: "\t\tYou Save \u20b9${item.discount * item.quantity}",
-                            style: TextStyle(color: Colors.green, fontSize: 15, fontWeight: FontWeight.bold))
-                      ])),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(item.name,
+                        style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis),
+                    SizedBox(height: 10),
+                    RichText(
+                        text: TextSpan(
+                            text: "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t\t",
+                            style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                            children: [
+                          TextSpan(
+                              text: "\u20b9${item.price * item.quantity}",
+                              style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                  decoration: TextDecoration.lineThrough,
+                                  fontWeight: FontWeight.bold)),
+                          TextSpan(
+                              text: "\t\tYou Save \u20b9${item.discount * item.quantity}",
+                              style: TextStyle(color: Colors.green, fontSize: 15, fontWeight: FontWeight.bold))
+                        ])),
+                    SizedBox(height: 10),
+                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                       SizedBox(
                           height: 30,
                           width: 30,
@@ -269,35 +263,25 @@ class _CartScreenState extends State<CartScreen> {
                       Text(item.quantity.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                       SizedBox(width: 10),
                       SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: FlatButton(
-                          child: Icon(Icons.add, color: Colors.white),
-                          onPressed: item.quantity <= item.maxQuantity
-                              ? () {
-                                  if (item.quantity != item.maxQuantity) {
-                                    setState(() {
-                                      item.quantity++;
-                                    });
-                                  }
-                                }
-                              : () {},
-                          color: item.quantity >= item.maxQuantity
-                              ? Myapp.primaryColor.withOpacity(0.7)
-                              : Myapp.primaryColor,
-                          padding: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+                          height: 30,
+                          width: 30,
+                          child: FlatButton(
+                              child: Icon(Icons.add, color: Colors.white),
+                              onPressed: item.quantity <= item.maxQuantity
+                                  ? () {
+                                      if (item.quantity != item.maxQuantity) {
+                                        setState(() => item.quantity++);
+                                      }
+                                    }
+                                  : () {},
+                              color: item.quantity >= item.maxQuantity
+                                  ? Myapp.primaryColor.withOpacity(0.7)
+                                  : Myapp.primaryColor,
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))))
+                    ])
+                  ])))
+        ]));
   }
 
   Widget greyStrip() {

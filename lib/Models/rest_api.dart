@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:e_commerce/Models/AllCategories.dart';
+import 'package:e_commerce/Models/Banners.dart';
 import 'package:e_commerce/Models/Products.dart';
 import 'package:e_commerce/Models/sku.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +9,13 @@ import 'SubCategories.dart';
 
 class URLS {
   // const String SERVER_URL = 'http://ecommerce.krishnasoftweb.com/';
- static const String SERVER_URL = 'https://palshopie.com';
+// static const String SERVER_URL = 'https://palshopie.com';
+
+
+  static const String SERVER_URL = 'http://ecommerce.krishnasoftweb.com/';
+  static const String GET_BANNERS = '${URLS.SERVER_URL}api/banner';
+
+
  static const String BASE_URL = '${URLS.SERVER_URL}/rest/default/V1/';
  // static const String BASE_URL = '${URLS.SERVER_URL}api/';
   static const String IMAGE_URL = SERVER_URL;
@@ -27,6 +34,17 @@ class ApiService {
     if (response.statusCode == 200) {
       return AllCategories.fromJson(json.decode(response.body));
     } else {
+      return null;
+    }
+  }
+
+  static Future<Banners> getBanners() async {
+    final response = await http.get(URLS.GET_BANNERS+'?banner_type=top category');
+    if (response.statusCode == 200) {
+      print("res " + response.body.toString());
+      return Banners.fromJson(json.decode(response.body));
+    } else {
+      print("res e" + response.toString());
       return null;
     }
   }
