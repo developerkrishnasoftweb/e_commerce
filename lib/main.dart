@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/screenutil_init.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
   runApp(Myapp());
+  await Firebase.initializeApp();
 }
 
 class Myapp extends StatefulWidget {

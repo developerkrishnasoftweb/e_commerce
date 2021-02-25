@@ -31,7 +31,7 @@ class navigationDrawer extends StatelessWidget {
       createDrawerBodyItem(
           icon: Icons.login,
           text: 'Login/SignIn',
-          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUp()))),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SignUp()))),
       createDrawerBodyItem(
           icon: Icons.person,
           text: 'My Account',

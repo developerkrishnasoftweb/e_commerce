@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:e_commerce/Screens/signin_signup/signin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -165,6 +166,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           onTap: () {
                             // Navigator.pop(context);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
                           },
                         ))
                       ]),
