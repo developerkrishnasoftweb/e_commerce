@@ -50,18 +50,18 @@ class _EditProfileState extends State<EditProfile> {
                         margin: EdgeInsets.zero,
                         keyboardType: TextInputType.datetime,
                         controller: dob,
-                        // onTap: () async {
-                        //   DateTime date = DateTime.now();
-                        //   FocusScope.of(context).requestFocus(new FocusNode());
-                        //   date = await showDatePicker(
-                        //       context: context,
-                        //       initialDate: DateTime(DateTime.now().year),
-                        //       firstDate: DateTime(DateTime.now().year - 100),
-                        //       lastDate: DateTime(DateTime.now().year));
-                        //   if (date != null)
-                        //     dob.text = DateFormat('yyyy-M-d').format(date);
-                        // },
-                        readOnly: false))
+                        onTap: () async {
+                          DateTime date = DateTime.now();
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                          date = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime(DateTime.now().year),
+                              firstDate: DateTime(DateTime.now().year - 100),
+                              lastDate: DateTime(DateTime.now().year));
+                          if (date != null)
+                            dob.text = DateFormat('yyyy-M-d').format(date);
+                        },
+                        readOnly: true))
               ]),
               SizedBox(height: 10),
               input(
