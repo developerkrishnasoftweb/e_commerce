@@ -1,5 +1,7 @@
 import 'package:e_commerce/Screens/HomeScreen.dart';
 import 'package:e_commerce/Screens/my_account.dart';
+import 'package:e_commerce/Screens/signin_signup/signin.dart';
+import 'package:e_commerce/Screens/signin_signup/signup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,11 +31,11 @@ class navigationDrawer extends StatelessWidget {
       createDrawerBodyItem(
           icon: Icons.login,
           text: 'Login/SignIn',
-          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LogIn()))),
+          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUp()))),
       createDrawerBodyItem(
           icon: Icons.person,
           text: 'My Account',
-          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyAccount()))),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => MyAccount()))),
       createDrawerBodyItem(
           icon: Icons.person,
           text: 'My Orders',

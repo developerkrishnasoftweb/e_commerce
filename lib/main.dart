@@ -1,12 +1,12 @@
-import 'dart:io';
 
 import 'package:e_commerce/Screens/HomeScreen.dart';
-import 'package:e_commerce/Screens/SignupScreen.dart';
-import 'package:e_commerce/UI/otp.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(Myapp());
 }
 

@@ -18,7 +18,9 @@ class _LogInState extends State<LogIn> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(title: Text("LogIn", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+        appBar: AppBar(
+            title: Text("LogIn",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
         drawer: navigationDrawer(),
         body: SingleChildScrollView(
@@ -27,20 +29,45 @@ class _LogInState extends State<LogIn> {
             child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
               SizedBox(height: 15),
               TextField(
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.teal), borderRadius: BorderRadius.circular(5.sp)),
-                      hintText: "Mobile Number")),
+                          borderSide: BorderSide(color: Colors.teal),
+                          borderRadius: BorderRadius.circular(5.sp)),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      hintText: "Username")),
+              SizedBox(height: 20),
+              TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.teal),
+                          borderRadius: BorderRadius.circular(5.sp)),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      hintText: "Password")),
               SizedBox(height: 30),
               Container(
-                  width: size.width - 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      boxShadow: <BoxShadow>[BoxShadow(color: Colors.lightBlue[100], blurRadius: 10, offset: Offset(0, 5))]),
+                  width: size.width,
+                  height: 45,
+                  decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.lightBlue[100],
+                        blurRadius: 10,
+                        offset: Offset(0, 5))
+                  ]),
                   child: FlatButton(
-                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SignUpScreen())),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      child: Text("Next", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)),
+                      onPressed: () => Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => SignUpScreen())),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Text("Next",
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
                       color: Myapp.primaryColor))
             ])));
   }
