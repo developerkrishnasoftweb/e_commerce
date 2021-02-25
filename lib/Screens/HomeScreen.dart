@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/Banners.dart';
+import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/CartScreen.dart';
 import 'package:e_commerce/Screens/SubCategoryDetails.dart';
@@ -32,6 +33,10 @@ final List<String> grocerySlider = [
 
 // ignore: non_constant_identifier_names
 class _HomeScreenState extends State<HomeScreen> {
+
+  Banners topCategoryBanners, bestDealsBanners, topDealsBanners, exclusiveDealsBanners;
+  MainCategory mainCategory;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,19 +57,29 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           searchBarView(),
           FutureBuilder(
-              future: Future.wait([ApiService.getBanners()]),
+              future: Future.wait([
+                ApiService.getBannersTopCategory(),
+                ApiService.getBannersBestDeals(),
+                ApiService.getBannersTopDeals(),
+                ApiService.getBannersExclusiveDeals(),
+                ApiService.getHomeCategories()
+              ]),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
-                  final Banners banners = snapshot.data[0];
+                  topCategoryBanners = snapshot.data[0];
+                  bestDealsBanners = snapshot.data[1];
+                  topDealsBanners = snapshot.data[2];
+                  exclusiveDealsBanners = snapshot.data[3];
+                  mainCategory = snapshot.data[4];
                   return Expanded(
                       child: SingleChildScrollView(
                           child: Column(children: [
-                    categoriesListHorizontal([]),
-                    freeHomeDeliverySlider(banners.data),
+                    categoriesListHorizontal(mainCategory.data),
+                    freeHomeDeliverySlider(topCategoryBanners.data),
                     topCategories(),
                     topDeals(),
                     shopGroceries(),
-                    offerListWithCategories(banners.data),
+                    offerListWithCategories(),
                     collectionWithBestOffers(),
                     kidsFashion()
                   ])));
@@ -74,12 +89,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ]));
   }
 
-  Widget categoriesListHorizontal([List<ChildrenData> childrenData]) => Padding(
+  Widget categoriesListHorizontal(List<Categories> data) => Padding(
         padding: EdgeInsets.only(top: 10.sp),
         child: Container(
             height: 100.h,
             child: ListView.builder(
-                itemCount: childrenData.length,
+                itemCount: data.length,
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 primary: false,
@@ -87,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () => Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => SubcategoryDetails(list: childrenData[index].childrenData))),
+                        context, MaterialPageRoute(builder: (_) => SubcategoryDetails(id:index,  list: data,))),
                     child: Container(
                         width: 70.h,
                         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,11 +110,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               CircleAvatar(
                                   radius: 25.h,
-                                  backgroundImage: NetworkImage(URLS.IMAGE_URL + childrenData[index].image),
+                                  backgroundImage: NetworkImage(URLS.PAL_IMAGE_URL + data[index].image),
                                   backgroundColor: Colors.transparent),
                               Center(
-                                  child: Text(childrenData[index].name,
-                                      maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center))
+                                  child: Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 1.w),
+                                    child: Text(data[index].name,
+                                        maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
+                                  ))
                             ])),
                   );
                 })),
@@ -131,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         child: Stack(children: <Widget>[
-                          Image.network(URLS.IMAGE_URL + item.image, fit: BoxFit.cover, width: 800.sp, height: 500.sp)
+                          Image.network(URLS.IMAGE_URL +"/"+ item.image, fit: BoxFit.cover, width: 800.sp, height: 400.sp)
                         ])))),
           ))
       .toList();
@@ -147,16 +165,16 @@ class _HomeScreenState extends State<HomeScreen> {
     "Women's Wear"
   ];
 
-    List<String> images = [
-      "https://www.abeautifulplate.com/wp-content/uploads/2017/03/bread-flour-differnet-types-of-flour.jpg",
-      "https://2.imimg.com/data2/OW/NJ/MY-3998144/2006020900280402-500x500.jpg",
-      "https://bsmedia.business-standard.com/_media/bs/img/article/2018-02/18/full/1518965938-4605.jpg",
-      "https://i.pinimg.com/736x/3e/71/86/3e7186bd207e26279a8d17d320532238.jpg",
-      "https://dropbasket.in/wp-content/uploads/2020/10/lux.jpg",
-      "https://i1.wp.com/www.wholesalecatalog.in/wp-content/uploads/formidable/6/291.jpg?w=936&h=1405&ssl=1",
-      "https://st.depositphotos.com/1007995/1274/i/950/depositphotos_12746726-stock-photo-fashion-man-wearing-sunglasses-thinking.jpg",
-      "https://ae01.alicdn.com/kf/HTB17NWQh5FTMKJjSZFAq6AkJpXa1/Winter-Big-Pendulum-Purple-Velvet-Dresses-Woman-Dress-2020-Lotus-Leaf-Long-Sleeve-Ladies-Dresses-Kleider.jpg_q50.jpg"
-    ];
+  List<String> images = [
+    "https://www.abeautifulplate.com/wp-content/uploads/2017/03/bread-flour-differnet-types-of-flour.jpg",
+    "https://2.imimg.com/data2/OW/NJ/MY-3998144/2006020900280402-500x500.jpg",
+    "https://bsmedia.business-standard.com/_media/bs/img/article/2018-02/18/full/1518965938-4605.jpg",
+    "https://i.pinimg.com/736x/3e/71/86/3e7186bd207e26279a8d17d320532238.jpg",
+    "https://dropbasket.in/wp-content/uploads/2020/10/lux.jpg",
+    "https://i1.wp.com/www.wholesalecatalog.in/wp-content/uploads/formidable/6/291.jpg?w=936&h=1405&ssl=1",
+    "https://st.depositphotos.com/1007995/1274/i/950/depositphotos_12746726-stock-photo-fashion-man-wearing-sunglasses-thinking.jpg",
+    "https://ae01.alicdn.com/kf/HTB17NWQh5FTMKJjSZFAq6AkJpXa1/Winter-Big-Pendulum-Purple-Velvet-Dresses-Woman-Dress-2020-Lotus-Leaf-Long-Sleeve-Ladies-Dresses-Kleider.jpg_q50.jpg"
+  ];
 
   topCategories() => Container(
       color: Colors.white,
@@ -210,6 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ])));
 
   topDeals() {
+
     List<String> litems = [
       "Lotte Choco Pie Creamfilled Biscuit 336",
       "Dove Nutritive Solutions Intense",
@@ -218,6 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "Lux Lotus Soap 200 g + 10% Extra",
       "Laxmi Bhog Besan"
     ];
+
     List<String> images = [
       "https://cdn.shopify.com/s/files/1/2649/4616/products/21.2_Lotte_Choco_Pie_336_gm_PRICE_140_1024x1024@2x.jpg?v=1608186737",
       "https://www.bigbasket.com/media/uploads/p/xxl/40141852_5-dove-hair-fall-rescue-shampoo.jpg",
@@ -303,6 +323,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   shopGroceries() {
+
     List<String> litems = [
       "Lotte Choco Pie Creamfilled Biscuit 336",
       "Dove Nutritive Solutions Intense",
@@ -311,6 +332,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "Lux Lotus Soap 200 g + 10% Extra",
       "Laxmi Bhog Besan"
     ];
+
     List<String> images = [
       "https://cdn.shopify.com/s/files/1/2649/4616/products/21.2_Lotte_Choco_Pie_336_gm_PRICE_140_1024x1024@2x.jpg?v=1608186737",
       "https://www.bigbasket.com/media/uploads/p/xxl/40141852_5-dove-hair-fall-rescue-shampoo.jpg",
@@ -371,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ])));
   }
 
-  offerListWithCategories(List<Data> data) {
+  offerListWithCategories() {
     List<String> titles = [
       "Top deals for you",
       "Best deals for you",
@@ -379,6 +401,15 @@ class _HomeScreenState extends State<HomeScreen> {
       "Top deals for you",
       "Best deals for you",
       "Exclusive deals for you"
+    ];
+
+    List<Banners> banners = [
+      topDealsBanners,
+      bestDealsBanners,
+      exclusiveDealsBanners,
+      topDealsBanners,
+      bestDealsBanners,
+      exclusiveDealsBanners
     ];
 
     List<Color> colors = [
@@ -410,16 +441,16 @@ class _HomeScreenState extends State<HomeScreen> {
       "Women's Wear"
     ];
 
-  List<String> images = [
-    "https://www.abeautifulplate.com/wp-content/uploads/2017/03/bread-flour-differnet-types-of-flour.jpg",
-    "https://2.imimg.com/data2/OW/NJ/MY-3998144/2006020900280402-500x500.jpg",
-    "https://bsmedia.business-standard.com/_media/bs/img/article/2018-02/18/full/1518965938-4605.jpg",
-    "https://i.pinimg.com/736x/3e/71/86/3e7186bd207e26279a8d17d320532238.jpg",
-    "https://dropbasket.in/wp-content/uploads/2020/10/lux.jpg",
-    "https://i1.wp.com/www.wholesalecatalog.in/wp-content/uploads/formidable/6/291.jpg?w=936&h=1405&ssl=1",
-    "https://st.depositphotos.com/1007995/1274/i/950/depositphotos_12746726-stock-photo-fashion-man-wearing-sunglasses-thinking.jpg",
-    "https://ae01.alicdn.com/kf/HTB17NWQh5FTMKJjSZFAq6AkJpXa1/Winter-Big-Pendulum-Purple-Velvet-Dresses-Woman-Dress-2020-Lotus-Leaf-Long-Sleeve-Ladies-Dresses-Kleider.jpg_q50.jpg"
-  ];
+    List<String> images = [
+      "https://www.abeautifulplate.com/wp-content/uploads/2017/03/bread-flour-differnet-types-of-flour.jpg",
+      "https://2.imimg.com/data2/OW/NJ/MY-3998144/2006020900280402-500x500.jpg",
+      "https://bsmedia.business-standard.com/_media/bs/img/article/2018-02/18/full/1518965938-4605.jpg",
+      "https://i.pinimg.com/736x/3e/71/86/3e7186bd207e26279a8d17d320532238.jpg",
+      "https://dropbasket.in/wp-content/uploads/2020/10/lux.jpg",
+      "https://i1.wp.com/www.wholesalecatalog.in/wp-content/uploads/formidable/6/291.jpg?w=936&h=1405&ssl=1",
+      "https://st.depositphotos.com/1007995/1274/i/950/depositphotos_12746726-stock-photo-fashion-man-wearing-sunglasses-thinking.jpg",
+      "https://ae01.alicdn.com/kf/HTB17NWQh5FTMKJjSZFAq6AkJpXa1/Winter-Big-Pendulum-Purple-Velvet-Dresses-Woman-Dress-2020-Lotus-Leaf-Long-Sleeve-Ladies-Dresses-Kleider.jpg_q50.jpg"
+    ];
 
     return ListView.builder(
         itemCount: titles.length,
@@ -438,7 +469,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                             style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
-                    freeHomeDeliverySlider(data),
+                    freeHomeDeliverySlider(banners[index].data),
                     Container(
                         color: colors[index],
                         child: Column(children: [
@@ -567,7 +598,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             width: double.infinity,
                                             color: Colors.white70,
                                             child: Center(
-                                                child: Text(litems[index],
+                                                child: Text (litems[index],
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     textAlign: TextAlign.center,
@@ -659,3 +690,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ])));
   }
 }
+
+
+
+

@@ -51,7 +51,6 @@ class _ShopByCategoryScreenState extends State<ShopByCategoryScreen> {
 
   _buildExpandableContent(List<SubCategoryItem> subCategoryItem) {
     List<Widget> columnContent = [];
-
     for (SubCategoryItem content in subCategoryItem)
       columnContent.add(ExpansionTile(
           title: Row(children: [

@@ -35,15 +35,13 @@ class _LogInState extends State<LogIn> {
               Container(
                   width: size.width - 50,
                   height: 50,
-                  decoration: BoxDecoration(boxShadow: <BoxShadow>[
-                    BoxShadow(color: Colors.lightBlue[100], blurRadius: 10, offset: Offset(0, 5))
-                  ]),
+                  decoration: BoxDecoration(
+                      boxShadow: <BoxShadow>[BoxShadow(color: Colors.lightBlue[100], blurRadius: 10, offset: Offset(0, 5))]),
                   child: FlatButton(
                       onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SignUpScreen())),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      child: Text("Next",
-                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)),
-                      color: Myapp.primaryColor)),
+                      child: Text("Next", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)),
+                      color: Myapp.primaryColor))
             ])));
   }
 }

@@ -71,59 +71,38 @@ class _CartScreenState extends State<CartScreen> {
             padding: EdgeInsets.only(bottom: 80),
             child: Column(children: [
               GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  color: Colors.grey[100],
-                  width: size.width,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.location_on_rounded,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(width: 10),
-                      RichText(
-                        text: TextSpan(
-                            text: "Deliver to\t\t",
-                            style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                  text: "394221",
-                                  style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))
-                            ]),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                ),
-              ),
+                  onTap: () {},
+                  child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      color: Colors.grey[100],
+                      width: size.width,
+                      child: Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
+                        Icon(Icons.location_on_rounded, color: Colors.grey),
+                        SizedBox(width: 10),
+                        RichText(
+                            text: TextSpan(
+                                text: "Deliver to\t\t",
+                                style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
+                                children: [
+                                  TextSpan(
+                                      text: "394221",
+                                      style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))
+                                ]),
+                            textAlign: TextAlign.center)
+                      ]))),
               SizedBox(height: 10),
               ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (_, index) {
-                  return card(cartItems[index]);
-                },
-                separatorBuilder: (_, index) {
-                  return Divider(
-                    color: Colors.grey,
-                    endIndent: 20,
-                    indent: 20,
-                  );
-                },
-                itemCount: cartItems.length,
-                shrinkWrap: true,
-              ),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (_, index) => card(cartItems[index]),
+                  separatorBuilder: (_, index) => Divider(color: Colors.grey, endIndent: 20, indent: 20),
+                  itemCount: cartItems.length,
+                  shrinkWrap: true),
               greyStrip(),
               Container(
-                width: size.width,
-                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  width: size.width,
+                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  child:
+                      Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
                     Text("Apply Coupon", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     SizedBox(height: 20),
                     RichText(
@@ -135,80 +114,59 @@ class _CartScreenState extends State<CartScreen> {
                               text: " to see best offers and cashback deals",
                               style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500))
                         ])),
-                    Container(
-                      color: Colors.blue,
-                      width: 48,
-                      height: 2,
-                    ),
-                  ],
-                ),
-              ),
+                    Container(color: Colors.blue, width: 48, height: 2)
+                  ])),
               greyStrip(),
               Container(
-                width: size.width,
-                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  width: size.width,
+                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  child:
+                      Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
                     Text("Payment Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     SizedBox(height: 20),
                     amountRow(title: "MRP Total", amount: "900.00"),
                     Divider(color: Colors.grey),
                     amountRow(title: "Product Discount", amount: "-90.00"),
                     Divider(color: Colors.grey),
-                    amountRow(
-                        title: "Total Amount", amount: "810.00", titleColor: Colors.black, amountColor: Colors.black),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    amountRow(title: "Total Amount", amount: "810.00", titleColor: Colors.black, amountColor: Colors.black),
+                    SizedBox(height: 10),
                     Align(
-                      alignment: Alignment.centerRight,
-                      child: Text("You Save \u20b9232.00",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.green)),
-                    ),
-                  ],
-                ),
-              ),
+                        alignment: Alignment.centerRight,
+                        child: Text("You Save \u20b9232.00",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.green)))
+                  ])),
               greyStrip()
             ])),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(
-            decoration: BoxDecoration(
-                color: Colors.white, border: Border.symmetric(horizontal: BorderSide(color: Colors.grey))),
+            decoration: BoxDecoration(color: Colors.white, border: Border.symmetric(horizontal: BorderSide(color: Colors.grey))),
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             height: 75,
             child: Row(children: [
               Expanded(
                   child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text("Payable Amount",
-                      style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16)),
-                  Text("\u20b94603.00",
-                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
-                ],
-              )),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                    Text("Payable Amount", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text("\u20b94603.00", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16))
+                  ])),
               Expanded(
                   child: Padding(
                       padding: const EdgeInsets.only(left: 30),
                       child: FlatButton(
-                        child: Text("Place Order", style: TextStyle(color: Colors.white, fontSize: 18)),
-                        onPressed: () {},
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                        color: Myapp.primaryColor,
-                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-                      )))
+                          child: Text("Place Order", style: TextStyle(color: Colors.white, fontSize: 18)),
+                          onPressed: () {},
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                          color: Myapp.primaryColor,
+                          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15))))
             ])));
   }
 
   Widget amountRow({String title, String amount, Color titleColor, Color amountColor}) {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Text(title ?? "N/A",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: titleColor ?? Colors.grey)),
-      Text("\u20b9$amount",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: amountColor ?? Colors.black87))
+      Text(title ?? "N/A", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: titleColor ?? Colors.grey)),
+      Text("\u20b9$amount", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: amountColor ?? Colors.black87))
     ]);
   }
 
@@ -274,9 +232,7 @@ class _CartScreenState extends State<CartScreen> {
                                       }
                                     }
                                   : () {},
-                              color: item.quantity >= item.maxQuantity
-                                  ? Myapp.primaryColor.withOpacity(0.7)
-                                  : Myapp.primaryColor,
+                              color: item.quantity >= item.maxQuantity ? Myapp.primaryColor.withOpacity(0.7) : Myapp.primaryColor,
                               padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))))
                     ])
@@ -285,11 +241,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget greyStrip() {
-    return Container(
-      height: 25,
-      width: double.infinity,
-      color: Color.fromRGBO(0, 0, 0, 0.2),
-    );
+    return Container(height: 25, width: double.infinity, color: Color.fromRGBO(0, 0, 0, 0.2));
   }
 }
 

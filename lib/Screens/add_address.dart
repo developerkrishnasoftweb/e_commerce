@@ -27,9 +27,7 @@ class _AddAddressState extends State<AddAddress> {
       pinCode = TextEditingController(text: widget.addressDetail.pinCode);
       state = TextEditingController(text: widget.addressDetail.state);
       city = TextEditingController(text: widget.addressDetail.city);
-      setState(() {
-        selectedIndex = option.indexOf(widget.addressDetail.type.toUpperCase());
-      });
+      setState(() => selectedIndex = option.indexOf(widget.addressDetail.type.toUpperCase()));
     } else {
       name = TextEditingController();
       mobile = TextEditingController();
