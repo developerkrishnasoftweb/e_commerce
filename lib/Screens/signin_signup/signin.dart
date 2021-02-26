@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/localization/localizations_constraints.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ import 'signup.dart';
 
 class SignIn extends StatefulWidget {
   final String email;
+
   SignIn({this.email});
 
   @override
@@ -23,13 +25,20 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  bool isLogging = false;
-  String username = "", password = "", token = "";
+  bool isLoading = false;
+  String password = "", token = "";
   TextEditingController emailController = TextEditingController();
   FocusNode myFocusNode;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
+
+  setLoading(bool status) {
+    setState(() {
+      isLoading = status;
+    });
+  }
+
   @override
   void initState() {
     var android = new AndroidInitializationSettings('mipmap/ic_launcher');
@@ -37,7 +46,7 @@ class _SignInState extends State<SignIn> {
     var platform = new InitializationSettings(android: android, iOS: ios);
     flutterLocalNotificationsPlugin.initialize(platform);
     setState(() {
-      emailController.text = username = widget.email ?? "";
+      emailController.text = widget.email ?? "";
       userdata = null;
     });
     myFocusNode = FocusNode();
@@ -121,23 +130,16 @@ class _SignInState extends State<SignIn> {
               input(
                   context: context,
                   style: TextStyle(fontSize: 17),
-                  text:
-                      "Username",
+                  text: "Username",
                   autoFocus: true,
                   keyboardType: TextInputType.emailAddress,
                   onEditingComplete: () => FocusScope.of(context).nextFocus(),
                   textInputAction: TextInputAction.next,
-                  onChanged: (value) {
-                    setState(() {
-                      username = value;
-                    });
-                  },
                   controller: emailController),
               input(
                   context: context,
                   style: TextStyle(fontSize: 17),
-                  text:
-                      "Password",
+                  text: "Password",
                   obscureText: true,
                   onEditingComplete: _signIn,
                   onChanged: (value) {
@@ -173,18 +175,29 @@ class _SignInState extends State<SignIn> {
               Container(
                   width: double.infinity,
                   height: 50,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
                   child: FlatButton(
-                    child: Text(
-                        "Login"),
-                    onPressed: !isLogging ? _signIn : null,
+                    child: isLoading
+                        ? SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: CircularProgressIndicator(),
+                          )
+                        : Text("Login",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            )),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6)),
+                    onPressed: !isLoading ? _signIn : null,
                     color: primaryColor,
                   )),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: RichText(
                   text: TextSpan(
-                      text:
-                          "Don't have an account?\t",
+                      text: "Don't have an account?\t",
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
                           color: Color(0xffa8a8a8),
                           fontSize: 16,
@@ -193,7 +206,7 @@ class _SignInState extends State<SignIn> {
                         WidgetSpan(
                             child: GestureDetector(
                           child: Text(
-                                "SignUp",
+                            "SignUp",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1
@@ -204,9 +217,14 @@ class _SignInState extends State<SignIn> {
                           ),
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUp()));
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignUp()))
+                                .then((value) {
+                              setState(() {
+                                emailController.text = value;
+                              });
+                            });
                           },
                         ))
                       ]),
@@ -221,18 +239,26 @@ class _SignInState extends State<SignIn> {
 
   void _signIn() async {
     FocusScope.of(context).unfocus();
-    setState(() {
-      isLogging = true;
-    });
-    if (username.isNotEmpty && password.isNotEmpty) {
+    if (emailController.text.isNotEmpty && password.isNotEmpty) {
+      setLoading(true);
       if (token.isEmpty) firebaseCloudMessagingListeners();
-    } else {
-      Fluttertoast.showToast(
-          msg:
-              "Please enter username and password");
-      setState(() {
-        isLogging = false;
+      Map<String, dynamic> body = {
+        "username": emailController.text,
+        "password": password
+      };
+      await ApiService.generateToken(body).then((value) {
+        if (value.status) {
+          print(value.data);
+          setLoading(false);
+          Fluttertoast.showToast(msg: value.message);
+        } else {
+          setLoading(false);
+          Fluttertoast.showToast(msg: value.message, toastLength: Toast.LENGTH_LONG);
+        }
       });
+      setLoading(false);
+    } else {
+      Fluttertoast.showToast(msg: "Please enter username and password");
     }
   }
 }

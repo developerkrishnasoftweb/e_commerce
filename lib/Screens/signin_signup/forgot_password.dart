@@ -1,12 +1,11 @@
-import 'package:dio/dio.dart';
+
+import 'package:e_commerce/Screens/widgets/appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../widgets/textinput.dart';
 import '../../constant/color.dart';
-import '../../constant/global.dart';
-import 'otp.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override
@@ -20,8 +19,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      // appBar: appBar(context: context, title: "Forgot Password"),
+      appBar: appBar(context: context, title: "Forgot Password"),
       body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
             image: DecorationImage(
                 image:
@@ -52,8 +52,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             Container(
                 width: double.infinity,
                 height: 50,
+                margin: EdgeInsets.symmetric(horizontal: 10),
                 child: FlatButton(
-                  child: Text("GET OTP"),
+                  child: Text("GET OTP", style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  )),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6)
+                  ),
                   onPressed: isLoading ? null : _forgotPassword,
                   color: primaryColor,
                 )),
