@@ -217,4 +217,5 @@ class ResponseData {
     return ResponseData(
         data: json['data'], message: json['message'], status: json['status']);
   }
+
 }
