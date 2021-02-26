@@ -14,7 +14,8 @@ class _ShopByCategoryScreenState extends State<ShopByCategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Shop by Category", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          toolbarHeight: 50.sp,
+          title: Text("Shop by Category", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
           actions: [
             IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {}),
             IconButton(

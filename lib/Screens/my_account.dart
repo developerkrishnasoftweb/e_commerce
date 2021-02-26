@@ -2,6 +2,7 @@ import 'package:e_commerce/Screens/my_addresses.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'edit_profile.dart';
 
@@ -17,7 +18,7 @@ class _MyAccountState extends State<MyAccount> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(title: Text("My Account", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+        appBar: AppBar(toolbarHeight: 50.sp,title: Text("My Account", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
         drawer: navigationDrawer(),
         body: SingleChildScrollView(
             child: Column(children: [

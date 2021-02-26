@@ -11,6 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../main.dart';
 import 'NavigationDrawer.dart';
+import 'SubCategoryDetails1.dart';
+import 'SubCategoryDetails2.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -33,15 +35,16 @@ final List<String> grocerySlider = [
 
 // ignore: non_constant_identifier_names
 class _HomeScreenState extends State<HomeScreen> {
-
   Banners topCategoryBanners, bestDealsBanners, topDealsBanners, exclusiveDealsBanners;
-  MainCategory mainCategory;
+  MainCategory  topCategory;
+  AllCategory mainCategory;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Pal", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          toolbarHeight: 50.sp,
+          title: Text("Pal", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
           elevation: 0,
           actions: [
             IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {}),
@@ -62,7 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ApiService.getBannersBestDeals(),
                 ApiService.getBannersTopDeals(),
                 ApiService.getBannersExclusiveDeals(),
-                ApiService.getHomeCategories()
+                ApiService.getHomeCategories(),
+                ApiService.getTopCategories(),
               ]),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
@@ -71,12 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   topDealsBanners = snapshot.data[2];
                   exclusiveDealsBanners = snapshot.data[3];
                   mainCategory = snapshot.data[4];
+                  topCategory = snapshot.data[5];
                   return Expanded(
                       child: SingleChildScrollView(
                           child: Column(children: [
                     categoriesListHorizontal(mainCategory.data),
                     freeHomeDeliverySlider(topCategoryBanners.data),
-                    topCategories(),
+                    topCategories(topCategory.data),
                     topDeals(),
                     shopGroceries(),
                     offerListWithCategories(),
@@ -89,10 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ]));
   }
 
-  Widget categoriesListHorizontal(List<Categories> data) => Padding(
+  Widget categoriesListHorizontal(List<MainData> data) => Padding(
         padding: EdgeInsets.only(top: 10.sp),
         child: Container(
-            height: 100.h,
+            height: 100.sp,
             child: ListView.builder(
                 itemCount: data.length,
                 scrollDirection: Axis.horizontal,
@@ -102,22 +107,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () => Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => SubcategoryDetails(id:index,  list: data,))),
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => SubcategoryDetails1(
+                                  id: index,
+                                  list: data,
+                                ))),
                     child: Container(
-                        width: 70.h,
+                        width: 70.sp,
                         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
                             // mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CircleAvatar(
-                                  radius: 25.h,
+                                  radius: 25.sp,
                                   backgroundImage: NetworkImage(URLS.PAL_IMAGE_URL + data[index].image),
                                   backgroundColor: Colors.transparent),
                               Center(
                                   child: Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 1.w),
-                                    child: Text(data[index].name,
-                                        maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
-                                  ))
+                                padding: EdgeInsets.symmetric(horizontal: 1.w),
+                                child: Text(
+                                  data[index].name,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 15.sp),
+                                ),
+                              ))
                             ])),
                   );
                 })),
@@ -128,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
           padding: EdgeInsets.fromLTRB(10.ssp, 0, 10.ssp, 10.ssp),
           child: TextField(
+              style: TextStyle(fontSize: 15.sp),
               decoration: InputDecoration(
                   fillColor: Colors.white,
                   filled: true,
@@ -138,18 +154,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   hintText: "Search for Products and Brand"))));
 
   freeHomeDeliverySlider(List<Data> data) => CarouselSlider(
-      options: CarouselOptions(autoPlay: true, aspectRatio: 2.0, enlargeCenterPage: true), items: imageSlideView(data));
+      options: CarouselOptions(autoPlay:  true, aspectRatio: 2.0, enlargeCenterPage: true), items: imageSlideView(data));
 
   imageSlideView(List<Data> data) => data
       .map((item) => GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails())),
+            onTap: () {
+               Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails2(id: item.linkUrl)));
+            },
             child: Container(
                 child: Container(
                     margin: EdgeInsets.all(5.0),
                     child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         child: Stack(children: <Widget>[
-                          Image.network(URLS.IMAGE_URL +"/"+ item.image, fit: BoxFit.cover, width: 800.sp, height: 400.sp)
+                          Image.network(URLS.IMAGE_URL + "/" + item.image, fit: BoxFit.cover, width: 800.sp, height: 400.sp)
                         ])))),
           ))
       .toList();
@@ -176,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "https://ae01.alicdn.com/kf/HTB17NWQh5FTMKJjSZFAq6AkJpXa1/Winter-Big-Pendulum-Purple-Velvet-Dresses-Woman-Dress-2020-Lotus-Leaf-Long-Sleeve-Ladies-Dresses-Kleider.jpg_q50.jpg"
   ];
 
-  topCategories() => Container(
+  topCategories(List<Categories> data) => Container(
       color: Colors.white,
       child: Padding(
           padding: EdgeInsets.symmetric(vertical: 10.sp),
@@ -193,24 +211,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3, childAspectRatio: 0.85, crossAxisSpacing: 10.sp, mainAxisSpacing: 10.sp),
-                    itemCount: litems.length,
+                    itemCount: data.length,
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                           onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => SubcategoryDetails(
-                                        list: null,
-                                      ))),
+                              context, MaterialPageRoute(builder: (_) => SubcategoryDetails(id: index, list: data))),
                           child: Container(
                               child: Stack(children: [
                             Container(
                                 alignment: Alignment.bottomCenter,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)),
+                                    image: DecorationImage(image: NetworkImage(URLS.IMAGE_URL+"/" + data[index].banner_image), fit: BoxFit.cover)),
                                 child: Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Container(
@@ -218,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: double.infinity,
                                         color: Colors.white70,
                                         child: Center(
-                                            child: Text(litems[index],
+                                            child: Text(data[index].name,
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.center,
@@ -228,7 +242,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ])));
 
   topDeals() {
-
     List<String> litems = [
       "Lotte Choco Pie Creamfilled Biscuit 336",
       "Dove Nutritive Solutions Intense",
@@ -323,7 +336,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   shopGroceries() {
-
     List<String> litems = [
       "Lotte Choco Pie Creamfilled Biscuit 336",
       "Dove Nutritive Solutions Intense",
@@ -598,7 +610,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             width: double.infinity,
                                             color: Colors.white70,
                                             child: Center(
-                                                child: Text (litems[index],
+                                                child: Text(litems[index],
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     textAlign: TextAlign.center,
@@ -690,7 +702,3 @@ class _HomeScreenState extends State<HomeScreen> {
             ])));
   }
 }
-
-
-
-

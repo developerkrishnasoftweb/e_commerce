@@ -12,7 +12,7 @@ class _MyOrdersState extends State<MyOrders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("My Orders", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+        appBar: AppBar(toolbarHeight: 50.sp,title: Text("My Orders", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
         drawer: navigationDrawer(),
         body: Padding(
             padding: EdgeInsets.all(10.sp),

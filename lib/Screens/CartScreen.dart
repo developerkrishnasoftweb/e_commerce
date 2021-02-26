@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../main.dart';
 import 'NavigationDrawer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -62,7 +63,8 @@ class _CartScreenState extends State<CartScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          title: Text("My Cart", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          toolbarHeight: 50.sp,
+          title: Text("My Cart", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
           actions: [IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {})],
         ),
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),

@@ -2,6 +2,7 @@ import 'package:e_commerce/Screens/add_address.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyAddress extends StatefulWidget {
   @override
@@ -33,7 +34,8 @@ class _MyAddressState extends State<MyAddress> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-            title: Text("Address", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)), automaticallyImplyLeading: true),
+            toolbarHeight: 50.sp,
+            title: Text("Address", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)), automaticallyImplyLeading: true),
         body: Column(children: [
           Padding(
               padding: const EdgeInsets.all(8.0),

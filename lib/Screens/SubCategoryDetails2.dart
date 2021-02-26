@@ -8,17 +8,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'ProductDetail.dart';
 
-class SubcategoryDetails extends StatefulWidget {
-  List<Categories> list;
-  int id;
+class SubcategoryDetails2 extends StatefulWidget {
+  String id;
 
-  SubcategoryDetails({this.list, this.id});
+  SubcategoryDetails2({this.id});
 
   @override
   _SubcategoryDetailsState createState() => _SubcategoryDetailsState();
 }
 
-class _SubcategoryDetailsState extends State<SubcategoryDetails> {
+class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   List<FilterList> filterList = [
     FilterList(
@@ -136,25 +135,26 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
 
   var subCatIndex = 0;
   var subCatIndex1 = 0;
+  var subCatIndex2 = 0;
+  List<MainData> list = [];
+  List<Products> productsList = [];
+  List<ChildSubCategory> childSubCategoryList = [];
+  List<SubCategotyLIst> subCategories = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    subCatIndex = widget.id ?? 1;
+    subCatIndex = 0;
     subCatIndex1 = 0;
+    subCatIndex2 = 0;
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-
-    widget.list[subCatIndex].subCategories
-        .forEach((element) => setState(() => element.isSelected = false));
-
-    widget.list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
-
+    refresh();
 
 
     return Scaffold(
@@ -165,13 +165,17 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
           actions: [IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {})],
         ),
         body: Container(
-          child:
-     //     FutureBuilder(
-        //      future: Future.wait([ApiService.getSubCategories(widget.id.toString() ?? "1605")]),
-        //      builder: (context, AsyncSnapshot snapshot) {
-        //        if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
-         //         return
-                    Column(children: [
+          child: FutureBuilder(
+              future: Future.wait([ApiService.getSubCategories(widget.id ?? "1605")]),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+                  AllCategory mainCategory = snapshot.data[0];
+
+                  list = mainCategory.data;
+
+                  refresh();
+
+                  return Column(children: [
                     GestureDetector(
                         onTap: () {},
                         child: Container(
@@ -205,7 +209,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                                     Expanded(
                                         child: Text(
-                                      widget.list != null ? widget.list[subCatIndex].name : "Staples",
+                                      list != null ? list[subCatIndex].name : "Staples",
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
@@ -235,15 +239,13 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                                           itemBuilder: (_, index) {
                                                             return ListTile(
                                                                 leading: Image.network(
-                                                                    widget.list != null
-                                                                        ? URLS.PAL_IMAGE_URL + widget.list[index].image
+                                                                    list != null
+                                                                        ? URLS.PAL_IMAGE_URL + list[index].image
                                                                         : "https://www.jiomart.com/images/category/141/thumb/fruits-vegetables-20200520.png",
                                                                     width: 40.sp,
                                                                     height: 40.sp),
                                                                 title: Text(
-                                                                    widget.list != null
-                                                                        ? widget.list[index].name
-                                                                        : "Fruits & Vegetables",
+                                                                    list != null ? list[index].name : "Fruits & Vegetables",
                                                                     style:
                                                                         TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
                                                                 // subtitle: Text(
@@ -254,10 +256,11 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                                                 onTap: () => setState(() {
                                                                       subCatIndex = index;
                                                                       subCatIndex1 = 0;
+                                                                      subCatIndex2 = 0;
                                                                       Navigator.of(context).pop();
                                                                     }));
                                                           },
-                                                          itemCount: widget.list != null ? widget.list.length : 10))
+                                                          itemCount: list != null ? list.length : 10))
                                                 ]);
                                               },
                                               backgroundColor: Colors.white,
@@ -270,11 +273,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                   itemBuilder: (_, index) {
                                     return GestureDetector(
                                         onTap: () {
-                                          widget.list[subCatIndex].subCategories
-                                              .forEach((element) => setState(() => element.isSelected = false));
+                                          subCategories.forEach((element) => setState(() => element.isSelected = false));
                                           setState(() {
                                             subCatIndex1 = index;
-                                            widget.list[subCatIndex].subCategories[index].isSelected = true;
+                                            subCategories[index].isSelected = true;
                                           });
                                         },
                                         child: Container(
@@ -286,30 +288,26 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                                 borderRadius: BorderRadius.circular(6),
                                                 color: Colors.white,
                                                 border: Border.all(
-                                                    color: widget.list[subCatIndex].subCategories[index].isSelected
-                                                        ? Myapp.primaryColor
-                                                        : Colors.white,
+                                                    color: subCategories[index].isSelected ? Myapp.primaryColor : Colors.white,
                                                     width: 2)),
                                             child: Row(children: [
-                                              Image.network(
-                                                  URLS.PAL_IMAGE_URL + widget.list[subCatIndex].subCategories[index].image,
-                                                  height: 30.sp,
-                                                  width: 30.sp),
+                                              Image.network(URLS.PAL_IMAGE_URL + subCategories[index].image,
+                                                  height: 30.sp, width: 30.sp),
                                               SizedBox(width: 10.sp),
                                               Expanded(
-                                                  child: Text(widget.list[subCatIndex].subCategories[index].name,
+                                                  child: Text(subCategories[index].name,
                                                       maxLines: 3,
                                                       style: TextStyle(
                                                           fontWeight: FontWeight.bold,
                                                           fontSize: 12.sp,
-                                                          color: widget.list[subCatIndex].subCategories[index].isSelected
+                                                          color: subCategories[index].isSelected
                                                               ? Myapp.primaryColor
                                                               : Colors.black)))
                                             ])));
                                   },
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
-                                  itemCount: widget.list[subCatIndex].subCategories.length,
+                                  itemCount: subCategories.length,
                                   physics: BouncingScrollPhysics()))
                         ])),
                     Container(
@@ -436,32 +434,31 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                         padding: EdgeInsets.symmetric(vertical: 5),
                         child: ListView.builder(
                             itemBuilder: (_, index) {
-                              return GestureDetector(
-                                  onTap: () {
-                                    // widget.list[subCatIndex].subCategories.forEach((element) =>
-                                    //     setState(() => element.isSelected = false));
-                                    // setState(() {
-                                    //   subCatIndex1 = index;
-                                    //   widget.list[subCatIndex].subCategories[index].isSelected = true;
-                                    // });
-                                  },
-                                  child: Container(
-                                      margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
-                                      child:
-                                          FlatButton(onPressed: () {}, child: Text(products[index]), color: Colors.grey[300])));
+                              return Container(
+                                  margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        childSubCategoryList.forEach((element) => setState(() => element.isSelected = false));
+                                        setState(() {
+                                          subCatIndex2 = index;
+                                          childSubCategoryList[index].isSelected = true;
+                                        });
+                                      },
+                                      child: Text(childSubCategoryList[index].name),
+                                      color: Colors.grey[300]));
                             },
                             physics: BouncingScrollPhysics(),
-                            itemCount: products.length,
+                            itemCount: list[subCatIndex].subCategories.length > 0 ? childSubCategoryList.length : 0,
                             scrollDirection: Axis.horizontal)),
                     Expanded(
                         child: ListView.separated(
                             separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
-                            itemBuilder: (_, index) => card(widget.list[subCatIndex].subCategories[subCatIndex1].products[index]),
-                            itemCount: widget.list[subCatIndex].subCategories[subCatIndex1].products.length))
-                  ])
-           //     } else
-            //      return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
-         //     }),
+                            itemBuilder: (_, index) => card(productsList[index]),
+                            itemCount: productsList.length > 0 ? productsList.length : 0))
+                  ]);
+                } else
+                  return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
+              }),
         ));
   }
 
@@ -554,7 +551,33 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                       ])))
             ])));
   }
+
+
+  void refresh() {
+    if (list.length > subCatIndex) {
+      subCategories = list[subCatIndex].subCategories;
+      if (list[subCatIndex].subCategories.length > subCatIndex1) {
+        list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
+        childSubCategoryList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory;
+        if (list[subCatIndex].subCategories[subCatIndex1].childSubCategory.length > subCatIndex2) {
+          list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].isSelected = true;
+          productsList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].products;
+        } else {
+          productsList = [];
+        }
+      } else {
+        childSubCategoryList = [];
+        productsList = [];
+      }
+    } else {
+      childSubCategoryList = [];
+      productsList = [];
+      subCategories = [];
+    }
+  }
+
 }
+
 
 class Category {
   final String title, image;

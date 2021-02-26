@@ -1,6 +1,7 @@
 import 'package:e_commerce/Screens/my_addresses.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddAddress extends StatefulWidget {
   final AddressDetail addressDetail;
@@ -42,8 +43,9 @@ class _AddAddressState extends State<AddAddress> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+            toolbarHeight: 50.sp,
             title: Text(widget.addressDetail != null ? "Edit Address" : "Add Address",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
             automaticallyImplyLeading: true),
         body: SingleChildScrollView(
             padding: EdgeInsets.all(10),

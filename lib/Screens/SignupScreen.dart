@@ -13,7 +13,7 @@ class _SignupScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("SignUp", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+        appBar: AppBar(toolbarHeight: 50.sp,title: Text("SignUp", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
         body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 10.sp),
             physics: BouncingScrollPhysics(),

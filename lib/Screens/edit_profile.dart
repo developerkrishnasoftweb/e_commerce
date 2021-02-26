@@ -2,6 +2,7 @@ import 'package:e_commerce/Screens/add_address.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -16,7 +17,9 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Edit Profile", style: TextStyle(fontSize: 18)), automaticallyImplyLeading: true),
+        appBar: AppBar(
+          toolbarHeight: 50.sp,
+            title: Text("Edit Profile", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)), automaticallyImplyLeading: true),
         body: SingleChildScrollView(
             padding: EdgeInsets.all(10),
             child: Column(children: [

@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:e_commerce/Models/MainCategory.dart';
+import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/CartScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -7,6 +9,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../main.dart';
 
 class ProductDetail extends StatefulWidget {
+
+  Products products;
+
+  ProductDetail(this.products);
+
   @override
   _ProductDetailState createState() => _ProductDetailState();
 }
@@ -18,12 +25,13 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("Amul Butter 500 g (Carton)", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+            toolbarHeight: 50.sp,
+            title: Text(widget.products.name, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
         body: SingleChildScrollView(
             child: Padding(
                 padding: EdgeInsets.all(10.sp),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text("Amul Butter 500 g (Carton)",
+                  Text(widget.products.name,
                       style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
                   Text("Amul".toUpperCase(),
                       style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey)),
@@ -35,7 +43,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             viewportFraction: 1.0,
                             enlargeCenterPage: false,
                             onPageChanged: (index, reason) => setState(() => _current = index)),
-                        items: imageSlideView(imgList)),
+                        items: imageSlideView(widget.products.images)),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: imgList.map((url) {
@@ -61,7 +69,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                 text: "Save ₹ 225.0 ",
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
                             TextSpan(
-                                text: '₹ 235.00 ',
+                                text: '₹ '+ widget.products.price.toString() + " ",
                                 style: TextStyle(
                                     decoration: TextDecoration.lineThrough, color: Colors.blueGrey, fontSize: 14.sp)),
                             TextSpan(
@@ -155,14 +163,14 @@ class _ProductDetailState extends State<ProductDetail> {
     'https://www.jiomart.com/images/product/420x420/490001392/amul-pasteurised-butter-500-g-carton-4-20210208.jpg'
   ];
 
-  imageSlideView(List<String> imgList) {
+  imageSlideView(List<Images> imgList) {
     return imgList
         .map((item) => Container(
             child: Container(
                 margin: EdgeInsets.all(5.0),
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(children: <Widget>[Image.network(item, fit: BoxFit.cover, height: 500.sp)])))))
+                    child: Stack(children: <Widget>[Image.network(URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + item.file, fit: BoxFit.cover, height: 500.sp)])))))
         .toList();
   }
 }
