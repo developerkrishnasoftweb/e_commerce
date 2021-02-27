@@ -59,7 +59,7 @@ class MainData {
     id = json['id'];
     parentId = json['parent_id'];
     name = json['name'];
-    image = json['image'];
+    image = json['image'] ?? '';
     isActive = json['is_active'];
     position = json['position'];
     level = json['level'];
@@ -79,7 +79,7 @@ class MainData {
     data['id'] = this.id;
     data['parent_id'] = this.parentId;
     data['name'] = this.name;
-    data['image'] = this.image;
+    data['image'] = this.image ?? '';
     data['is_active'] = this.isActive;
     data['position'] = this.position;
     data['level'] = this.level;
@@ -125,7 +125,7 @@ class SubCategotyLIst {
     id = json['id'];
     parentId = json['parent_id'];
     name = json['name'];
-    image = json['image'];
+    image = json['image'] ?? '';
     isActive = json['is_active'];
     position = json['position'];
     level = json['level'];
@@ -192,7 +192,7 @@ class ChildSubCategory {
     id = json['id'];
     parentId = json['parent_id'];
     name = json['name'];
-    image = json['image'];
+    image = json['image'] ?? '';
     isActive = json['is_active'];
     position = json['position'];
     level = json['level'];

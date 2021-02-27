@@ -1,23 +1,24 @@
 
+import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/rest_api.dart';
+import 'package:e_commerce/Screens/ProductDetail.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'ProductDetail.dart';
 
-class SubcategoryDetails extends StatefulWidget {
-  List<Categories> list;
+class SubCategoryDetailsGrocery extends StatefulWidget {
+  List<SubCategotyLIst> list;
   int id;
 
-  SubcategoryDetails({this.list, this.id});
+  SubCategoryDetailsGrocery({this.list, this.id});
 
   @override
   _SubcategoryDetailsState createState() => _SubcategoryDetailsState();
 }
 
-class _SubcategoryDetailsState extends State<SubcategoryDetails> {
+class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   List<FilterList> filterList = [
     FilterList(
@@ -148,9 +149,9 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    widget.list[subCatIndex].subCategories.forEach((element) => setState(() => element.isSelected = false));
+    widget.list[subCatIndex].childSubCategory.forEach((element) => setState(() => element.isSelected = false));
 
-    widget.list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
+    widget.list[subCatIndex].childSubCategory[subCatIndex1].isSelected = true;
 
     return Scaffold(
         key: scaffoldKey,
@@ -262,11 +263,11 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                         itemBuilder: (_, index) {
                           return GestureDetector(
                               onTap: () {
-                                widget.list[subCatIndex].subCategories
+                                widget.list[subCatIndex].childSubCategory
                                     .forEach((element) => setState(() => element.isSelected = false));
                                 setState(() {
                                   subCatIndex1 = index;
-                                  widget.list[subCatIndex].subCategories[index].isSelected = true;
+                                  widget.list[subCatIndex].childSubCategory[index].isSelected = true;
                                 });
                               },
                               child: Container(
@@ -278,28 +279,28 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                       borderRadius: BorderRadius.circular(6),
                                       color: Colors.white,
                                       border: Border.all(
-                                          color: widget.list[subCatIndex].subCategories[index].isSelected
+                                          color: widget.list[subCatIndex].childSubCategory[index].isSelected
                                               ? Myapp.primaryColor
                                               : Colors.white,
                                           width: 2)),
                                   child: Row(children: [
-                                    Image.network(URLS.PAL_IMAGE_URL + widget.list[subCatIndex].subCategories[index].image,
+                                    Image.network(URLS.PAL_IMAGE_URL + widget.list[subCatIndex].childSubCategory[index].image,
                                         height: 30.sp, width: 30.sp),
                                     SizedBox(width: 10.sp),
                                     Expanded(
-                                        child: Text(widget.list[subCatIndex].subCategories[index].name,
+                                        child: Text(widget.list[subCatIndex].childSubCategory[index].name,
                                             maxLines: 3,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 12.sp,
-                                                color: widget.list[subCatIndex].subCategories[index].isSelected
+                                                color: widget.list[subCatIndex].childSubCategory[index].isSelected
                                                     ? Myapp.primaryColor
                                                     : Colors.black)))
                                   ])));
                         },
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
-                        itemCount: widget.list[subCatIndex].subCategories.length,
+                        itemCount: widget.list[subCatIndex].childSubCategory.length,
                         physics: BouncingScrollPhysics()))
               ])),
           Container(
@@ -444,8 +445,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
           Expanded(
               child: ListView.separated(
                   separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
-                  itemBuilder: (_, index) => card(widget.list[subCatIndex].subCategories[subCatIndex1].products[index]),
-                  itemCount: widget.list[subCatIndex].subCategories[subCatIndex1].products.length))
+                  itemBuilder: (_, index) => card(widget.list[subCatIndex].childSubCategory[subCatIndex1].products[index]),
+                  itemCount: widget.list[subCatIndex].childSubCategory[subCatIndex1].products.length))
         ])
             //     } else
             //      return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));

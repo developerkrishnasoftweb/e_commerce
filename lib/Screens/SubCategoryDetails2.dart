@@ -1,7 +1,6 @@
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/rest_api.dart';
-import 'package:e_commerce/Models/sku.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -274,8 +273,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                     return GestureDetector(
                                         onTap: () {
                                           subCategories.forEach((element) => setState(() => element.isSelected = false));
+                                          childSubCategoryList.forEach((element) => setState(() => element.isSelected = false));
                                           setState(() {
                                             subCatIndex1 = index;
+                                            subCatIndex2 = 0;
                                             subCategories[index].isSelected = true;
                                           });
                                         },
@@ -444,8 +445,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                           childSubCategoryList[index].isSelected = true;
                                         });
                                       },
-                                      child: Text(childSubCategoryList[index].name),
-                                      color: Colors.grey[300]));
+                                      child: Text(childSubCategoryList[index].name,
+                                          style: TextStyle(
+                                              color: childSubCategoryList[index].isSelected ? Colors.white : Colors.black)),
+                                      color: childSubCategoryList[index].isSelected ? Myapp.primaryColor : Colors.grey[300]));
                             },
                             physics: BouncingScrollPhysics(),
                             itemCount: list[subCatIndex].subCategories.length > 0 ? childSubCategoryList.length : 0,
@@ -554,11 +557,16 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
 
 
   void refresh() {
+
+
+
     if (list.length > subCatIndex) {
       subCategories = list[subCatIndex].subCategories;
+
       if (list[subCatIndex].subCategories.length > subCatIndex1) {
         list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
         childSubCategoryList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory;
+
         if (list[subCatIndex].subCategories[subCatIndex1].childSubCategory.length > subCatIndex2) {
           list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].isSelected = true;
           productsList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].products;

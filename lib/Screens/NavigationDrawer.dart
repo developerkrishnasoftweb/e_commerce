@@ -1,13 +1,11 @@
 import 'package:e_commerce/Screens/HomeScreen.dart';
 import 'package:e_commerce/Screens/my_account.dart';
 import 'package:e_commerce/Screens/signin_signup/signin.dart';
-import 'package:e_commerce/Screens/signin_signup/signup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'MyOrders.dart';
 import 'ShopByCategoryScreen.dart';
-import 'login.dart';
+
 
 class navigationDrawer extends StatelessWidget {
   @override

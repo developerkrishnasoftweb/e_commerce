@@ -3,10 +3,7 @@ import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/Banners.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/TopProducts.dart';
-import 'package:e_commerce/Models/sku.dart';
 import 'package:http/http.dart' as http;
-import 'Departments.dart';
-import 'SubCategory.dart';
 
 class URLS {
   // const String SERVER_URL = 'http://ecommerce.krishnasoftweb.com/';
@@ -23,6 +20,7 @@ class URLS {
   static const String GET_CATEGORIES = '${URLS.SERVER_URL}/api/category';
   static const String GET_TOP_CATEGORIES = '${URLS.SERVER_URL}/api/top-category';
   static const String GET_SUBCATEGORIES = '${URLS.SERVER_URL}/api/category?category_id=';
+  static const String GET_GROCERIES = '${URLS.SERVER_URL}/api/category?category_type=Grocery';
   static const String GET_TOP_PRODUCTS = '${URLS.SERVER_URL}/api/top-product';
 
   static const String DEPARTMENTS = '${URLS.BASE_URL}department';
@@ -58,10 +56,18 @@ class ApiService {
     }
   }
 
-
   static Future<AllCategory> getSubCategories(String i) async {
     final response = await http.get(URLS.GET_SUBCATEGORIES + i.toString());
     print("res " + response.body.toString());
+    if (response.statusCode == 200) {
+      return AllCategory.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
+
+  static Future<AllCategory> getGroceries() async {
+    final response = await http.get(URLS.GET_GROCERIES);
     if (response.statusCode == 200) {
       return AllCategory.fromJson(json.decode(response.body));
     } else {
@@ -101,54 +107,6 @@ class ApiService {
       return TopProducts.fromJson(json.decode(response.body));
     } else {
       return null;
-    }
-  }
-
-  static Future<Departments> getDepartments() async {
-    final response = await http.get(URLS.DEPARTMENTS);
-    if (response.statusCode == 200) {
-      return Departments.fromJson(json.decode(response.body));
-    } else {
-      return null;
-    }
-  }
-
-  static Future<SubCategory> getCategories(String categoryId, String departmentId) async {
-    Map<String, String> queryParams = {'category_id': categoryId, 'department_id': departmentId};
-    String queryString = Uri(queryParameters: queryParams).query;
-    final response = await http.get(URLS.CATEGORIES + '?' + queryString);
-    if (response.statusCode == 200) {
-      return SubCategory.fromJson(json.decode(response.body));
-    } else {
-      return null;
-    }
-  }
-
-  // static Future<Products> getProducts(String manufacturerId, String subCategoryId) async {
-  //   Map<String, String> queryParams = {'manufacturer_id': manufacturerId, 'sub_category_id': subCategoryId};
-  //   String queryString = Uri(queryParameters: queryParams).query;
-  //   final response = await http.get(URLS.PRODUCTS + '?' + queryString);
-  //   if (response.statusCode == 200) {
-  //     return Products.fromJson(json.decode(response.body));
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
-  static Future<List<ProductSku>> getProduct(String subCategoryId) async {
-    try {
-      final response = await http.get(URLS.GET_CATEGORIES_PRODUCTS + "/" + subCategoryId + "/" + 'products');
-      if (response.statusCode == 200) {
-        List<ProductSku> sku = List();
-        json.decode(response.body).forEach((v) {
-          sku.add(ProductSku.fromJson(v));
-        });
-        return sku;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      throw (e);
     }
   }
 

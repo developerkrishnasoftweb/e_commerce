@@ -33,8 +33,8 @@ class _ProductDetailState extends State<ProductDetail> {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(widget.products.name,
                       style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
-                  Text("Amul".toUpperCase(),
-                      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey)),
+                  Text(widget.products.sku.toUpperCase(),
+                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey)),
                   SizedBox(height: 15),
                   Column(children: [
                     CarouselSlider(

@@ -1,7 +1,6 @@
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/rest_api.dart';
-import 'package:e_commerce/Models/sku.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -188,10 +187,9 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
         ),
         body: Container(
           child: FutureBuilder(
-              future: Future.wait([ApiService.getSubCategories(widget.id.toString()?? "1605")]),
+              future: Future.wait([ApiService.getSubCategories(widget.id.toString() ?? "1605")]),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
-
                   return Column(children: [
                     GestureDetector(
                         onTap: () {},
@@ -226,11 +224,11 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                                     Expanded(
                                         child: Text(
-                                          list != null ? list[subCatIndex].name : "Staples",
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
-                                        )),
+                                      list != null ? list[subCatIndex].name : "Staples",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                                    )),
                                     Icon(Icons.arrow_drop_down_outlined)
                                   ]),
                                   onPressed: () {
@@ -264,18 +262,18 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                                                                 title: Text(
                                                                     list != null ? list[index].name : "Fruits & Vegetables",
                                                                     style:
-                                                                    TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
+                                                                        TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
                                                                 // subtitle: Text(
                                                                 //   "Fresh Fruits,Fresh Vegetables,Herbs & Season ,Exotic Fruits & Vegetables",
                                                                 //   maxLines: 1,
                                                                 //   overflow: TextOverflow.ellipsis,
                                                                 // ),
                                                                 onTap: () => setState(() {
-                                                                  subCatIndex = index;
-                                                                  subCatIndex1 = 0;
-                                                                  subCatIndex2 = 0;
-                                                                  Navigator.of(context).pop();
-                                                                }));
+                                                                      subCatIndex = index;
+                                                                      subCatIndex1 = 0;
+                                                                      subCatIndex2 = 0;
+                                                                      Navigator.of(context).pop();
+                                                                    }));
                                                           },
                                                           itemCount: list != null ? list.length : 10))
                                                 ]);
@@ -377,62 +375,62 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                                                             scrollDirection: Axis.horizontal)),
                                                     Expanded(
                                                         child: Row(children: [
-                                                          Flexible(
-                                                              flex: 1,
-                                                              child: ListView.separated(
-                                                                  separatorBuilder: (_, index) =>
-                                                                      Divider(height: 0.5, color: Colors.grey),
-                                                                  itemBuilder: (_, index) {
-                                                                    return GestureDetector(
-                                                                        child: Container(
-                                                                            height: 50,
-                                                                            padding: EdgeInsets.symmetric(horizontal: 10),
-                                                                            alignment: Alignment.centerLeft,
-                                                                            decoration: BoxDecoration(
-                                                                                color: filterList[index].isSelected
-                                                                                    ? Colors.white
-                                                                                    : Colors.grey[200]),
-                                                                            child: Text(filterList[index].title)),
-                                                                        onTap: () {
-                                                                          filterList.forEach(
-                                                                                  (element) => state(() => element.isSelected = false));
-                                                                          state(() => filterList[index].isSelected = true);
-                                                                        });
-                                                                  },
-                                                                  itemCount: filterList.length,
-                                                                  physics: BouncingScrollPhysics())),
-                                                          Flexible(
-                                                              flex: 2,
-                                                              child: ListView.separated(
-                                                                  separatorBuilder: (_, index) =>
-                                                                      Divider(height: 0.5, color: Colors.grey),
-                                                                  itemBuilder: (_, index) {
-                                                                    FilterList filter =
-                                                                        filterList.where((element) => element.isSelected).first;
-                                                                    return filter.isMultipleSelection
-                                                                        ? CheckboxListTile(
-                                                                      value: filter.filterItems[index].isSelected,
-                                                                      onChanged: (value) {
-                                                                        state(() => filter.filterItems[index].isSelected =
-                                                                        !filter.filterItems[index].isSelected);
-                                                                      },
-                                                                      title: Text(filter.filterItems[index].title),
-                                                                    )
-                                                                        : RadioListTile<FilterItems>(
+                                                      Flexible(
+                                                          flex: 1,
+                                                          child: ListView.separated(
+                                                              separatorBuilder: (_, index) =>
+                                                                  Divider(height: 0.5, color: Colors.grey),
+                                                              itemBuilder: (_, index) {
+                                                                return GestureDetector(
+                                                                    child: Container(
+                                                                        height: 50,
+                                                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                                                        alignment: Alignment.centerLeft,
+                                                                        decoration: BoxDecoration(
+                                                                            color: filterList[index].isSelected
+                                                                                ? Colors.white
+                                                                                : Colors.grey[200]),
+                                                                        child: Text(filterList[index].title)),
+                                                                    onTap: () {
+                                                                      filterList.forEach(
+                                                                          (element) => state(() => element.isSelected = false));
+                                                                      state(() => filterList[index].isSelected = true);
+                                                                    });
+                                                              },
+                                                              itemCount: filterList.length,
+                                                              physics: BouncingScrollPhysics())),
+                                                      Flexible(
+                                                          flex: 2,
+                                                          child: ListView.separated(
+                                                              separatorBuilder: (_, index) =>
+                                                                  Divider(height: 0.5, color: Colors.grey),
+                                                              itemBuilder: (_, index) {
+                                                                FilterList filter =
+                                                                    filterList.where((element) => element.isSelected).first;
+                                                                return filter.isMultipleSelection
+                                                                    ? CheckboxListTile(
+                                                                        value: filter.filterItems[index].isSelected,
+                                                                        onChanged: (value) {
+                                                                          state(() => filter.filterItems[index].isSelected =
+                                                                              !filter.filterItems[index].isSelected);
+                                                                        },
+                                                                        title: Text(filter.filterItems[index].title),
+                                                                      )
+                                                                    : RadioListTile<FilterItems>(
                                                                         value: filter.filterItems[index],
                                                                         groupValue: filter.filterItem,
                                                                         title: Text(filter.filterItems[index].title),
                                                                         onChanged: (value) =>
                                                                             state(() => filter.filterItem = value),
                                                                         controlAffinity: ListTileControlAffinity.trailing);
-                                                                  },
-                                                                  itemCount: filterList
-                                                                      .where((element) => element.isSelected)
-                                                                      .first
-                                                                      .filterItems
-                                                                      .length,
-                                                                  physics: BouncingScrollPhysics()))
-                                                        ]))
+                                                              },
+                                                              itemCount: filterList
+                                                                  .where((element) => element.isSelected)
+                                                                  .first
+                                                                  .filterItems
+                                                                  .length,
+                                                              physics: BouncingScrollPhysics()))
+                                                    ]))
                                                   ]);
                                                 },
                                                 backgroundColor: Colors.white,
@@ -461,8 +459,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                                           childSubCategoryList[index].isSelected = true;
                                         });
                                       },
-                                      child: Text(childSubCategoryList[index].name),
-                                      color: Colors.grey[300]));
+                                      child: Text(childSubCategoryList[index].name,
+                                          style: TextStyle(
+                                              color: childSubCategoryList[index].isSelected ? Colors.white : Colors.black)),
+                                      color: childSubCategoryList[index].isSelected ? Myapp.primaryColor : Colors.grey[300]));
                             },
                             physics: BouncingScrollPhysics(),
                             itemCount: list[subCatIndex].subCategories.length > 0 ? childSubCategoryList.length : 0,
