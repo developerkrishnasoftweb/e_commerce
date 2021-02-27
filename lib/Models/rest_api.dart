@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/Banners.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
+import 'package:e_commerce/Models/TopProducts.dart';
 import 'package:e_commerce/Models/sku.dart';
 import 'package:http/http.dart' as http;
 import 'Departments.dart';
@@ -22,6 +23,7 @@ class URLS {
   static const String GET_CATEGORIES = '${URLS.SERVER_URL}/api/category';
   static const String GET_TOP_CATEGORIES = '${URLS.SERVER_URL}/api/top-category';
   static const String GET_SUBCATEGORIES = '${URLS.SERVER_URL}/api/category?category_id=';
+  static const String GET_TOP_PRODUCTS = '${URLS.SERVER_URL}/api/top-product';
 
   static const String DEPARTMENTS = '${URLS.BASE_URL}department';
   static const String CATEGORIES = '${URLS.BASE_URL}category';
@@ -91,6 +93,15 @@ class ApiService {
 
   static Future<Banners> getBannersExclusiveDeals() async {
     return getBanners('exclusive deals');
+  }
+
+  static Future<TopProducts> getTopProducts() async {
+    final response = await http.get(URLS.GET_TOP_PRODUCTS);
+    if (response.statusCode == 200) {
+      return TopProducts.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
   }
 
   static Future<Departments> getDepartments() async {

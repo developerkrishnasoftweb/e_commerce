@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/Banners.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
+import 'package:e_commerce/Models/TopProducts.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/CartScreen.dart';
 import 'package:e_commerce/Screens/SubCategoryDetails.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../main.dart';
 import 'NavigationDrawer.dart';
+import 'ProductDetail.dart';
 import 'SubCategoryDetails1.dart';
 import 'SubCategoryDetails2.dart';
 
@@ -38,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Banners topCategoryBanners, bestDealsBanners, topDealsBanners, exclusiveDealsBanners;
   MainCategory  topCategory;
   AllCategory mainCategory;
+  TopProducts topProducts;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ApiService.getBannersExclusiveDeals(),
                 ApiService.getHomeCategories(),
                 ApiService.getTopCategories(),
+                ApiService.getTopProducts()
               ]),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
@@ -76,13 +80,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   exclusiveDealsBanners = snapshot.data[3];
                   mainCategory = snapshot.data[4];
                   topCategory = snapshot.data[5];
+                  topProducts = snapshot.data[6];
                   return Expanded(
                       child: SingleChildScrollView(
                           child: Column(children: [
                     categoriesListHorizontal(mainCategory.data),
                     freeHomeDeliverySlider(topCategoryBanners.data),
                     topCategories(topCategory.data),
-                    topDeals(),
+                    topDeals(topProducts.data),
                     shopGroceries(),
                     offerListWithCategories(),
                     collectionWithBestOffers(),
@@ -241,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     }))
           ])));
 
-  topDeals() {
+  topDeals(List<Products> data) {
     List<String> litems = [
       "Lotte Choco Pie Creamfilled Biscuit 336",
       "Dove Nutritive Solutions Intense",
@@ -275,62 +280,66 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                   height: 210.h,
                   child: ListView.builder(
-                      itemCount: litems.length,
+                      itemCount: data.length,
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                            width: 110.h,
-                            height: 200.h,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
-                              child: Column(children: [
-                                Container(
-                                    width: 100.h,
-                                    height: 100.h,
-                                    alignment: Alignment.bottomCenter,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover))),
-                                Expanded(
-                                    child: Center(
-                                  child: RichText(
-                                      maxLines: 4,
-                                      overflow: TextOverflow.ellipsis,
-                                      text: TextSpan(
-                                          text: '₹ 22.50 ',
-                                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
-                                          children: [
-                                            TextSpan(
-                                                text: '₹ 45.00 \n',
-                                                style: TextStyle(
-                                                    decoration: TextDecoration.lineThrough,
-                                                    color: Colors.black,
-                                                    fontSize: 10.sp)),
-                                            TextSpan(
-                                                text: "Save ₹ 22.50 \n",
-                                                style:
-                                                    TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green)),
-                                            TextSpan(
-                                                text: litems[index],
-                                                style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold))
-                                          ])),
-                                )),
-                                RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5.sp), side: BorderSide(color: Myapp.primaryColor)),
-                                    onPressed: () {},
-                                    elevation: 0,
-                                    color: Myapp.primaryColor,
-                                    textColor: Colors.white,
-                                    padding: EdgeInsets.all(0.h),
-                                    child: SizedBox(
-                                        width: double.infinity,
-                                        child: Text("Add".toUpperCase(),
-                                            style: TextStyle(fontSize: 12.sp), textAlign: TextAlign.center)))
-                              ]),
-                            ));
+                        return GestureDetector(
+
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail(data[index]))),
+                          child: Container(
+                              width: 110.h,
+                              height: 200.h,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
+                                child: Column(children: [
+                                  Container(
+                                      width: 100.h,
+                                      height: 100.h,
+                                      alignment: Alignment.bottomCenter,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          image: DecorationImage(image: NetworkImage(URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + data[index].images[0].file), fit: BoxFit.cover))),
+                                  Expanded(
+                                      child: Center(
+                                    child: RichText(
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                        text: TextSpan(
+                                            text: '₹ '+ data[index].price.toString() +' ',
+                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
+                                            children: [
+                                              TextSpan(
+                                                  text: '₹ 45.00 \n',
+                                                  style: TextStyle(
+                                                      decoration: TextDecoration.lineThrough,
+                                                      color: Colors.black,
+                                                      fontSize: 10.sp)),
+                                              TextSpan(
+                                                  text: "Save ₹ 22.50 \n",
+                                                  style:
+                                                      TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green)),
+                                              TextSpan(
+                                                  text: data[index].name,
+                                                  style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold))
+                                            ])),
+                                  )),
+                                  RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5.sp), side: BorderSide(color: Myapp.primaryColor)),
+                                      onPressed: () {},
+                                      elevation: 0,
+                                      color: Myapp.primaryColor,
+                                      textColor: Colors.white,
+                                      padding: EdgeInsets.all(0.h),
+                                      child: SizedBox(
+                                          width: double.infinity,
+                                          child: Text("Add".toUpperCase(),
+                                              style: TextStyle(fontSize: 12.sp), textAlign: TextAlign.center)))
+                                ]),
+                              )),
+                        );
                       }))
             ])));
   }

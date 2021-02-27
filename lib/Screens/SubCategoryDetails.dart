@@ -430,29 +430,32 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)))
                             ])),
-                    Container(
-                        height: 50,
-                        width: size.width,
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: ListView.builder(
-                            itemBuilder: (_, index) {
-                              return GestureDetector(
-                                  onTap: () {
-                                    // widget.list[subCatIndex].subCategories.forEach((element) =>
-                                    //     setState(() => element.isSelected = false));
-                                    // setState(() {
-                                    //   subCatIndex1 = index;
-                                    //   widget.list[subCatIndex].subCategories[index].isSelected = true;
-                                    // });
-                                  },
-                                  child: Container(
-                                      margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
-                                      child:
-                                          FlatButton(onPressed: () {}, child: Text(products[index]), color: Colors.grey[300])));
-                            },
-                            physics: BouncingScrollPhysics(),
-                            itemCount: products.length,
-                            scrollDirection: Axis.horizontal)),
+                    Visibility(
+                      visible: false,
+                      child: Container(
+                          height: 50,
+                          width: size.width,
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: ListView.builder(
+                              itemBuilder: (_, index) {
+                                return GestureDetector(
+                                    onTap: () {
+                                      // widget.list[subCatIndex].subCategories.forEach((element) =>
+                                      //     setState(() => element.isSelected = false));
+                                      // setState(() {
+                                      //   subCatIndex1 = index;
+                                      //   widget.list[subCatIndex].subCategories[index].isSelected = true;
+                                      // });
+                                    },
+                                    child: Container(
+                                        margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
+                                        child:
+                                            FlatButton(onPressed: () {}, child: Text(products[index]), color: Colors.grey[300])));
+                              },
+                              physics: BouncingScrollPhysics(),
+                              itemCount: products.length,
+                              scrollDirection: Axis.horizontal)),
+                    ),
                     Expanded(
                         child: ListView.separated(
                             separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
