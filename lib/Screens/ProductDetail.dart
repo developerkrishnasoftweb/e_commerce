@@ -96,11 +96,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           children: [
                             TextSpan(
                                 text:
-                                    "Who doesn't like a chunk of creamy, velvety, smooth and mouth-watering butter? Made with fresh ingredients, "
-                                    "Amul Butter is a multi-purpose butter that can be used as a spread on bread, paratha, roti, naan and sandwiches. "
-                                    "It also makes an excellent topping for Pav-bhaji, dal, soups, salads, rice as well as a great cooking medium for "
-                                    "Paneer Butter Masala, Dal Makhni and a variety "
-                                    "of delightful recipes. So what are you waiting for? Buy this product online today!",
+                                    widget.products.attributes.description,
                                 style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
                             TextSpan(
                                 text: '\n\nFeatures & Details\n',
@@ -116,7 +112,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             TextSpan(text: 'Amul\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
                             TextSpan(text: 'Manufacturer : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
                             TextSpan(
-                                text: 'Hindustan Unilever Limited\n',
+                                text: '${widget.products.attributes.manufacturer}\n',
                                 style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
                             TextSpan(
                                 text: 'Country of Origin : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),

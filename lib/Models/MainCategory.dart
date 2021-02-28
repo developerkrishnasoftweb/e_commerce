@@ -182,7 +182,7 @@ class Products {
   String createdAt;
   String updatedAt;
   List<Images> images;
-  List<Attributes> attributes;
+  Attributes attributes;
 
   Products(
       {this.id,
@@ -221,12 +221,13 @@ class Products {
         images.add(new Images.fromJson(v));
       });
     }
-    if (json['attributes'] != null) {
-      attributes = new List<Attributes>();
-      json['attributes'].forEach((v) {
-        attributes.add(new Attributes.fromJson(v));
-      });
-    }
+    attributes = new Attributes.fromJson(json['attributes']);
+    // if (json['attributes'] != null) {
+    //   attributes = new List<Attributes>();
+    //   json['attributes'].forEach((v) {
+    //     attributes.add(new Attributes.fromJson(v));
+    //   });
+    // }
     quantity = 1;
     maxQuantity = 10;
     discount = 5;
@@ -246,12 +247,13 @@ class Products {
     data['type_id'] = this.typeId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['attributes'] = this.attributes;
     if (this.images != null) {
       data['images'] = this.images.map((v) => v.toJson()).toList();
     }
-    if (this.attributes != null) {
-      data['attributes'] = this.attributes.map((v) => v.toJson()).toList();
-    }
+    // if (this.attributes != null) {
+    //   data['attributes'] = this.attributes.map((v) => v.toJson()).toList();
+    // }
     return data;
   }
 }
@@ -310,38 +312,30 @@ class Images {
 }
 
 class Attributes {
-  int id;
-  int productId;
-  String title;
-  String value;
-  String createdAt;
-  String updatedAt;
+  String description;
+  String specialPrice;
+  String manufacturer;
+  String shortDescription;
 
   Attributes(
-      {this.id,
-        this.productId,
-        this.title,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      {this.description,
+        this.specialPrice,
+        this.manufacturer,
+        this.shortDescription});
 
   Attributes.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    productId = json['product_id'];
-    title = json['title'];
-    value = json['value'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    description = json['description'].toString();
+    specialPrice = json['special_price'].toString();
+    manufacturer = json['manufacturer'].toString();
+    shortDescription = json['short_description'].toString();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['product_id'] = this.productId;
-    data['title'] = this.title;
-    data['value'] = this.value;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['description'] = this.description;
+    data['special_price'] = this.specialPrice;
+    data['manufacturer'] = this.manufacturer;
+    data['short_description'] = this.shortDescription;
     return data;
   }
 }

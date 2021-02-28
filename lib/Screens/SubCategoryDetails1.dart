@@ -189,6 +189,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
           child: FutureBuilder(
               future: Future.wait([ApiService.getSubCategories(widget.id.toString() ?? "1605")]),
               builder: (context, AsyncSnapshot snapshot) {
+                print("Snapshot Data" + snapshot.toString());
                 if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
                   return Column(children: [
                     GestureDetector(
@@ -480,6 +481,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
   }
 
   Widget card(Products item) {
+    print("Item Details" + item.name);
     return GestureDetector(
         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail(item))),
         child: Container(

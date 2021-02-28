@@ -40,19 +40,27 @@ class ApiService {
 
   static Future<AllCategory> getHomeCategories() async {
     final response = await http.get(URLS.GET_CATEGORIES);
-    if (response.statusCode == 200) {
-      return AllCategory.fromJson(json.decode(response.body));
-    } else {
-      return null;
+    try {
+      if (response.statusCode == 200) {
+        return AllCategory.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw(_);
     }
   }
 
   static Future<MainCategory> getTopCategories() async {
     final response = await http.get(URLS.GET_TOP_CATEGORIES);
-    if (response.statusCode == 200) {
-      return MainCategory.fromJson(json.decode(response.body));
-    } else {
-      return null;
+    try{
+      if (response.statusCode == 200) {
+        return MainCategory.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw(_);
     }
   }
 
@@ -68,20 +76,28 @@ class ApiService {
 
   static Future<AllCategory> getGroceries() async {
     final response = await http.get(URLS.GET_GROCERIES);
-    if (response.statusCode == 200) {
-      return AllCategory.fromJson(json.decode(response.body));
-    } else {
-      return null;
+    try {
+      if (response.statusCode == 200) {
+        return AllCategory.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw(_);
     }
   }
 
   static Future<Banners> getBanners(String type) async {
     final response = await http.get(URLS.GET_BANNERS + '?banner_type=' + type);
-    if (response.statusCode == 200) {
-      return Banners.fromJson(json.decode(response.body));
-    } else {
-      print("res e" + response.toString());
-      return null;
+    try {
+      if (response.statusCode == 200) {
+        return Banners.fromJson(json.decode(response.body));
+      } else {
+        print("res e" + response.toString());
+        return null;
+      }
+    } catch (_) {
+      throw(_);
     }
   }
 
@@ -103,10 +119,14 @@ class ApiService {
 
   static Future<TopProducts> getTopProducts() async {
     final response = await http.get(URLS.GET_TOP_PRODUCTS);
-    if (response.statusCode == 200) {
-      return TopProducts.fromJson(json.decode(response.body));
-    } else {
-      return null;
+    try {
+      if (response.statusCode == 200) {
+        return TopProducts.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw(_);
     }
   }
 
