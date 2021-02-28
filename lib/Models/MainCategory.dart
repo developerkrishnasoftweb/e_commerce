@@ -181,6 +181,7 @@ class Products {
   String typeId;
   String createdAt;
   String updatedAt;
+  bool inStock;
   List<Images> images;
   Attributes attributes;
 
@@ -201,6 +202,7 @@ class Products {
         this.maxQuantity,
         this.discount,
         this.inCart,
+        this.inStock,
         this.attributes});
 
   Products.fromJson(Map<String, dynamic> json) {
@@ -222,16 +224,11 @@ class Products {
       });
     }
     attributes = new Attributes.fromJson(json['attributes']);
-    // if (json['attributes'] != null) {
-    //   attributes = new List<Attributes>();
-    //   json['attributes'].forEach((v) {
-    //     attributes.add(new Attributes.fromJson(v));
-    //   });
-    // }
-    quantity = 1;
-    maxQuantity = 10;
+    maxQuantity = json['quantity'];
     discount = 5;
     inCart = false;
+    inStock = json['in_stock'];
+    quantity = 1;
   }
 
   Map<String, dynamic> toJson() {
@@ -248,6 +245,8 @@ class Products {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['attributes'] = this.attributes;
+    data['in_stock'] = this.inStock;
+    data['quantity'] = this.quantity;
     if (this.images != null) {
       data['images'] = this.images.map((v) => v.toJson()).toList();
     }
@@ -339,7 +338,3 @@ class Attributes {
     return data;
   }
 }
-
-
-
-

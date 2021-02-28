@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/CartScreen.dart';
+import 'package:e_commerce/constant/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,11 +63,11 @@ class _ProductDetailState extends State<ProductDetail> {
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
                       text: TextSpan(
-                          text: 'You Save ₹ 22.50 \n',
+                          text: 'You Save ₹ ${widget.products.price - double.parse(widget.products.attributes.specialPrice)} \n',
                           style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 16.sp),
                           children: [
                             TextSpan(
-                                text: "Save ₹ 225.0 ",
+                                text: "₹ ${(widget.products.price * widget.products.quantity) - (widget.products.quantity * widget.products.discount)} ",
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
                             TextSpan(
                                 text: '₹ '+ widget.products.price.toString() + " ",
@@ -83,7 +84,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 16.sp),
                           children: [
                             TextSpan(text: 'Sold by ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
-                            TextSpan(text: 'Reliance Retail', style: TextStyle(fontSize: 12.sp, color: Colors.blue)),
+                            TextSpan(text: 'Pal Departmental Store', style: TextStyle(fontSize: 12.sp, color: Colors.blue)),
                             TextSpan(text: '\n\nFree Shipping', style: TextStyle(fontSize: 16.sp, color: Colors.black))
                           ])),
                   Container(height: 10),
@@ -103,22 +104,22 @@ class _ProductDetailState extends State<ProductDetail> {
                                 style: TextStyle(fontSize: 16.sp, color: Colors.black)),
                             TextSpan(
                                 text:
-                                    "Smooth and creamy\nEasy to spread\nEnhances the flavour\nAmul Butter is the tastiest",
+                                    removeHtmlTags(data: widget.products.attributes.shortDescription),
                                 style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
                             TextSpan(
                                 text: '\n\nProduct Information\n\n',
                                 style: TextStyle(fontSize: 16.sp, color: Colors.black)),
-                            TextSpan(text: 'Brand : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
-                            TextSpan(text: 'Amul\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
+                            // TextSpan(text: 'Brand : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
+                            // TextSpan(text: 'Amul\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
                             TextSpan(text: 'Manufacturer : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
                             TextSpan(
                                 text: '${widget.products.attributes.manufacturer}\n',
                                 style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
-                            TextSpan(
-                                text: 'Country of Origin : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
-                            TextSpan(text: 'India\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
-                            TextSpan(text: 'Food Type : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
-                            TextSpan(text: 'Veg\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey))
+                            // TextSpan(
+                            //     text: 'Country of Origin : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
+                            // TextSpan(text: 'India\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
+                            // TextSpan(text: 'Food Type : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
+                            // TextSpan(text: 'Veg\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey))
                           ])),
                   Row(children: [
                     Expanded(

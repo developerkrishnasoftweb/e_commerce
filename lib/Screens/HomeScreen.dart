@@ -84,6 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ApiService.getGroceries(),
               ]),
               builder: (context, AsyncSnapshot snapshot) {
+                if(snapshot.hasError) {
+                  throw(snapshot.error);
+                }
                 if (snapshot.connectionState == ConnectionState.done &&
                     snapshot.data != null) {
                   topCategoryBanners = snapshot.data[0];

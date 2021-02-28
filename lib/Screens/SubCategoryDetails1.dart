@@ -504,14 +504,14 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                                 style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                                 children: [
                               TextSpan(
-                                  text: "\u20b9${item.price * item.quantity}",
+                                  text: "\u20b9${double.parse(item.attributes.specialPrice) * item.quantity}",
                                   style: TextStyle(
                                       color: Colors.black87,
                                       fontSize: 14,
                                       decoration: TextDecoration.lineThrough,
                                       fontWeight: FontWeight.bold)),
                               TextSpan(
-                                  text: "\t\tYou Save \u20b9${item.discount * item.quantity}",
+                                  text: "\t\tYou Save \u20b9${double.parse(item.attributes.specialPrice) * item.quantity}",
                                   style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold))
                             ])),
                         SizedBox(height: 10),
