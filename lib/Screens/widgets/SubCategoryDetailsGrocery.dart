@@ -1,12 +1,11 @@
-
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
+import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/ProductDetail.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class SubCategoryDetailsGrocery extends StatefulWidget {
   List<SubCategotyLIst> list;
@@ -385,10 +384,8 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                                                       return filter.isMultipleSelection
                                                           ? CheckboxListTile(
                                                               value: filter.filterItems[index].isSelected,
-                                                              onChanged: (value) {
-                                                                state(() => filter.filterItems[index].isSelected =
-                                                                    !filter.filterItems[index].isSelected);
-                                                              },
+                                                              onChanged: (value) => state(() => filter.filterItems[index].isSelected =
+                                                                    !filter.filterItems[index].isSelected),
                                                               title: Text(filter.filterItems[index].title),
                                                             )
                                                           : RadioListTile<FilterItems>(
@@ -443,15 +440,28 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                     scrollDirection: Axis.horizontal)),
           ),
           Expanded(
-              child: ListView.separated(
-                  separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
-                  itemBuilder: (_, index) => card(widget.list[subCatIndex].childSubCategory[subCatIndex1].products[index]),
-                  itemCount: widget.list[subCatIndex].childSubCategory[subCatIndex1].products.length))
-        ])
-            //     } else
-            //      return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
-            //     }),
-            ));
+              child: FutureBuilder(
+                  future: Future.wait([
+                    ApiService.getProductsById(widget.list[subCatIndex].childSubCategory[subCatIndex1].id != 0
+                        ? widget.list[subCatIndex].childSubCategory[subCatIndex1].id.toString()
+                        : widget.list[subCatIndex].id.toString())
+                  ]),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    print("Snapshot Data" + snapshot.toString());
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.data != null) {
+                        ProductsById data = snapshot.data[0];
+                        return ListView.separated(
+                            separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
+                            itemBuilder: (_, index) => card(data.data[index]),
+                            itemCount: data.data.length > 0 ? data.data.length : 0);
+                      } else {
+                        return Center(child: Text("Product not found!", style: TextStyle(color: Colors.black)));
+                      }
+                    } else
+                      return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
+                  }))
+        ])));
   }
 
   Widget card(Products item) {

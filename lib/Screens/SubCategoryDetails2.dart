@@ -1,5 +1,6 @@
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
+import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
@@ -139,6 +140,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
   List<Products> productsList = [];
   List<ChildSubCategory> childSubCategoryList = [];
   List<SubCategotyLIst> subCategories = [];
+  var productId = 0;
 
   @override
   void initState() {
@@ -153,9 +155,6 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    refresh();
-
-
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -169,11 +168,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
                   AllCategory mainCategory = snapshot.data[0];
-
                   list = mainCategory.data;
-
                   refresh();
-
                   return Column(children: [
                     GestureDetector(
                         onTap: () {},
@@ -208,7 +204,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                                     Expanded(
                                         child: Text(
-                                      list != null ? list[subCatIndex].name : "Staples",
+                                      list.isNotEmpty ? list[subCatIndex].name : "Staples",
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
@@ -451,13 +447,26 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                       color: childSubCategoryList[index].isSelected ? Myapp.primaryColor : Colors.grey[300]));
                             },
                             physics: BouncingScrollPhysics(),
-                            itemCount: list[subCatIndex].subCategories.length > 0 ? childSubCategoryList.length : 0,
+                            itemCount: list.isNotEmpty ? list[subCatIndex].subCategories.length > 0 ? childSubCategoryList.length : 0 :0,
                             scrollDirection: Axis.horizontal)),
                     Expanded(
-                        child: ListView.separated(
-                            separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
-                            itemBuilder: (_, index) => card(productsList[index]),
-                            itemCount: productsList.length > 0 ? productsList.length : 0))
+                      child: FutureBuilder(
+                          future: Future.wait([ApiService.getProductsById(productId.toString())]),
+                          builder: (context, AsyncSnapshot snapshot) {
+                            print("Snapshot Data" + snapshot.toString());
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              if (snapshot.data != null) {
+                                ProductsById data = snapshot.data[0];
+                                return ListView.separated(
+                                    separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
+                                    itemBuilder: (_, index) => card(data.data[index]),
+                                    itemCount: data.data.length > 0 ? data.data.length : 0);
+                              } else {
+                                return Center(child: Text("Product not found!", style: TextStyle(color: Colors.black)));
+                              }
+                            } else
+                              return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
+                          }))
                   ]);
                 } else
                   return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
@@ -558,30 +567,54 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
 
   void refresh() {
 
-
-
     if (list.length > subCatIndex) {
       subCategories = list[subCatIndex].subCategories;
-
       if (list[subCatIndex].subCategories.length > subCatIndex1) {
         list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
         childSubCategoryList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory;
-
         if (list[subCatIndex].subCategories[subCatIndex1].childSubCategory.length > subCatIndex2) {
           list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].isSelected = true;
-          productsList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].products;
+          productId = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id != 0
+              ? list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id
+              : list[subCatIndex].subCategories[subCatIndex1].id;
         } else {
-          productsList = [];
+          productId = 0;
         }
       } else {
         childSubCategoryList = [];
-        productsList = [];
+        productId = 0;
       }
     } else {
       childSubCategoryList = [];
       productsList = [];
       subCategories = [];
+      productId = 0;
     }
+
+
+    // if (list.length > subCatIndex) {
+    //   subCategories = list[subCatIndex].subCategories;
+    //
+    //   if (list[subCatIndex].subCategories.length > subCatIndex1) {
+    //     list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
+    //     childSubCategoryList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory;
+    //
+    //     if (list[subCatIndex].subCategories[subCatIndex1].childSubCategory.length > subCatIndex2) {
+    //       list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].isSelected = true;
+    //       productsList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].products;
+    //     } else {
+    //       productsList = [];
+    //     }
+    //   } else {
+    //     childSubCategoryList = [];
+    //     productsList = [];
+    //   }
+    // } else {
+    //   childSubCategoryList = [];
+    //   productsList = [];
+    //   subCategories = [];
+    // }
+
   }
 
 }

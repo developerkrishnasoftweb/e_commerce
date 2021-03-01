@@ -1,5 +1,5 @@
-
 import 'package:e_commerce/Models/MainCategory.dart';
+import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
@@ -149,7 +149,6 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
     Size size = MediaQuery.of(context).size;
 
     widget.list[subCatIndex].subCategories.forEach((element) => setState(() => element.isSelected = false));
-
     widget.list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
 
     return Scaffold(
@@ -442,15 +441,24 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
                     scrollDirection: Axis.horizontal)),
           ),
           Expanded(
-              child: ListView.separated(
-                  separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
-                  itemBuilder: (_, index) => card(widget.list[subCatIndex].subCategories[subCatIndex1].products[index]),
-                  itemCount: widget.list[subCatIndex].subCategories[subCatIndex1].products.length))
-        ])
-            //     } else
-            //      return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
-            //     }),
-            ));
+              child: FutureBuilder(
+                  future: Future.wait([ApiService.getProductsById(widget.list[subCatIndex].subCategories[subCatIndex1].id.toString())]),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    print("Snapshot Data" + snapshot.toString());
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.data != null) {
+                        ProductsById data = snapshot.data[0];
+                        return ListView.separated(
+                            separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
+                            itemBuilder: (_, index) => card(data.data[index]),
+                            itemCount: data.data.length > 0 ? data.data.length : 0);
+                      } else {
+                        return Center(child: Text("Product not found!", style: TextStyle(color: Colors.black)));
+                      }
+                    } else
+                      return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
+                  }))
+        ])));
   }
 
   Widget card(Products item) {

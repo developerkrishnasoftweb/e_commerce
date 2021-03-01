@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/Banners.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
+import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/TopProducts.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,6 +23,7 @@ class URLS {
   static const String GET_SUBCATEGORIES = '${URLS.SERVER_URL}/api/category?category_id=';
   static const String GET_GROCERIES = '${URLS.SERVER_URL}/api/category?category_type=Grocery';
   static const String GET_TOP_PRODUCTS = '${URLS.SERVER_URL}/api/top-product';
+  static const String GET_PRODUCTS = '${URLS.SERVER_URL}/api/product?category_id=';
 
   static const String DEPARTMENTS = '${URLS.BASE_URL}department';
   static const String CATEGORIES = '${URLS.BASE_URL}category';
@@ -79,6 +81,20 @@ class ApiService {
     try {
       if (response.statusCode == 200) {
         return AllCategory.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw(_);
+    }
+  }
+
+  static Future<ProductsById> getProductsById(String id) async {
+    print("URL     " + URLS.GET_PRODUCTS+ id);
+    final response = await http.get(URLS.GET_PRODUCTS+ id);
+    try {
+      if (response.statusCode == 200) {
+        return ProductsById.fromJson(json.decode(response.body));
       } else {
         return null;
       }
