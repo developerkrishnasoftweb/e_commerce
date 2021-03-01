@@ -17,7 +17,7 @@ class _SignUpState extends State<SignUp> {
   bool terms = false, isLoading = false;
   List<String> genders = ["Select Gender", "Male", "Female", "Not Specified"];
   int gender = 0;
-  String firstName = "", lastName = "", email = "", password = "";
+  String firstName = "", lastName = "", email = "", password = "", phone = "";
   TextEditingController dob = TextEditingController();
 
   setLoading(bool status) {
@@ -105,6 +105,16 @@ class _SignUpState extends State<SignUp> {
                   },
                   textInputAction: TextInputAction.next,
                   text: "Email $mandatoryChar"),
+              input(
+                  context: context,
+                  keyboardType: TextInputType.phone,
+                  onChanged: (value) {
+                    setState(() {
+                      phone = value;
+                    });
+                  },
+                  textInputAction: TextInputAction.next,
+                  text: "Mobile $mandatoryChar"),
               input(
                   context: context,
                   keyboardType: TextInputType.datetime,
