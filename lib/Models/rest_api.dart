@@ -19,9 +19,12 @@ class URLS {
   static const String IMAGE_URL = SERVER_URL;
   static const String PAL_IMAGE_URL = 'https://palshopie.com';
   static const String GET_CATEGORIES = '${URLS.SERVER_URL}/api/category';
-  static const String GET_TOP_CATEGORIES = '${URLS.SERVER_URL}/api/top-category';
-  static const String GET_SUBCATEGORIES = '${URLS.SERVER_URL}/api/category?category_id=';
-  static const String GET_GROCERIES = '${URLS.SERVER_URL}/api/category?category_type=Grocery';
+  static const String GET_TOP_CATEGORIES =
+      '${URLS.SERVER_URL}/api/top-category';
+  static const String GET_SUBCATEGORIES =
+      '${URLS.SERVER_URL}/api/category?category_id=';
+  static const String GET_GROCERIES =
+      '${URLS.SERVER_URL}/api/category?category_type=Grocery';
   static const String GET_TOP_PRODUCTS = '${URLS.SERVER_URL}/api/top-product';
   static const String GET_PRODUCTS = '${URLS.SERVER_URL}/api/product?category_id=';
 
@@ -31,15 +34,15 @@ class URLS {
   static const String GET_CATEGORIES_PRODUCTS = '${URLS.BASE_URL}categories';
   static const String GET_PRODUCT_LIST = '${URLS.BASE_URL}mma/categories';
 
-  static const String PAL_SHOPPIE_BASE_URL = 'https://www.palshopie.com/rest/V1/';
+  static const String PAL_SHOPPIE_BASE_URL =
+      'https://www.palshopie.com/rest/V1/';
   static const String REGISTER = '${URLS.PAL_SHOPPIE_BASE_URL}customers/';
-  static const String GENERATE_TOKEN = '${URLS.PAL_SHOPPIE_BASE_URL}integration/customer/token';
+  static const String GENERATE_TOKEN =
+      '${URLS.PAL_SHOPPIE_BASE_URL}integration/customer/token';
   static const String LOGIN = '${URLS.PAL_SHOPPIE_BASE_URL}customers/me';
-
 }
 
 class ApiService {
-
   static Future<AllCategory> getHomeCategories() async {
     final response = await http.get(URLS.GET_CATEGORIES);
     try {
@@ -49,20 +52,20 @@ class ApiService {
         return null;
       }
     } catch (_) {
-      throw(_);
+      throw (_);
     }
   }
 
   static Future<MainCategory> getTopCategories() async {
     final response = await http.get(URLS.GET_TOP_CATEGORIES);
-    try{
+    try {
       if (response.statusCode == 200) {
         return MainCategory.fromJson(json.decode(response.body));
       } else {
         return null;
       }
     } catch (_) {
-      throw(_);
+      throw (_);
     }
   }
 
@@ -85,7 +88,7 @@ class ApiService {
         return null;
       }
     } catch (_) {
-      throw(_);
+      throw (_);
     }
   }
 
@@ -99,7 +102,7 @@ class ApiService {
         return null;
       }
     } catch (_) {
-      throw(_);
+      throw (_);
     }
   }
 
@@ -142,7 +145,7 @@ class ApiService {
         return null;
       }
     } catch (_) {
-      throw(_);
+      throw (_);
     }
   }
 
@@ -206,17 +209,7 @@ class ApiService {
       throw (_);
     }
   }
-
-
-
-
-
-
-
-
 }
-
-
 
 class ResponseData {
   final bool status;
@@ -229,5 +222,4 @@ class ResponseData {
     return ResponseData(
         data: json['data'], message: json['message'], status: json['status']);
   }
-
 }
