@@ -9,10 +9,8 @@ import '../../constant/color.dart';
 
 class OTP extends StatefulWidget {
   final String otp, mobile;
-  final FormData formData;
   OTP({
     this.otp,
-    this.formData,
     this.mobile
   });
   @override
