@@ -14,7 +14,10 @@ AppBar appBar(
   if (leading == null)
     leading = IconButton(
       icon: Icon(Icons.arrow_back_ios),
-      onPressed: () => Navigator.pop(context),
+      onPressed: () {
+        if(Navigator.canPop(context))
+          Navigator.pop(context);
+      },
       iconSize: 20,
       splashRadius: 25,
     );
