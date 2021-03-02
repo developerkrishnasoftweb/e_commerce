@@ -74,64 +74,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
       ],
     ),
   ];
-  List<Category> categories = [
-    Category(title: "Atta, Flours & Sooji", image: "https://www.jiomart.com/images/category/14/thumb/0-14.png"),
-    Category(title: "Dals & Pulses", image: "https://www.jiomart.com/images/category/17/thumb/dals-pulses-20200714.png"),
-    Category(
-        title: "Rice & Rice Products", image: "https://www.jiomart.com/images/category/14/thumb/rice-rice-products-20200722.png"),
-    Category(title: "Edible Oil", image: "https://www.jiomart.com/images/category/18/thumb/0-18.png"),
-    Category(title: "Masalas Spices", image: "https://www.jiomart.com/images/category/15/thumb/0-15.png"),
-  ];
+
   List<String> products = ["ALL", "Exotic Vegetables", "Citrus Fruits", "Root Vegetable", "Beans", "Guard", "Vegetable Others"],
       filterTabs = ["Popularity", "High to Low", "Low to High", "Discount"];
-  List<Item> items = [
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
-        category: "Groccery",
-        price: 12,
-        name: "Aashirvaad Multigrain Atta 5 kg",
-        quantity: 1,
-        discount: 10,
-        maxQuantity: 5),
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491504124/super-sarvottam-physicaly-refined-100-rice-bran-oil-1-l-pouch-0-20201021.jpg",
-        category: "Groccery",
-        price: 200,
-        name: "Tata Lite Free Flow Iodised Salt 1 kg",
-        quantity: 1,
-        discount: 30,
-        maxQuantity: 1),
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491076026/oleev-active-ricebran-based-blended-oil-5-l-jar-0-20200825.jpg",
-        category: "Groccery",
-        price: 121.0,
-        name: "Good Life Tur Dal 1 kg",
-        quantity: 5,
-        discount: 20,
-        inCart: true,
-        maxQuantity: 20),
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491278308/priya-fortified-with-vitamin-a-d-refined-sunflower-oil-1-l-0-20210119.jpg",
-        category: "Groccery",
-        price: 123,
-        name: "Good Life Almonds 500 g",
-        quantity: 1,
-        discount: 15,
-        maxQuantity: 10),
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491076025/oleev-active-ricebran-based-blended-oil-1-l-pouch-0-20200805.jpg",
-        category: "Groccery",
-        price: 200,
-        name: "Tata Lite Free Flow Iodised Salt 1 kg",
-        quantity: 1,
-        discount: 30,
-        maxQuantity: 1),
-  ];
+
 
   var subCatIndex = 0;
   var subCatIndex1 = 0;
@@ -144,7 +90,6 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     subCatIndex = 0;
     subCatIndex1 = 0;
@@ -316,7 +261,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("${items.length} products"),
+                              Text("5 products"),
                               FlatButton.icon(
                                   onPressed: () {
                                     showModalBottomSheet(

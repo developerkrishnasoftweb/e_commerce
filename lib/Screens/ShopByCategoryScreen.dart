@@ -14,40 +14,33 @@ class _ShopByCategoryScreenState extends State<ShopByCategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 50.sp,
-          title: Text("Shop by Category", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
-          actions: [
-            IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {}),
-            IconButton(
-                icon: Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
-                })
-          ],
-        ),
+            toolbarHeight: 50.sp,
+            title: Text("Shop by Category", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+            actions: [
+              IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {}),
+              IconButton(
+                  icon: Icon(Icons.shopping_cart, color: Colors.white),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen())))
+            ]),
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
         drawer: navigationDrawer(),
         body: ListView.builder(
-          itemCount: categoryItem.length,
-          itemBuilder: (context, i) {
-            return ExpansionTile(
-                title: Row(children: [
-                  Padding(
-                      padding: EdgeInsets.all(10.sp),
-                      child: Image(image: NetworkImage(categoryItem[i].image), width: 40.sp, height: 40.sp)),
-                  Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(categoryItem[i].title,
-                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Colors.black)),
-                    Text(categoryItem[i].description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey))
-                  ]))
-                ]),
-                children: <Widget>[new Column(children: _buildExpandableContent(categoryItem[i].subCategoryItem))]);
-          },
-        ));
+            itemCount: categoryItem.length,
+            itemBuilder: (context, i) {
+              return ExpansionTile(
+                  title: Row(children: [
+                    Padding(
+                        padding: EdgeInsets.all(10.sp),
+                        child: Image(image: NetworkImage(categoryItem[i].image), width: 40.sp, height: 40.sp)),
+                    Expanded(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(categoryItem[i].title, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Colors.black)),
+                      Text(categoryItem[i].description,
+                          maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey))
+                    ]))
+                  ]),
+                  children: <Widget>[new Column(children: _buildExpandableContent(categoryItem[i].subCategoryItem))]);
+            }));
   }
 
   _buildExpandableContent(List<SubCategoryItem> subCategoryItem) {
@@ -55,12 +48,8 @@ class _ShopByCategoryScreenState extends State<ShopByCategoryScreen> {
     for (SubCategoryItem content in subCategoryItem)
       columnContent.add(ExpansionTile(
           title: Row(children: [
-            Padding(
-                padding: EdgeInsets.all(10.sp),
-                child: Image(image: NetworkImage(content.image), width: 40.sp, height: 40.sp)),
-            Expanded(
-                child: Text(content.title,
-                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Colors.black)))
+            Padding(padding: EdgeInsets.all(10.sp), child: Image(image: NetworkImage(content.image), width: 40.sp, height: 40.sp)),
+            Expanded(child: Text(content.title, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Colors.black)))
           ]),
           children: <Widget>[Column(children: _buildExpandableContent1())]));
     return columnContent;
@@ -69,14 +58,11 @@ class _ShopByCategoryScreenState extends State<ShopByCategoryScreen> {
   _buildExpandableContent1() {
     List<Widget> columnContent = [];
     for (var i = 0; i < 5; i++)
-      columnContent.add(
-        ListTile(
+      columnContent.add(ListTile(
           dense: true,
           contentPadding: EdgeInsets.only(left: 25.sp, right: 25.sp, top: 0, bottom: 0),
           title: Text("Fresh Fruits", style: TextStyle(fontSize: 12.sp)),
-          trailing: Icon(Icons.navigate_next),
-        ),
-      );
+          trailing: Icon(Icons.navigate_next)));
     return columnContent;
   }
 }
@@ -88,8 +74,7 @@ List<CategoryItem> categoryItem = [
       'Fruits & Vegetables, Dairy & Bakery, Staples, Snacks & Branded Foods, Beverages, '
           'Personal Care, Home Care, Baby Care, Best Deals, Home & Kitchen',
       [
-        SubCategoryItem(
-            "Fruits & Vegetables", 'https://www.jiomart.com/images/category/141/thumb/fruits-vegetables-20200520.png'),
+        SubCategoryItem("Fruits & Vegetables", 'https://www.jiomart.com/images/category/141/thumb/fruits-vegetables-20200520.png'),
         SubCategoryItem('Dairy & Bakery', 'https://www.jiomart.com/images/category/12/thumb/0-12.png'),
         SubCategoryItem('Staples', 'https://www.jiomart.com/images/category/13/thumb/staples-20200710.jpg'),
         SubCategoryItem('Snacks & Branded Foods', 'https://www.jiomart.com/images/category/11/thumb/0-11.png'),
@@ -100,9 +85,8 @@ List<CategoryItem> categoryItem = [
     SubCategoryItem("Women", 'https://www.jiomart.com/images/category/493/thumb/women-20200808.jpg'),
     SubCategoryItem("Boys", 'https://www.jiomart.com/images/category/499/thumb/boys-20200808.jpg')
   ]),
-  CategoryItem('Jewellery', 'https://static.thenounproject.com/png/1451484-200.png', 'Fine Jewellery', [
-    SubCategoryItem("Fine Jewellery", 'https://www.jiomart.com/images/category/1531/thumb/fine-jewellery-20201127.png')
-  ])
+  CategoryItem('Jewellery', 'https://static.thenounproject.com/png/1451484-200.png', 'Fine Jewellery',
+      [SubCategoryItem("Fine Jewellery", 'https://www.jiomart.com/images/category/1531/thumb/fine-jewellery-20201127.png')])
 ];
 
 class CategoryItem {

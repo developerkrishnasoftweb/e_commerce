@@ -96,15 +96,13 @@ class _ProductDetailState extends State<ProductDetail> {
                           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),
                           children: [
                             TextSpan(
-                                text:
-                                    widget.products.attributes.description,
+                                text: widget.products.attributes.description,
                                 style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
                             TextSpan(
                                 text: '\n\nFeatures & Details\n',
                                 style: TextStyle(fontSize: 16.sp, color: Colors.black)),
                             TextSpan(
-                                text:
-                                    removeHtmlTags(data: widget.products.attributes.shortDescription),
+                                text: removeHtmlTags(data: widget.products.attributes.shortDescription),
                                 style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
                             TextSpan(
                                 text: '\n\nProduct Information\n\n',

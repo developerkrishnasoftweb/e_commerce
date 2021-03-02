@@ -30,8 +30,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 30,
         maxQuantity: 1),
     CartItem(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491076026/oleev-active-ricebran-based-blended-oil-5-l-jar-0-20200825.jpg",
+        image: "https://www.jiomart.com/images/product/75x75/491076026/oleev-active-ricebran-based-blended-oil-5-l-jar-0-20200825.jpg",
         category: "Groccery",
         price: 121.0,
         name: "Good Life Tur Dal 1 kg",
@@ -48,8 +47,7 @@ class _CartScreenState extends State<CartScreen> {
         discount: 15,
         maxQuantity: 10),
     CartItem(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491076025/oleev-active-ricebran-based-blended-oil-1-l-pouch-0-20200805.jpg",
+        image: "https://www.jiomart.com/images/product/75x75/491076025/oleev-active-ricebran-based-blended-oil-1-l-pouch-0-20200805.jpg",
         category: "Groccery",
         price: 200,
         name: "Tata Lite Free Flow Iodised Salt 1 kg",
@@ -63,10 +61,9 @@ class _CartScreenState extends State<CartScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 50.sp,
-          title: Text("My Cart", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
-          actions: [IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {})],
-        ),
+            toolbarHeight: 50.sp,
+            title: Text("My Cart", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+            actions: [IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {})]),
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
         drawer: navigationDrawer(),
         body: SingleChildScrollView(
@@ -86,9 +83,7 @@ class _CartScreenState extends State<CartScreen> {
                                 text: "Deliver to\t\t",
                                 style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
                                 children: [
-                                  TextSpan(
-                                      text: "394221",
-                                      style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))
+                                  TextSpan(text: "394221", style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))
                                 ]),
                             textAlign: TextAlign.center)
                       ]))),
@@ -103,8 +98,7 @@ class _CartScreenState extends State<CartScreen> {
               Container(
                   width: size.width,
                   padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  child:
-                      Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
                     Text("Apply Coupon", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     SizedBox(height: 20),
                     RichText(
@@ -122,8 +116,7 @@ class _CartScreenState extends State<CartScreen> {
               Container(
                   width: size.width,
                   padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  child:
-                      Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
                     Text("Payment Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     SizedBox(height: 20),
                     amountRow(title: "MRP Total", amount: "900.00"),
@@ -134,8 +127,7 @@ class _CartScreenState extends State<CartScreen> {
                     SizedBox(height: 10),
                     Align(
                         alignment: Alignment.centerRight,
-                        child: Text("You Save \u20b9232.00",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.green)))
+                        child: Text("You Save \u20b9232.00", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.green)))
                   ])),
               greyStrip()
             ])),
@@ -146,13 +138,10 @@ class _CartScreenState extends State<CartScreen> {
             height: 75,
             child: Row(children: [
               Expanded(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                    Text("Payable Amount", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16)),
-                    Text("\u20b94603.00", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16))
-                  ])),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                Text("Payable Amount", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16)),
+                Text("\u20b94603.00", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16))
+              ])),
               Expanded(
                   child: Padding(
                       padding: const EdgeInsets.only(left: 30),
@@ -242,9 +231,7 @@ class _CartScreenState extends State<CartScreen> {
         ]));
   }
 
-  Widget greyStrip() {
-    return Container(height: 25, width: double.infinity, color: Color.fromRGBO(0, 0, 0, 0.2));
-  }
+  Widget greyStrip() => Container(height: 25, width: double.infinity, color: Color.fromRGBO(0, 0, 0, 0.2));
 }
 
 class CartItem {

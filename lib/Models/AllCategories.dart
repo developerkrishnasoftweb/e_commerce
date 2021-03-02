@@ -38,8 +38,6 @@ class MainData {
   int position;
   int level;
   int productCount;
-  String createdAt;
-  String updatedAt;
   List<SubCategotyLIst> subCategories;
 
   MainData(
@@ -51,8 +49,6 @@ class MainData {
       this.position,
       this.level,
       this.productCount,
-      this.createdAt,
-      this.updatedAt,
       this.subCategories});
 
   MainData.fromJson(Map<String, dynamic> json) {
@@ -64,8 +60,6 @@ class MainData {
     position = json['position'];
     level = json['level'];
     productCount = json['product_count'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
     if (json['sub_categories'] != null) {
       subCategories = new List<SubCategotyLIst>();
       json['sub_categories'].forEach((v) {
@@ -84,8 +78,6 @@ class MainData {
     data['position'] = this.position;
     data['level'] = this.level;
     data['product_count'] = this.productCount;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     if (this.subCategories != null) {
       data['sub_categories'] = this.subCategories.map((v) => v.toJson()).toList();
     }
@@ -102,8 +94,6 @@ class SubCategotyLIst {
   int position;
   int level;
   int productCount;
-  String createdAt;
-  String updatedAt;
   List<ChildSubCategory> childSubCategory;
   bool isSelected;
 
@@ -116,8 +106,6 @@ class SubCategotyLIst {
       this.position,
       this.level,
       this.productCount,
-      this.createdAt,
-      this.updatedAt,
       this.childSubCategory,
       this.isSelected: false});
 
@@ -130,8 +118,6 @@ class SubCategotyLIst {
     position = json['position'];
     level = json['level'];
     productCount = json['product_count'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
     if (json['child_sub_category'] != null) {
       childSubCategory = new List<ChildSubCategory>();
       json['child_sub_category'].forEach((v) {
@@ -151,8 +137,6 @@ class SubCategotyLIst {
     data['position'] = this.position;
     data['level'] = this.level;
     data['product_count'] = this.productCount;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     if (this.childSubCategory != null) {
       data['child_sub_category'] = this.childSubCategory.map((v) => v.toJson()).toList();
     }
@@ -169,8 +153,6 @@ class ChildSubCategory {
   int position;
   int level;
   int productCount;
-  String createdAt;
-  String updatedAt;
   List<Products> products;
   bool isSelected;
 
@@ -183,8 +165,6 @@ class ChildSubCategory {
       this.position,
       this.level,
       this.productCount,
-      this.createdAt,
-      this.updatedAt,
       this.products,
       this.isSelected: false});
 
@@ -197,8 +177,6 @@ class ChildSubCategory {
     position = json['position'];
     level = json['level'];
     productCount = json['product_count'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
     if (json['products'] != null) {
       products = new List<Products>();
       json['products'].forEach((v) {
@@ -218,8 +196,6 @@ class ChildSubCategory {
     data['position'] = this.position;
     data['level'] = this.level;
     data['product_count'] = this.productCount;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     if (this.products != null) {
       data['products'] = this.products.map((v) => v.toJson()).toList();
     }
