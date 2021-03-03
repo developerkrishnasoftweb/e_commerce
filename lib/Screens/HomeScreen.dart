@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/Models/AllCategories.dart';
+import 'package:e_commerce/Models/AllCollection.dart';
 import 'package:e_commerce/Models/Banners.dart';
 import 'package:e_commerce/Models/BestOffer.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
@@ -7,7 +8,7 @@ import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/CartScreen.dart';
 import 'package:e_commerce/Screens/SubCategoryDetails.dart';
-import 'package:e_commerce/Screens/widgets/SubCategoryDetailsGrocery.dart';
+import 'package:e_commerce/Screens/SubCategoryDetailsGrocery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,13 +26,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   Banners topCategoryBanners, bestDealsBanners, topDealsBanners, exclusiveDealsBanners;
   MainCategory topCategory;
   AllCategory mainCategory;
-  AllCategory shopGrocery;
+  AllCategory shopGrocery, kidsFashionData;
   ProductsById topProducts;
-  BestOffers bestOffers, offers1;
+  BestOffers bestOffers;
+  AllCollection offers;
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ApiService.getTopProducts(),
                 ApiService.getGroceries(),
                 ApiService.getBestOfferCollection(),
-                ApiService.getOffers1(),
+                ApiService.getKidsFashion(),
+                ApiService.getOffers1()
               ]),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   throw (snapshot.error);
                 }
                 if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
-
                   topCategoryBanners = snapshot.data[0];
                   bestDealsBanners = snapshot.data[1];
                   topDealsBanners = snapshot.data[2];
@@ -81,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   topProducts = snapshot.data[6];
                   shopGrocery = snapshot.data[7];
                   bestOffers = snapshot.data[8];
-                  offers1 = snapshot.data[9];
+                  kidsFashionData = snapshot.data[9];
+                  offers = snapshot.data[10];
 
                   return Expanded(
                       child: SingleChildScrollView(
@@ -91,9 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     topCategories(topCategory.data),
                     topDeals(topProducts.data),
                     shopGroceries(shopGrocery.data),
-                    offerListWithCategories(offers1),
+                    offerListWithCategories(),
                     collectionWithBestOffers(bestOffers),
-                    kidsFashion()
+                    kidsFashion(kidsFashionData.data)
                   ])));
                 } else
                   return Expanded(child: Container(color: Colors.white, child: Center(child: CircularProgressIndicator())));
@@ -113,29 +115,25 @@ class _HomeScreenState extends State<HomeScreen> {
               physics: BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails1(id: index, list: data))),
-                  child: Container(
-                      width: 70.sp,
-                      child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                                radius: 25.sp,
-                                backgroundImage: NetworkImage(URLS.PAL_IMAGE_URL + data[index].image),
-                                backgroundColor: Colors.transparent),
-                            Center(
-                                child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 1.w),
-                              child: Text(
-                                data[index].name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 15.sp),
-                              ),
-                            ))
-                          ])),
-                );
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails1(id: index, list: data))),
+                    child: Container(
+                        width: 70.sp,
+                        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                  radius: 25.sp,
+                                  backgroundImage: NetworkImage(URLS.PAL_IMAGE_URL + data[index].image),
+                                  backgroundColor: Colors.transparent),
+                              Center(
+                                  child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 1.w),
+                                      child: Text(data[index].name,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 15.sp))))
+                            ])));
               })));
 
   Widget searchBarView() => Container(
@@ -148,7 +146,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   fillColor: Colors.white,
                   filled: true,
                   isDense: true,
-                  // Added this
                   contentPadding: EdgeInsets.all(10.sp),
                   border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(5.ssp)),
                   hintText: "Search for Products and Brand"))));
@@ -242,63 +239,64 @@ class _HomeScreenState extends State<HomeScreen> {
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail(data[index]))),
-                          child: Container(
-                              width: 110.h,
-                              height: 200.h,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
-                                child: Column(children: [
-                                  Container(
-                                      width: 100.h,
-                                      height: 100.h,
-                                      alignment: Alignment.bottomCenter,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                  URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + data[index].images[0].file),
-                                              fit: BoxFit.cover))),
-                                  Expanded(
-                                      child: Center(
-                                    child: RichText(
-                                        maxLines: 4,
-                                        overflow: TextOverflow.ellipsis,
-                                        text: TextSpan(
-                                            text: '₹ ' + data[index].price.toString() + ' ',
-                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
-                                            children: [
-                                              TextSpan(
-                                                  text: '₹ 45.00 \n',
-                                                  style: TextStyle(
-                                                      decoration: TextDecoration.lineThrough, color: Colors.black, fontSize: 10.sp)),
-                                              TextSpan(
-                                                  text: "Save ₹ 22.50 \n",
-                                                  style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green)),
-                                              TextSpan(
-                                                  text: data[index].name, style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold))
-                                            ])),
-                                  )),
-                                  RaisedButton(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(5.sp), side: BorderSide(color: Myapp.primaryColor)),
-                                      onPressed: () {},
-                                      elevation: 0,
-                                      color: Myapp.primaryColor,
-                                      textColor: Colors.white,
-                                      padding: EdgeInsets.all(0.h),
-                                      child: SizedBox(
-                                          width: double.infinity,
-                                          child: Text("Add".toUpperCase(), style: TextStyle(fontSize: 12.sp), textAlign: TextAlign.center)))
-                                ]),
-                              )),
-                        );
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail(data[index]))),
+                            child: Container(
+                                width: 110.h,
+                                height: 200.h,
+                                child: Padding(
+                                    padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
+                                    child: Column(children: [
+                                      Container(
+                                          width: 100.h,
+                                          height: 100.h,
+                                          alignment: Alignment.bottomCenter,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + data[index].images[0].file),
+                                                  fit: BoxFit.cover))),
+                                      Expanded(
+                                          child: Center(
+                                              child: RichText(
+                                                  maxLines: 4,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  text: TextSpan(
+                                                      text: '₹ ' + data[index].price.toString() + ' ',
+                                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
+                                                      children: [
+                                                        TextSpan(
+                                                            text: '₹ 45.00 \n',
+                                                            style: TextStyle(
+                                                                decoration: TextDecoration.lineThrough,
+                                                                color: Colors.black,
+                                                                fontSize: 10.sp)),
+                                                        TextSpan(
+                                                            text: "Save ₹ 22.50 \n",
+                                                            style: TextStyle(
+                                                                fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green)),
+                                                        TextSpan(
+                                                            text: data[index].name,
+                                                            style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold))
+                                                      ])))),
+                                      RaisedButton(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5.sp), side: BorderSide(color: Myapp.primaryColor)),
+                                          onPressed: () {},
+                                          elevation: 0,
+                                          color: Myapp.primaryColor,
+                                          textColor: Colors.white,
+                                          padding: EdgeInsets.all(0.h),
+                                          child: SizedBox(
+                                              width: double.infinity,
+                                              child: Text("Add".toUpperCase(),
+                                                  style: TextStyle(fontSize: 12.sp), textAlign: TextAlign.center)))
+                                    ]))));
                       }))
             ])));
   }
 
   shopGroceries(List<MainData> data) {
-
     return Container(
         color: Colors.grey[200],
         child: Padding(
@@ -320,81 +318,56 @@ class _HomeScreenState extends State<HomeScreen> {
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                          onTap: () => Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => SubCategoryDetailsGrocery(id: index, list: data[0].subCategories))),
-                          child: Container(
-                              width: 170.h,
-                              height: 90.h,
-                              child: Padding(
-                                  padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
-                                  child: Container(
-                                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.h))),
-                                      child: Padding(
-                                          padding: EdgeInsets.all(5.h),
-                                          child: Row(children: [
-                                            Container(
-                                                width: 50.h,
-                                                height: 50.h,
-                                                alignment: Alignment.bottomCenter,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(3.h),
-                                                    image: DecorationImage(
-                                                        image: NetworkImage(URLS.PAL_IMAGE_URL + data[0].subCategories[index].image ?? ''),
-                                                        fit: BoxFit.cover))),
-                                            Expanded(
-                                                child: Center(
-                                                    child: Padding(
-                                                        padding: EdgeInsets.symmetric(horizontal: 10.h),
-                                                        child: Text(data[0].subCategories[index].name,
-                                                            maxLines: 2,
-                                                            overflow: TextOverflow.ellipsis,
-                                                            style: TextStyle(fontSize: 12.sp)))))
-                                          ]))))),
-                        );
+                            onTap: () => Navigator.push(context,
+                                MaterialPageRoute(builder: (_) => SubCategoryDetailsGrocery(id: index, list: data[0].subCategories))),
+                            child: Container(
+                                width: 170.h,
+                                height: 90.h,
+                                child: Padding(
+                                    padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
+                                    child: Container(
+                                        decoration:
+                                            BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.h))),
+                                        child: Padding(
+                                            padding: EdgeInsets.all(5.h),
+                                            child: Row(children: [
+                                              Container(
+                                                  width: 50.h,
+                                                  height: 50.h,
+                                                  alignment: Alignment.bottomCenter,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(3.h),
+                                                      image: DecorationImage(
+                                                          image:
+                                                              NetworkImage(URLS.PAL_IMAGE_URL + data[0].subCategories[index].image ?? ''),
+                                                          fit: BoxFit.cover))),
+                                              Expanded(
+                                                  child: Center(
+                                                      child: Padding(
+                                                          padding: EdgeInsets.symmetric(horizontal: 10.h),
+                                                          child: Text(data[0].subCategories[index].name,
+                                                              maxLines: 2,
+                                                              overflow: TextOverflow.ellipsis,
+                                                              style: TextStyle(fontSize: 12.sp)))))
+                                            ]))))));
                       }))
             ])));
   }
 
-  offerListWithCategories(BestOffers offers1) {
-
-    List<String> titles = [
-      "Top deals for you",
-      "Best deals for you",
-      "Exclusive deals for you",
-      "Top deals for you",
-      "Best deals for you",
-      "Exclusive deals for you"
-    ];
-
-    List<Banners> banners = [
-      topDealsBanners,
-      bestDealsBanners,
-      exclusiveDealsBanners,
-      topDealsBanners,
-      bestDealsBanners,
-      exclusiveDealsBanners
-    ];
+  offerListWithCategories() {
+    List<String> titles = ["Top deals for you", "Best deals for you", "Exclusive deals for you"];
+    List<Banners> banners = [topDealsBanners, bestDealsBanners, exclusiveDealsBanners];
 
     List<Color> colors = [
       Colors.blueAccent,
       Colors.deepOrangeAccent[100],
       Colors.yellow[200],
       Colors.greenAccent[100],
-      Colors.redAccent[100],
       Colors.deepPurple[200]
     ];
 
-    List<Color> textcolors = [
-      Colors.blueAccent[700],
-      Colors.deepOrangeAccent[700],
-      Colors.yellow[900],
-      Colors.greenAccent[700],
-      Colors.redAccent[700],
-      Colors.deepPurple[700]
-    ];
-
     return ListView.builder(
-        itemCount: titles.length,
+        itemCount: offers.data.length,
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
@@ -410,9 +383,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                             style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))),
-                    freeHomeDeliverySlider(banners[index].data),
+                    freeHomeDeliverySlider(banners[index ~/ 3].data),
                     Container(
-                        color: colors[index],
+                        color: Color(int.parse(offers.data[index].backgroundColor)),
                         child: Column(children: [
                           Padding(
                               padding: EdgeInsets.all(10.h),
@@ -424,22 +397,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                           BorderRadius.only(bottomLeft: Radius.circular(30.h), bottomRight: Radius.circular(30.h))),
                                   child: Padding(
                                       padding: EdgeInsets.all(10.sp),
-                                      child: Text("Offers on daily essentials".toUpperCase(),
+                                      child: Text(offers.data[index].title.toUpperCase(),
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.center,
+                                          maxLines: 2,
                                           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: Colors.red))))),
                           Padding(
                               padding: EdgeInsets.all(10.sp),
                               child: GridView.builder(
                                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2, childAspectRatio: 0.85, crossAxisSpacing: 30.sp, mainAxisSpacing: 30.sp),
-                                  itemCount: offers1.data.length,
+                                  itemCount: offers.data[index].collections.length,
                                   shrinkWrap: true,
                                   physics: BouncingScrollPhysics(),
                                   itemBuilder: (BuildContext context, int index1) {
                                     return GestureDetector(
-                                        onTap: () => Navigator.push(context,
-                                            MaterialPageRoute(builder: (_) => CollectionProducts(id: offers1.data[index1].categoryId))),
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) => CollectionProducts(id: offers.data[index].collections[index1].categoryId))),
                                         child: Container(
                                             child: Stack(children: [
                                           Container(
@@ -447,7 +423,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(10),
                                                   image: DecorationImage(
-                                                      image: NetworkImage(URLS.IMAGE_URL + '/' + offers1.data[index1].image),
+                                                      image:
+                                                          NetworkImage(URLS.IMAGE_URL + '/' + offers.data[index].collections[index1].image),
                                                       fit: BoxFit.cover)),
                                               child: Align(
                                                   alignment: Alignment.bottomCenter,
@@ -467,18 +444,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               text: TextSpan(
                                                                   text: 'UP TO ',
                                                                   style: TextStyle(
-                                                                      color: textcolors[index],
+                                                                      color: Colors.blueAccent[700],
                                                                       fontWeight: FontWeight.bold,
                                                                       fontSize: 15.sp),
                                                                   children: [
                                                                     TextSpan(
-                                                                        text: offers1.data[index1].offerString + '\n',
+                                                                        text: offers.data[index].collections[index1].offerString + '\n',
                                                                         style: TextStyle(
                                                                             color: Colors.red,
                                                                             fontSize: 15.sp,
                                                                             fontWeight: FontWeight.bold)),
                                                                     TextSpan(
-                                                                        text: offers1.data[index1].title,
+                                                                        text: offers.data[index].collections[index1].title,
                                                                         style: TextStyle(
                                                                             color: Colors.black,
                                                                             fontSize: 12.sp,
@@ -563,24 +540,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ])));
   }
 
-  kidsFashion() {
-
-    List<String> litems = [
-      "Leggings",
-      "Track Pants",
-      'Shorts',
-      'Tshirts',
-      'Shirts',
-    ];
-
-    List<String> images = [
-      "https://www.jiomart.com/images/cms/section/category/246/587.png?v=1612275415",
-      "https://www.jiomart.com/images/cms/section/category/246/501.png?v=1612275415",
-      'https://www.jiomart.com/images/cms/section/category/246/533.png?v=1612275415',
-      'https://www.jiomart.com/images/cms/section/category/246/507.png?v=1612275415',
-      'https://www.jiomart.com/images/cms/section/category/246/549.png?v=1612275415',
-    ];
-
+  kidsFashion(List<MainData> data) {
     return Container(
         color: Colors.white,
         child: Padding(
@@ -598,12 +558,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3, childAspectRatio: 0.80, crossAxisSpacing: 10.sp, mainAxisSpacing: 10.sp),
-                      itemCount: litems.length,
+                      itemCount: data[0].subCategories.length,
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CollectionProducts())),
+                            onTap: () => Navigator.push(
+                                context, MaterialPageRoute(builder: (_) => CollectionProducts(id: data[0].subCategories[index].id))),
                             child: Column(children: [
                               Expanded(
                                   child: Container(
@@ -611,12 +572,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alignment: Alignment.bottomCenter,
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(5.sp),
-                                          image: DecorationImage(image: NetworkImage(images[index]), fit: BoxFit.cover)))),
+                                          image: DecorationImage(
+                                              image: NetworkImage(URLS.PAL_IMAGE_URL + data[0].subCategories[index].image ?? ''),
+                                              fit: BoxFit.cover)))),
                               Container(
                                   height: 20.sp,
                                   width: double.infinity,
                                   child: Center(
-                                      child: Text(litems[index],
+                                      child: Text(data[0].subCategories[index].name,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.center,

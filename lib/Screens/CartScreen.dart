@@ -168,7 +168,7 @@ class _CartScreenState extends State<CartScreen> {
           Image.network(item.image, width: 70, height: 70, fit: BoxFit.contain),
           Expanded(
               child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(item.name,
                         style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),

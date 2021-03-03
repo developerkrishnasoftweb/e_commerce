@@ -76,8 +76,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
     ),
   ];
 
-  List<String> products = ["ALL", "Exotic Vegetables", "Citrus Fruits", "Root Vegetable", "Beans", "Guard", "Vegetable Others"],
-      filterTabs = ["Popularity", "High to Low", "Low to High", "Discount"];
+  List<String> filterTabs = ["Popularity", "High to Low", "Low to High", "Discount"];
 
   var subCatIndex = 0;
   var subCatIndex1 = 0;
@@ -362,9 +361,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                 builder: (context, AsyncSnapshot snapshot) {
                   print("Snapshot Data" + snapshot.toString());
                   if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.data != null
-                        //&& snapshot.data[0].data.length > 0
-                        ) {
+                    if(snapshot.data != null && snapshot.data[0].data.length > 0) {
                       ProductsById data = snapshot.data[0];
                       return ListView.separated(
                           separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),

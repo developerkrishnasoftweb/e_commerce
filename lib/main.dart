@@ -26,7 +26,7 @@ class _MyappState extends State<Myapp> {
       allowFontScaling: false,
       builder: ()=> MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: OTP(),
+          home: HomeScreen(),
           // home: Category(title: "Saree",),
           theme: ThemeData(
             // fontFamily: "Segoe UI"

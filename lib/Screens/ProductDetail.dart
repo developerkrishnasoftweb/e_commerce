@@ -10,7 +10,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../main.dart';
 
 class ProductDetail extends StatefulWidget {
-
   Products products;
 
   ProductDetail(this.products);
@@ -25,15 +24,13 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            toolbarHeight: 50.sp,
-            title: Text(widget.products.name, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
+        appBar:
+            AppBar(toolbarHeight: 50.sp, title: Text(widget.products.name, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
         body: SingleChildScrollView(
             child: Padding(
                 padding: EdgeInsets.all(10.sp),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(widget.products.name,
-                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
+                  Text(widget.products.name, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
                   Text(widget.products.sku.toUpperCase(),
                       style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey)),
                   SizedBox(height: 15),
@@ -47,8 +44,8 @@ class _ProductDetailState extends State<ProductDetail> {
                         items: imageSlideView(widget.products.images)),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: imgList.map((url) {
-                          int index = imgList.indexOf(url);
+                        children: widget.products.images.map((url) {
+                          int index = widget.products.images.indexOf(url);
                           return Container(
                               width: 8.0,
                               height: 8.0,
@@ -67,14 +64,13 @@ class _ProductDetailState extends State<ProductDetail> {
                           style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 16.sp),
                           children: [
                             TextSpan(
-                                text: "₹ ${(widget.products.price * widget.products.quantity) - (widget.products.quantity * widget.products.discount)} ",
+                                text:
+                                    "₹ ${(widget.products.price * widget.products.quantity) - (widget.products.quantity * widget.products.discount)} ",
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
                             TextSpan(
-                                text: '₹ '+ widget.products.price.toString() + " ",
-                                style: TextStyle(
-                                    decoration: TextDecoration.lineThrough, color: Colors.blueGrey, fontSize: 14.sp)),
-                            TextSpan(
-                                text: "(Incl. of all taxes)", style: TextStyle(fontSize: 14.sp, color: Colors.blueGrey))
+                                text: '₹ ' + widget.products.price.toString() + " ",
+                                style: TextStyle(decoration: TextDecoration.lineThrough, color: Colors.blueGrey, fontSize: 14.sp)),
+                            TextSpan(text: "(Incl. of all taxes)", style: TextStyle(fontSize: 14.sp, color: Colors.blueGrey))
                           ])),
                   Container(height: 10),
                   RichText(
@@ -95,18 +91,12 @@ class _ProductDetailState extends State<ProductDetail> {
                           text: 'Description \n',
                           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),
                           children: [
-                            TextSpan(
-                                text: widget.products.attributes.description,
-                                style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
-                            TextSpan(
-                                text: '\n\nFeatures & Details\n',
-                                style: TextStyle(fontSize: 16.sp, color: Colors.black)),
+                            TextSpan(text: widget.products.attributes.description, style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+                            TextSpan(text: '\n\nFeatures & Details\n', style: TextStyle(fontSize: 16.sp, color: Colors.black)),
                             TextSpan(
                                 text: removeHtmlTags(data: widget.products.attributes.shortDescription),
                                 style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
-                            TextSpan(
-                                text: '\n\nProduct Information\n\n',
-                                style: TextStyle(fontSize: 16.sp, color: Colors.black)),
+                            TextSpan(text: '\n\nProduct Information\n\n', style: TextStyle(fontSize: 16.sp, color: Colors.black)),
                             // TextSpan(text: 'Brand : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
                             // TextSpan(text: 'Amul\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
                             TextSpan(text: 'Manufacturer : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
@@ -121,8 +111,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           ])),
                   Row(children: [
                     Expanded(
-                        child: Text("Product Rating",
-                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black))),
+                        child: Text("Product Rating", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black))),
                     RatingBar.builder(
                         initialRating: 3,
                         minRating: 1,
@@ -139,24 +128,15 @@ class _ProductDetailState extends State<ProductDetail> {
                   Container(
                       width: double.infinity,
                       height: 50,
-                      decoration: BoxDecoration(boxShadow: <BoxShadow>[
-                        BoxShadow(color: Colors.lightBlue[100], blurRadius: 10, offset: Offset(0, 5))
-                      ]),
+                      decoration: BoxDecoration(
+                          boxShadow: <BoxShadow>[BoxShadow(color: Colors.lightBlue[100], blurRadius: 10, offset: Offset(0, 5))]),
                       child: FlatButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen())),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          child: Text("Add to Cart",
-                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)),
+                          child: Text("Add to Cart", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)),
                           color: Myapp.primaryColor))
                 ]))));
   }
-
-  List<String> imgList = [
-    'https://www.jiomart.com/images/product/420x420/490001392/amul-pasteurised-butter-500-g-carton-0-20210208.jpg',
-    'https://www.jiomart.com/images/product/420x420/490001392/amul-pasteurised-butter-500-g-carton-1-20210208.jpg',
-    'https://www.jiomart.com/images/product/420x420/490001392/amul-pasteurised-butter-500-g-carton-2-20210208.jpg',
-    'https://www.jiomart.com/images/product/420x420/490001392/amul-pasteurised-butter-500-g-carton-4-20210208.jpg'
-  ];
 
   imageSlideView(List<Images> imgList) {
     return imgList
@@ -165,7 +145,9 @@ class _ProductDetailState extends State<ProductDetail> {
                 margin: EdgeInsets.all(5.0),
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(children: <Widget>[Image.network(URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + item.file, fit: BoxFit.cover, height: 500.sp)])))))
+                    child: Stack(children: <Widget>[
+                      Image.network(URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + item.file, fit: BoxFit.cover, height: 500.sp)
+                    ])))))
         .toList();
   }
 }

@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/Banners.dart';
+import 'package:e_commerce/Models/BestOffer.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/ProductsById.dart';
-import 'package:e_commerce/Models/TopProducts.dart';
 import 'package:http/http.dart' as http;
+
+import 'AllCollection.dart';
 
 class URLS {
   // const String SERVER_URL = 'http://ecommerce.krishnasoftweb.com/';
@@ -19,14 +21,14 @@ class URLS {
   static const String IMAGE_URL = SERVER_URL;
   static const String PAL_IMAGE_URL = 'https://palshopie.com';
   static const String GET_CATEGORIES = '${URLS.SERVER_URL}/api/category';
-  static const String GET_TOP_CATEGORIES =
-      '${URLS.SERVER_URL}/api/top-category';
-  static const String GET_SUBCATEGORIES =
-      '${URLS.SERVER_URL}/api/category?category_id=';
-  static const String GET_GROCERIES =
-      '${URLS.SERVER_URL}/api/category?category_type=Grocery';
+  static const String GET_TOP_CATEGORIES = '${URLS.SERVER_URL}/api/top-category';
+  static const String GET_SUBCATEGORIES = '${URLS.SERVER_URL}/api/category?category_id=';
+  static const String GET_GROCERIES = '${URLS.SERVER_URL}/api/category?category_type=Grocery';
+  static const String GET_KIDS_FASHION = '${URLS.SERVER_URL}/api/category?category_type=Kids Fashion';
   static const String GET_TOP_PRODUCTS = '${URLS.SERVER_URL}/api/top-product';
   static const String GET_PRODUCTS = '${URLS.SERVER_URL}/api/product?category_id=';
+  static const String GET_BEST_OFFERS = '${URLS.SERVER_URL}/api/best-offer';
+  static const String GET_OFFERS1 = '${URLS.SERVER_URL}/api/home-section';
 
   static const String DEPARTMENTS = '${URLS.BASE_URL}department';
   static const String CATEGORIES = '${URLS.BASE_URL}category';
@@ -34,11 +36,9 @@ class URLS {
   static const String GET_CATEGORIES_PRODUCTS = '${URLS.BASE_URL}categories';
   static const String GET_PRODUCT_LIST = '${URLS.BASE_URL}mma/categories';
 
-  static const String PAL_SHOPPIE_BASE_URL =
-      'https://www.palshopie.com/rest/V1/';
+  static const String PAL_SHOPPIE_BASE_URL = 'https://www.palshopie.com/rest/V1/';
   static const String REGISTER = '${URLS.PAL_SHOPPIE_BASE_URL}customers/';
-  static const String GENERATE_TOKEN =
-      '${URLS.PAL_SHOPPIE_BASE_URL}integration/customer/token';
+  static const String GENERATE_TOKEN = '${URLS.PAL_SHOPPIE_BASE_URL}integration/customer/token';
   static const String LOGIN = '${URLS.PAL_SHOPPIE_BASE_URL}customers/me';
 }
 
@@ -55,6 +55,33 @@ class ApiService {
       throw (_);
     }
   }
+
+  static Future<BestOffers> getBestOfferCollection() async {
+    final response = await http.get(URLS.GET_BEST_OFFERS);
+    try {
+      if (response.statusCode == 200) {
+        return BestOffers.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<AllCollection> getOffers1() async {
+    final response = await http.get(URLS.GET_OFFERS1);
+    try {
+      if (response.statusCode == 200) {
+        return AllCollection.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
 
   static Future<MainCategory> getTopCategories() async {
     final response = await http.get(URLS.GET_TOP_CATEGORIES);
@@ -92,9 +119,22 @@ class ApiService {
     }
   }
 
+  static Future<AllCategory> getKidsFashion() async {
+    final response = await http.get(URLS.GET_KIDS_FASHION);
+    try {
+      if (response.statusCode == 200) {
+        return AllCategory.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
   static Future<ProductsById> getProductsById(String id) async {
-    print("URL     " + URLS.GET_PRODUCTS+ id);
-    final response = await http.get(URLS.GET_PRODUCTS+ id);
+    print("URL     " + URLS.GET_PRODUCTS + id);
+    final response = await http.get(URLS.GET_PRODUCTS + id);
     try {
       if (response.statusCode == 200) {
         return ProductsById.fromJson(json.decode(response.body));
@@ -116,7 +156,7 @@ class ApiService {
         return null;
       }
     } catch (_) {
-      throw(_);
+      throw (_);
     }
   }
 
@@ -136,11 +176,11 @@ class ApiService {
     return getBanners('exclusive deals');
   }
 
-  static Future<TopProducts> getTopProducts() async {
+  static Future<ProductsById> getTopProducts() async {
     final response = await http.get(URLS.GET_TOP_PRODUCTS);
     try {
       if (response.statusCode == 200) {
-        return TopProducts.fromJson(json.decode(response.body));
+        return ProductsById.fromJson(json.decode(response.body));
       } else {
         return null;
       }
@@ -151,19 +191,11 @@ class ApiService {
 
   static Future<ResponseData> register(Map<String, dynamic> body) async {
     try {
-      final response = await http.post(URLS.REGISTER,
-          body: jsonEncode(body),
-          headers: {"Content-Type": "application/json"});
+      final response = await http.post(URLS.REGISTER, body: jsonEncode(body), headers: {"Content-Type": "application/json"});
       if (response.statusCode == 200) {
-        return ResponseData(
-            status: true,
-            message: "Registered successfully",
-            data: await jsonDecode(response.body));
+        return ResponseData(status: true, message: "Registered successfully", data: await jsonDecode(response.body));
       } else {
-        return ResponseData(
-            status: false,
-            message: await jsonDecode(response.body)['message'],
-            data: null);
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
       }
     } catch (_) {
       throw (_);
@@ -172,16 +204,11 @@ class ApiService {
 
   static Future<ResponseData> generateToken(Map<String, dynamic> body) async {
     try {
-      final response = await http.post(URLS.GENERATE_TOKEN,
-          body: jsonEncode(body),
-          headers: {"Content-Type": "application/json"});
+      final response = await http.post(URLS.GENERATE_TOKEN, body: jsonEncode(body), headers: {"Content-Type": "application/json"});
       if (response.statusCode == 200) {
         return await login(response.body.replaceAll('"', ""));
       } else {
-        return ResponseData(
-            status: false,
-            message: await jsonDecode(response.body)['message'],
-            data: null);
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
       }
     } catch (_) {
       throw (_);
@@ -190,20 +217,11 @@ class ApiService {
 
   static Future<ResponseData> login(String token) async {
     try {
-      final response = await http.get(URLS.LOGIN, headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token'
-      });
+      final response = await http.get(URLS.LOGIN, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'});
       if (response.statusCode == 200) {
-        return ResponseData(
-            status: true,
-            message: "Logged in successfully",
-            data: await jsonDecode(response.body));
+        return ResponseData(status: true, message: "Logged in successfully", data: await jsonDecode(response.body));
       } else {
-        return ResponseData(
-            status: false,
-            message: await jsonDecode(response.body)['message'],
-            data: null);
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
       }
     } catch (_) {
       throw (_);
@@ -219,7 +237,6 @@ class ResponseData {
   ResponseData({this.status, this.message, this.data});
 
   factory ResponseData.fromJson(Map<String, dynamic> json) {
-    return ResponseData(
-        data: json['data'], message: json['message'], status: json['status']);
+    return ResponseData(data: json['data'], message: json['message'], status: json['status']);
   }
 }

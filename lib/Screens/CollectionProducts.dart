@@ -22,7 +22,6 @@ class _CollectionProductsState extends State<CollectionProducts> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
         key: scaffoldKey,
@@ -38,7 +37,7 @@ class _CollectionProductsState extends State<CollectionProducts> {
                   builder: (context, AsyncSnapshot snapshot) {
                     print("Snapshot Data" + snapshot.toString());
                     if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.data != null) {
+                      if(snapshot.data != null && snapshot.data[0].data.length > 0) {
                         ProductsById data = snapshot.data[0];
                         return ListView.separated(
                             separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),

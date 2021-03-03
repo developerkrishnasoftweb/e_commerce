@@ -74,64 +74,9 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
       ],
     ),
   ];
-  List<Category> categories = [
-    Category(title: "Atta, Flours & Sooji", image: "https://www.jiomart.com/images/category/14/thumb/0-14.png"),
-    Category(title: "Dals & Pulses", image: "https://www.jiomart.com/images/category/17/thumb/dals-pulses-20200714.png"),
-    Category(
-        title: "Rice & Rice Products", image: "https://www.jiomart.com/images/category/14/thumb/rice-rice-products-20200722.png"),
-    Category(title: "Edible Oil", image: "https://www.jiomart.com/images/category/18/thumb/0-18.png"),
-    Category(title: "Masalas Spices", image: "https://www.jiomart.com/images/category/15/thumb/0-15.png"),
-  ];
+
   List<String> products = ["ALL", "Exotic Vegetables", "Citrus Fruits", "Root Vegetable", "Beans", "Guard", "Vegetable Others"],
       filterTabs = ["Popularity", "High to Low", "Low to High", "Discount"];
-  List<Item> items = [
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/590122516/fortune-health-physically-refined-rice-bran-oil-5-l-india-gate-feast-rozzana-basmati-rice-5-kg-combo-pack-0-20201229.jpg",
-        category: "Groccery",
-        price: 12,
-        name: "Aashirvaad Multigrain Atta 5 kg",
-        quantity: 1,
-        discount: 10,
-        maxQuantity: 5),
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491504124/super-sarvottam-physicaly-refined-100-rice-bran-oil-1-l-pouch-0-20201021.jpg",
-        category: "Groccery",
-        price: 200,
-        name: "Tata Lite Free Flow Iodised Salt 1 kg",
-        quantity: 1,
-        discount: 30,
-        maxQuantity: 1),
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491076026/oleev-active-ricebran-based-blended-oil-5-l-jar-0-20200825.jpg",
-        category: "Groccery",
-        price: 121.0,
-        name: "Good Life Tur Dal 1 kg",
-        quantity: 5,
-        discount: 20,
-        inCart: true,
-        maxQuantity: 20),
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491278308/priya-fortified-with-vitamin-a-d-refined-sunflower-oil-1-l-0-20210119.jpg",
-        category: "Groccery",
-        price: 123,
-        name: "Good Life Almonds 500 g",
-        quantity: 1,
-        discount: 15,
-        maxQuantity: 10),
-    Item(
-        image:
-            "https://www.jiomart.com/images/product/75x75/491076025/oleev-active-ricebran-based-blended-oil-1-l-pouch-0-20200805.jpg",
-        category: "Groccery",
-        price: 200,
-        name: "Tata Lite Free Flow Iodised Salt 1 kg",
-        quantity: 1,
-        discount: 30,
-        maxQuantity: 1),
-  ];
 
   var subCatIndex = 0;
   var subCatIndex1 = 0;
@@ -181,9 +126,7 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                             text: "Deliver to\t\t",
                             style: TextStyle(color: Colors.grey, fontSize: 11.sp, fontWeight: FontWeight.bold),
                             children: [
-                              TextSpan(
-                                  text: "394221",
-                                  style: TextStyle(color: Colors.black, fontSize: 13.sp, fontWeight: FontWeight.bold))
+                              TextSpan(text: "394221", style: TextStyle(color: Colors.black, fontSize: 13.sp, fontWeight: FontWeight.bold))
                             ]),
                         textAlign: TextAlign.center)
                   ]))),
@@ -218,12 +161,9 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                                       return Column(children: [
                                         SizedBox(height: 50.sp),
                                         ListTile(
-                                            title:
-                                                Text("Category", style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
+                                            title: Text("Category", style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
                                             trailing: IconButton(
-                                                icon: Icon(Icons.close),
-                                                onPressed: () => Navigator.pop(context),
-                                                splashRadius: 25)),
+                                                icon: Icon(Icons.close), onPressed: () => Navigator.pop(context), splashRadius: 25)),
                                         Expanded(
                                             child: ListView.separated(
                                                 separatorBuilder: (_, index) => Divider(color: Colors.grey),
@@ -235,8 +175,7 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                                                               : "https://www.jiomart.com/images/category/141/thumb/fruits-vegetables-20200520.png",
                                                           width: 40.sp,
                                                           height: 40.sp),
-                                                      title: Text(
-                                                          widget.list != null ? widget.list[index].name : "Fruits & Vegetables",
+                                                      title: Text(widget.list != null ? widget.list[index].name : "Fruits & Vegetables",
                                                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
                                                       // subtitle: Text(
                                                       //   "Fresh Fruits,Fresh Vegetables,Herbs & Season ,Exotic Fruits & Vegetables",
@@ -262,8 +201,7 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                         itemBuilder: (_, index) {
                           return GestureDetector(
                               onTap: () {
-                                widget.list[subCatIndex].childSubCategory
-                                    .forEach((element) => setState(() => element.isSelected = false));
+                                widget.list[subCatIndex].childSubCategory.forEach((element) => setState(() => element.isSelected = false));
                                 setState(() {
                                   subCatIndex1 = index;
                                   widget.list[subCatIndex].childSubCategory[index].isSelected = true;
@@ -307,113 +245,99 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
               color: Colors.grey[300],
               width: size.width,
               height: 40,
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("${items.length} products"),
-                    FlatButton.icon(
-                        onPressed: () {
-                          showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (_) {
-                                return StatefulBuilder(builder: (_, state) {
-                                  return BottomSheet(
-                                      onClosing: () {},
-                                      builder: (_) {
-                                        return Column(children: [
-                                          SizedBox(height: MediaQuery.of(context).padding.top),
-                                          ListTile(
-                                              title: Text("Sort & Filter By",
-                                                  style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
-                                              trailing: IconButton(
-                                                  icon: Icon(Icons.close),
-                                                  onPressed: () => Navigator.pop(context),
-                                                  splashRadius: 25)),
-                                          Container(
-                                              height: 45,
-                                              width: size.width,
-                                              padding: EdgeInsets.symmetric(vertical: 5),
-                                              child: ListView.builder(
-                                                  itemBuilder: (_, index) {
-                                                    return Container(
-                                                        margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
-                                                        child: FlatButton(
-                                                            onPressed: () {},
-                                                            child: Text(filterTabs[index]),
-                                                            color: Colors.grey[200],
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius.circular(7),
-                                                                side: BorderSide(color: Colors.grey))));
-                                                  },
-                                                  physics: BouncingScrollPhysics(),
-                                                  itemCount: filterTabs.length,
-                                                  scrollDirection: Axis.horizontal)),
-                                          Expanded(
-                                              child: Row(children: [
-                                            Flexible(
-                                                flex: 1,
-                                                child: ListView.separated(
-                                                    separatorBuilder: (_, index) => Divider(height: 0.5, color: Colors.grey),
-                                                    itemBuilder: (_, index) {
-                                                      return GestureDetector(
-                                                          child: Container(
-                                                              height: 50,
-                                                              padding: EdgeInsets.symmetric(horizontal: 10),
-                                                              alignment: Alignment.centerLeft,
-                                                              decoration: BoxDecoration(
-                                                                  color: filterList[index].isSelected
-                                                                      ? Colors.white
-                                                                      : Colors.grey[200]),
-                                                              child: Text(filterList[index].title)),
-                                                          onTap: () {
-                                                            filterList
-                                                                .forEach((element) => state(() => element.isSelected = false));
-                                                            state(() => filterList[index].isSelected = true);
-                                                          });
-                                                    },
-                                                    itemCount: filterList.length,
-                                                    physics: BouncingScrollPhysics())),
-                                            Flexible(
-                                                flex: 2,
-                                                child: ListView.separated(
-                                                    separatorBuilder: (_, index) => Divider(height: 0.5, color: Colors.grey),
-                                                    itemBuilder: (_, index) {
-                                                      FilterList filter = filterList.where((element) => element.isSelected).first;
-                                                      return filter.isMultipleSelection
-                                                          ? CheckboxListTile(
-                                                              value: filter.filterItems[index].isSelected,
-                                                              onChanged: (value) => state(() => filter.filterItems[index].isSelected =
-                                                                    !filter.filterItems[index].isSelected),
-                                                              title: Text(filter.filterItems[index].title),
-                                                            )
-                                                          : RadioListTile<FilterItems>(
-                                                              value: filter.filterItems[index],
-                                                              groupValue: filter.filterItem,
-                                                              title: Text(filter.filterItems[index].title),
-                                                              onChanged: (value) => state(() => filter.filterItem = value),
-                                                              controlAffinity: ListTileControlAffinity.trailing);
-                                                    },
-                                                    itemCount: filterList
-                                                        .where((element) => element.isSelected)
-                                                        .first
-                                                        .filterItems
-                                                        .length,
-                                                    physics: BouncingScrollPhysics()))
-                                          ]))
-                                        ]);
-                                      },
-                                      backgroundColor: Colors.white,
-                                      enableDrag: true);
-                                });
-                              });
-                        },
-                        label: Text("Sort | Filter"),
-                        icon: Icon(Icons.filter_alt_outlined, size: 15.sp),
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)))
-                  ])),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text("5 products"),
+                FlatButton.icon(
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (_) {
+                            return StatefulBuilder(builder: (_, state) {
+                              return BottomSheet(
+                                  onClosing: () {},
+                                  builder: (_) {
+                                    return Column(children: [
+                                      SizedBox(height: MediaQuery.of(context).padding.top),
+                                      ListTile(
+                                          title: Text("Sort & Filter By", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                                          trailing: IconButton(
+                                              icon: Icon(Icons.close), onPressed: () => Navigator.pop(context), splashRadius: 25)),
+                                      Container(
+                                          height: 45,
+                                          width: size.width,
+                                          padding: EdgeInsets.symmetric(vertical: 5),
+                                          child: ListView.builder(
+                                              itemBuilder: (_, index) {
+                                                return Container(
+                                                    margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
+                                                    child: FlatButton(
+                                                        onPressed: () {},
+                                                        child: Text(filterTabs[index]),
+                                                        color: Colors.grey[200],
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(7), side: BorderSide(color: Colors.grey))));
+                                              },
+                                              physics: BouncingScrollPhysics(),
+                                              itemCount: filterTabs.length,
+                                              scrollDirection: Axis.horizontal)),
+                                      Expanded(
+                                          child: Row(children: [
+                                        Flexible(
+                                            flex: 1,
+                                            child: ListView.separated(
+                                                separatorBuilder: (_, index) => Divider(height: 0.5, color: Colors.grey),
+                                                itemBuilder: (_, index) {
+                                                  return GestureDetector(
+                                                      child: Container(
+                                                          height: 50,
+                                                          padding: EdgeInsets.symmetric(horizontal: 10),
+                                                          alignment: Alignment.centerLeft,
+                                                          decoration: BoxDecoration(
+                                                              color: filterList[index].isSelected ? Colors.white : Colors.grey[200]),
+                                                          child: Text(filterList[index].title)),
+                                                      onTap: () {
+                                                        filterList.forEach((element) => state(() => element.isSelected = false));
+                                                        state(() => filterList[index].isSelected = true);
+                                                      });
+                                                },
+                                                itemCount: filterList.length,
+                                                physics: BouncingScrollPhysics())),
+                                        Flexible(
+                                            flex: 2,
+                                            child: ListView.separated(
+                                                separatorBuilder: (_, index) => Divider(height: 0.5, color: Colors.grey),
+                                                itemBuilder: (_, index) {
+                                                  FilterList filter = filterList.where((element) => element.isSelected).first;
+                                                  return filter.isMultipleSelection
+                                                      ? CheckboxListTile(
+                                                          value: filter.filterItems[index].isSelected,
+                                                          onChanged: (value) => state(() =>
+                                                              filter.filterItems[index].isSelected = !filter.filterItems[index].isSelected),
+                                                          title: Text(filter.filterItems[index].title),
+                                                        )
+                                                      : RadioListTile<FilterItems>(
+                                                          value: filter.filterItems[index],
+                                                          groupValue: filter.filterItem,
+                                                          title: Text(filter.filterItems[index].title),
+                                                          onChanged: (value) => state(() => filter.filterItem = value),
+                                                          controlAffinity: ListTileControlAffinity.trailing);
+                                                },
+                                                itemCount: filterList.where((element) => element.isSelected).first.filterItems.length,
+                                                physics: BouncingScrollPhysics()))
+                                      ]))
+                                    ]);
+                                  },
+                                  backgroundColor: Colors.white,
+                                  enableDrag: true);
+                            });
+                          });
+                    },
+                    label: Text("Sort | Filter"),
+                    icon: Icon(Icons.filter_alt_outlined, size: 15.sp),
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)))
+              ])),
           Visibility(
             visible: false,
             child: Container(
@@ -449,7 +373,7 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                   builder: (context, AsyncSnapshot snapshot) {
                     print("Snapshot Data" + snapshot.toString());
                     if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.data != null) {
+                      if (snapshot.data != null && snapshot.data[0].data.length > 0) {
                         ProductsById data = snapshot.data[0];
                         return ListView.separated(
                             separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
@@ -530,9 +454,7 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                                                 }
                                               }
                                             : null,
-                                        color: item.quantity >= item.maxQuantity
-                                            ? Myapp.primaryColor.withOpacity(0.7)
-                                            : Myapp.primaryColor,
+                                        color: item.quantity >= item.maxQuantity ? Myapp.primaryColor.withOpacity(0.7) : Myapp.primaryColor,
                                         disabledColor: Myapp.primaryColor.withOpacity(0.7),
                                         padding: EdgeInsets.zero,
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))))
@@ -546,8 +468,7 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                                         child: Text("ADD", style: TextStyle(color: Colors.white)),
                                         onPressed: () {
                                           setState(() => item.inCart = true);
-                                          scaffoldKey.currentState
-                                              .showSnackBar(SnackBar(content: Text("Added to cart successfully")));
+                                          scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Added to cart successfully")));
                                         },
                                         color: Myapp.primaryColor)))
                       ])))
