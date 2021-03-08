@@ -42,6 +42,36 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
     subCatIndex = widget.id ?? 1;
     subCatIndex1 = 0;
     subCatIndex2 = 0;
+
+    list = widget.list;
+
+    if (list.length > subCatIndex) {
+      subCategories = list[subCatIndex].subCategories;
+      if (list[subCatIndex].subCategories.length > subCatIndex1) {
+        list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
+        childSubCategoryList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory;
+        if (list[subCatIndex].subCategories[subCatIndex1].childSubCategory.length > subCatIndex2) {
+          list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].isSelected = true;
+          productId = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id != 0
+              ? list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id
+              : list[subCatIndex].subCategories[subCatIndex1].id;
+
+        } else {
+          productId = 0;
+        }
+      } else {
+        childSubCategoryList = [];
+        productId = 0;
+      }
+    } else {
+      childSubCategoryList = [];
+      productsList = [];
+      subCategories = [];
+      productId = 0;
+    }
+    getProducts();
+
+
   }
 
   getProducts() async {
@@ -49,8 +79,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
       products = null;
       productsFound = false;
     });
-    ProductsById productsById =
-    await ApiService.getProductsById(productId.toString());
+    ProductsById productsById = await ApiService.getProductsById(productId.toString());
+
+  //  print("productsById"+productsById.data.toString() +"___"+ productId.toString());
+
     if(productsById == null) {
       setState(() {
         productsFound = true;
@@ -176,6 +208,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                                                         subCatIndex1 = 0;
                                                         subCatIndex2 = 0;
                                                         Navigator.of(context).pop();
+                                                        getProducts();
                                                       })),
                                               itemCount: list != null ? list.length : 10))
                                     ]),
@@ -428,6 +461,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                               subCatIndex2 = index;
                               childSubCategoryList[index].isSelected = true;
                             });
+                            getProducts();
                           },
                           child: Text(childSubCategoryList[index].name,
                               style: TextStyle(color: childSubCategoryList[index].isSelected ? Colors.white : Colors.black)),
