@@ -175,7 +175,7 @@ class Products {
   int quantity;
   int maxQuantity;
   int discount;
-  bool inCart;
+  bool inCart, isLoading;
   String status;
   String visibility;
   String typeId;
@@ -203,7 +203,7 @@ class Products {
         this.discount,
         this.inCart,
         this.inStock,
-        this.attributes});
+        this.attributes, this.isLoading});
 
   Products.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -224,9 +224,10 @@ class Products {
       });
     }
     attributes = new Attributes.fromJson(json['attributes']);
-    maxQuantity = json['quantity'];
+    maxQuantity = json['quantity'] ?? 1;
     discount = 5;
     inCart = false;
+    isLoading = false;
     inStock = json['in_stock'];
     quantity = 1;
   }

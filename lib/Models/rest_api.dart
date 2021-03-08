@@ -28,6 +28,7 @@ class URLS {
   static const String GET_KIDS_FASHION = '${URLS.SERVER_URL}/api/category?category_type=Kids Fashion';
   static const String GET_TOP_PRODUCTS = '${URLS.SERVER_URL}/api/top-product';
   static const String GET_PRODUCTS = '${URLS.SERVER_URL}/api/product?category_id=';
+  static const String GET_PRODUCT_QUANTITY = '${URLS.SERVER_URL}/api/product/get-quantity?product_id=';
   static const String GET_BEST_OFFERS = '${URLS.SERVER_URL}/api/best-offer';
   static const String GET_OFFERS1 = '${URLS.SERVER_URL}/api/home-section';
   static const String GET_FILTERS_DATA = '${URLS.SERVER_URL}/api/category/filter?category_id=';
@@ -139,6 +140,19 @@ class ApiService {
     try {
       if (response.statusCode == 200) {
         return ProductsById.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<int> getProductQuantity(String id) async {
+    final response = await http.get(URLS.GET_PRODUCT_QUANTITY + id);
+    try {
+      if (response.statusCode == 200) {
+        return json.decode(response.body)['data'][0]['quantity'];
       } else {
         return null;
       }
