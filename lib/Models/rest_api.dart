@@ -190,12 +190,12 @@ class ApiService {
     }
   }
 
-  static Future<FiltersData> getFiltersData(String id) async {
+  static Future<ResponseData> getFiltersData(String id) async {
     print("URL     " + URLS.GET_FILTERS_DATA + id);
     final response = await http.get(URLS.GET_FILTERS_DATA + id);
     try {
       if (response.statusCode == 200) {
-        return FiltersData.fromJson(json.decode(response.body));
+        return ResponseData(status: true, message: "", data: await jsonDecode(response.body));
       } else {
         return null;
       }

@@ -18,63 +18,8 @@ class SubcategoryDetails2 extends StatefulWidget {
 }
 
 class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  List<FilterList> filterList = [
-    FilterList(
-        title: "Availability",
-        isMultipleSelection: true,
-        filterItems: [
-          FilterItems(title: "In Stock Products"),
-          FilterItems(title: "Out of Stock Products"),
-        ],
-        isSelected: true),
-    FilterList(
-      title: "Categories",
-      isMultipleSelection: false,
-      filterItems: [
-        FilterItems(title: "Exotic Vegetables"),
-        FilterItems(title: "Citrus Fruits"),
-        FilterItems(title: "Root vegetable"),
-        FilterItems(title: "Beans"),
-        FilterItems(title: "Gourd"),
-        FilterItems(title: "Vegetable Others"),
-        FilterItems(title: "Apples"),
-        FilterItems(title: "Brinjal"),
-        FilterItems(title: "Onion"),
-        FilterItems(title: "Banana"),
-        FilterItems(title: "Ginger"),
-        FilterItems(title: "Grapes"),
-        FilterItems(title: "Melons"),
-        FilterItems(title: "Others"),
-        FilterItems(title: "Berries"),
-        FilterItems(title: "Cabbage"),
-        FilterItems(title: "Capsicum"),
-        FilterItems(title: "Carrot"),
-        FilterItems(title: "Cauliflower"),
-        FilterItems(title: "Corn"),
-        FilterItems(title: "Cucumber"),
-        FilterItems(title: "Drumstick"),
-        FilterItems(title: "Exotic Fruits"),
-      ],
-    ),
-    FilterList(
-      title: "Brands",
-      isMultipleSelection: true,
-      filterItems: [
-        FilterItems(title: "Loose"),
-      ],
-    ),
-    FilterList(
-      title: "Price",
-      isMultipleSelection: false,
-      filterItems: [
-        FilterItems(title: "\u20b97 - \u20b9100"),
-        FilterItems(title: "\u20b9100 - \u20b9200"),
-        FilterItems(title: "\u20b9200 - \u20b9253"),
-      ],
-    ),
-  ];
 
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   List<String> filterTabs = ["Popularity", "High to Low", "Low to High", "Discount"];
 
   var subCatIndex = 0;
@@ -85,6 +30,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
   List<ChildSubCategory> childSubCategoryList = [];
   List<SubCategotyLIst> subCategories = [];
   var productId = 0;
+  final Map<String, dynamic> bodyData = new Map<String, dynamic>();
 
   @override
   void initState() {
@@ -146,12 +92,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                               child: FlatButton(
                                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                                     Expanded(
-                                        child: Text(
-                                      list.isNotEmpty ? list[subCatIndex].name : "Staples",
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
-                                    )),
+                                        child: Text(list.isNotEmpty ? list[subCatIndex].name : "Staples",
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold))),
                                     Icon(Icons.arrow_drop_down_outlined)
                                   ]),
                                   onPressed: () {
@@ -165,8 +109,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                                 return Column(children: [
                                                   SizedBox(height: 50.sp),
                                                   ListTile(
-                                                      title: Text("Category",
-                                                          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
+                                                      title:
+                                                          Text("Category", style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
                                                       trailing: IconButton(
                                                           icon: Icon(Icons.close),
                                                           onPressed: () => Navigator.pop(context),
@@ -182,10 +126,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                                                         : "https://www.jiomart.com/images/category/141/thumb/fruits-vegetables-20200520.png",
                                                                     width: 40.sp,
                                                                     height: 40.sp),
-                                                                title: Text(
-                                                                    list != null ? list[index].name : "Fruits & Vegetables",
-                                                                    style:
-                                                                        TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
+                                                                title: Text(list != null ? list[index].name : "Fruits & Vegetables",
+                                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
                                                                 // subtitle: Text(
                                                                 //   "Fresh Fruits,Fresh Vegetables,Herbs & Season ,Exotic Fruits & Vegetables",
                                                                 //   maxLines: 1,
@@ -228,11 +170,9 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                                 borderRadius: BorderRadius.circular(6),
                                                 color: Colors.white,
                                                 border: Border.all(
-                                                    color: subCategories[index].isSelected ? Myapp.primaryColor : Colors.white,
-                                                    width: 2)),
+                                                    color: subCategories[index].isSelected ? Myapp.primaryColor : Colors.white, width: 2)),
                                             child: Row(children: [
-                                              Image.network(URLS.PAL_IMAGE_URL + subCategories[index].image,
-                                                  height: 30.sp, width: 30.sp),
+                                              Image.network(URLS.PAL_IMAGE_URL + subCategories[index].image, height: 30.sp, width: 30.sp),
                                               SizedBox(width: 10.sp),
                                               Expanded(
                                                   child: Text(subCategories[index].name,
@@ -240,9 +180,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                                       style: TextStyle(
                                                           fontWeight: FontWeight.bold,
                                                           fontSize: 12.sp,
-                                                          color: subCategories[index].isSelected
-                                                              ? Myapp.primaryColor
-                                                              : Colors.black)))
+                                                          color: subCategories[index].isSelected ? Myapp.primaryColor : Colors.black)))
                                             ])));
                                   },
                                   scrollDirection: Axis.horizontal,
@@ -266,101 +204,187 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                         context: context,
                                         isScrollControlled: true,
                                         builder: (_) {
-                                          return StatefulBuilder(builder: (_, state) {
-                                            return BottomSheet(
-                                                onClosing: () {},
-                                                builder: (_) {
-                                                  return Column(children: [
-                                                    SizedBox(height: MediaQuery.of(context).padding.top),
-                                                    ListTile(
-                                                        title: Text("Sort & Filter By",
-                                                            style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
-                                                        trailing: IconButton(
-                                                            icon: Icon(Icons.close),
-                                                            onPressed: () => Navigator.pop(context),
-                                                            splashRadius: 25)),
-                                                    Container(
-                                                        height: 45,
-                                                        width: size.width,
-                                                        padding: EdgeInsets.symmetric(vertical: 5),
-                                                        child: ListView.builder(
-                                                            itemBuilder: (_, index) {
-                                                              return Container(
-                                                                  margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
-                                                                  child: FlatButton(
-                                                                      onPressed: () {},
-                                                                      child: Text(filterTabs[index]),
-                                                                      color: Colors.grey[200],
-                                                                      shape: RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.circular(7),
-                                                                          side: BorderSide(color: Colors.grey))));
-                                                            },
-                                                            physics: BouncingScrollPhysics(),
-                                                            itemCount: filterTabs.length,
-                                                            scrollDirection: Axis.horizontal)),
-                                                    Expanded(
-                                                        child: Row(children: [
-                                                      Flexible(
-                                                          flex: 1,
-                                                          child: ListView.separated(
-                                                              separatorBuilder: (_, index) =>
-                                                                  Divider(height: 0.5, color: Colors.grey),
-                                                              itemBuilder: (_, index) {
-                                                                return GestureDetector(
+                                          return FutureBuilder(
+                                              future: Future.wait(
+                                                  [ApiService.getFiltersData(list != null ? list[subCatIndex].id.toString() : "")]),
+                                              builder: (context, AsyncSnapshot snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+                                                  ResponseData filterData = snapshot.data[0];
+                                                  Map<String, dynamic> filter = Map<String, dynamic>();
+                                                  filter = filterData.data;
+                                                  List<dynamic> list = List();
+                                                  List<dynamic> list1 = List();
+
+                                                  List<bool> selected = List();
+                                                  List<dynamic> value = List();
+                                                  List<dynamic> selectedFilter = List();
+                                                  var filter_selected_index = 0;
+
+                                                  list1 = filter['data'];
+
+                                                  if (list1.length > 0) {
+                                                    list = filter['data'][0]['option'];
+                                                    value = filter['data'][0]['value'];
+                                                    print("filterData" + value.toString());
+
+                                                    list.forEach((element) => selected.add(false));
+                                                    selected[filter_selected_index] = true;
+
+                                                    value.forEach((element) {
+                                                      List<bool> selected = List();
+                                                      element.forEach((element1) => selected.add(false));
+                                                      selectedFilter.add(selected);
+                                                    });
+                                                  }
+
+                                                  return StatefulBuilder(
+                                                      builder: (_, state) => BottomSheet(
+                                                          onClosing: () {},
+                                                          builder: (_) {
+                                                            return Column(mainAxisSize: MainAxisSize.max, children: [
+                                                              SizedBox(height: 50),
+                                                              ListTile(
+                                                                  title: Text("Sort & Filter By",
+                                                                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                                                                  trailing: IconButton(
+                                                                      icon: Icon(Icons.close),
+                                                                      onPressed: () => Navigator.pop(context),
+                                                                      splashRadius: 25)),
+                                                              Container(
+                                                                  height: 45,
+                                                                  width: size.width,
+                                                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                                                  child: ListView.builder(
+                                                                      itemBuilder: (_, index) {
+                                                                        return Container(
+                                                                            margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
+                                                                            child: FlatButton(
+                                                                                onPressed: () {},
+                                                                                child: Text(filterTabs[index]),
+                                                                                color: Colors.grey[200],
+                                                                                shape: RoundedRectangleBorder(
+                                                                                    borderRadius: BorderRadius.circular(7),
+                                                                                    side: BorderSide(color: Colors.grey))));
+                                                                      },
+                                                                      physics: BouncingScrollPhysics(),
+                                                                      itemCount: filterTabs.length,
+                                                                      scrollDirection: Axis.horizontal)),
+                                                              Expanded(
+                                                                child: Row(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    children: [
+                                                                      Flexible(
+                                                                          flex: 1,
+                                                                          child: ListView.separated(
+                                                                              separatorBuilder: (_, index) =>
+                                                                                  Divider(height: 0.5, color: Colors.grey),
+                                                                              shrinkWrap: true,
+                                                                              itemBuilder: (_, index) {
+                                                                                return GestureDetector(
+                                                                                    child: Container(
+                                                                                        height: 50,
+                                                                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                                                                        alignment: Alignment.centerLeft,
+                                                                                        decoration: BoxDecoration(
+                                                                                            color: selected[index]
+                                                                                                ? Colors.white
+                                                                                                : Colors.grey[200]),
+                                                                                        child: Text(list[index].toString())),
+                                                                                    onTap: () {
+                                                                                      state(() {
+                                                                                        selected
+                                                                                            .asMap()
+                                                                                            .forEach((i, value) => selected[i] = false);
+                                                                                        selected[index] = true;
+                                                                                        filter_selected_index = index;
+                                                                                      });
+                                                                                    });
+                                                                              },
+                                                                              itemCount: list.length > 0 ? list.length : 0,
+                                                                              physics: BouncingScrollPhysics())),
+                                                                      Flexible(
+                                                                          flex: 2,
+                                                                          child: ListView.separated(
+                                                                              separatorBuilder: (_, index) =>
+                                                                                  Divider(height: 0.5, color: Colors.grey),
+                                                                              shrinkWrap: true,
+                                                                              itemBuilder: (_, index) {
+                                                                                return CheckboxListTile(
+                                                                                  value: selectedFilter[filter_selected_index][index],
+                                                                                  onChanged: (value) => state(() {
+                                                                                    selectedFilter[filter_selected_index][index] = value;
+                                                                                  }),
+                                                                                  title: Text(value[filter_selected_index][index]['name']),
+                                                                                );
+
+                                                                                // return filter.isMultipleSelection
+                                                                                //     ? CheckboxListTile(
+                                                                                //         value: filter.filterItems[index].isSelected,
+                                                                                //         onChanged: (value) => state(() => filter.filterItems[index].isSelected =
+                                                                                //             !filter.filterItems[index].isSelected),
+                                                                                //         title: Text(filter.filterItems[index].title),
+                                                                                //       )
+                                                                                //     : RadioListTile<FilterItems>(
+                                                                                //         value: filter.filterItems[index],
+                                                                                //         groupValue: filter.filterItem,
+                                                                                //         title: Text(filter.filterItems[index].title),
+                                                                                //         onChanged: (value) => state(() => filter.filterItem = value),
+                                                                                //         controlAffinity: ListTileControlAffinity.trailing);
+                                                                              },
+                                                                              itemCount: value.length > 0
+                                                                                  ? value[filter_selected_index].length
+                                                                                  : 0,
+                                                                              physics: BouncingScrollPhysics()))
+                                                                    ]),
+                                                              ),
+                                                              Row(mainAxisSize: MainAxisSize.min, children: [
+                                                                Expanded(
                                                                     child: Container(
-                                                                        height: 50,
-                                                                        padding: EdgeInsets.symmetric(horizontal: 10),
-                                                                        alignment: Alignment.centerLeft,
-                                                                        decoration: BoxDecoration(
-                                                                            color: filterList[index].isSelected
-                                                                                ? Colors.white
-                                                                                : Colors.grey[200]),
-                                                                        child: Text(filterList[index].title)),
-                                                                    onTap: () {
-                                                                      filterList.forEach(
-                                                                          (element) => state(() => element.isSelected = false));
-                                                                      state(() => filterList[index].isSelected = true);
-                                                                    });
-                                                              },
-                                                              itemCount: filterList.length,
-                                                              physics: BouncingScrollPhysics())),
-                                                      Flexible(
-                                                          flex: 2,
-                                                          child: ListView.separated(
-                                                              separatorBuilder: (_, index) =>
-                                                                  Divider(height: 0.5, color: Colors.grey),
-                                                              itemBuilder: (_, index) {
-                                                                FilterList filter =
-                                                                    filterList.where((element) => element.isSelected).first;
-                                                                return filter.isMultipleSelection
-                                                                    ? CheckboxListTile(
-                                                                        value: filter.filterItems[index].isSelected,
-                                                                        onChanged: (value) {
-                                                                          state(() => filter.filterItems[index].isSelected =
-                                                                              !filter.filterItems[index].isSelected);
-                                                                        },
-                                                                        title: Text(filter.filterItems[index].title),
-                                                                      )
-                                                                    : RadioListTile<FilterItems>(
-                                                                        value: filter.filterItems[index],
-                                                                        groupValue: filter.filterItem,
-                                                                        title: Text(filter.filterItems[index].title),
-                                                                        onChanged: (value) =>
-                                                                            state(() => filter.filterItem = value),
-                                                                        controlAffinity: ListTileControlAffinity.trailing);
-                                                              },
-                                                              itemCount: filterList
-                                                                  .where((element) => element.isSelected)
-                                                                  .first
-                                                                  .filterItems
-                                                                  .length,
-                                                              physics: BouncingScrollPhysics()))
-                                                    ]))
-                                                  ]);
-                                                },
-                                                backgroundColor: Colors.white,
-                                                enableDrag: true);
-                                          });
+                                                                        margin: EdgeInsets.only(left: 10, right: 5),
+                                                                        child: FlatButton(
+                                                                            onPressed: () {
+                                                                              state(() {
+                                                                                selectedFilter.asMap().forEach((i, value) {
+                                                                                  selectedFilter[i].asMap().forEach((i1, value1) {
+                                                                                    selectedFilter[i][i1] = false;
+                                                                                  });
+                                                                                });
+                                                                              });
+                                                                            },
+                                                                            child: Text("Clear All",
+                                                                                style: TextStyle(color: Myapp.primaryColor)),
+                                                                            color: Colors.white,
+                                                                            shape: RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(7),
+                                                                                side: BorderSide(color: Myapp.primaryColor))))),
+                                                                Expanded(
+                                                                  child: Container(
+                                                                      margin: EdgeInsets.only(left: 10, right: 5),
+                                                                      child: FlatButton(
+                                                                          onPressed: () {
+
+                                                                          },
+                                                                          child:
+                                                                              Text("Apply Filter", style: TextStyle(color: Colors.white)),
+                                                                          color: Myapp.primaryColor,
+                                                                          shape: RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.circular(7),
+                                                                              side: BorderSide(color: Myapp.primaryColor)))),
+                                                                )
+                                                              ])
+                                                            ]);
+                                                          },
+                                                          backgroundColor: Colors.white,
+                                                          enableDrag: true));
+                                                } else {
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                                                    child:
+                                                        Container(color: Colors.white, child: Center(child: CircularProgressIndicator())),
+                                                  );
+                                                }
+                                              });
                                         });
                                   },
                                   label: Text("Sort | Filter"),
@@ -385,31 +409,34 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                         });
                                       },
                                       child: Text(childSubCategoryList[index].name,
-                                          style: TextStyle(
-                                              color: childSubCategoryList[index].isSelected ? Colors.white : Colors.black)),
+                                          style: TextStyle(color: childSubCategoryList[index].isSelected ? Colors.white : Colors.black)),
                                       color: childSubCategoryList[index].isSelected ? Myapp.primaryColor : Colors.grey[300]));
                             },
                             physics: BouncingScrollPhysics(),
-                            itemCount: list.isNotEmpty ? list[subCatIndex].subCategories.length > 0 ? childSubCategoryList.length : 0 :0,
+                            itemCount: list.isNotEmpty
+                                ? list[subCatIndex].subCategories.length > 0
+                                    ? childSubCategoryList.length
+                                    : 0
+                                : 0,
                             scrollDirection: Axis.horizontal)),
                     Expanded(
-                      child: FutureBuilder(
-                          future: Future.wait([ApiService.getProductsById(productId.toString())]),
-                          builder: (context, AsyncSnapshot snapshot) {
-                            print("Snapshot Data" + snapshot.toString());
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              if(snapshot.data != null && snapshot.data[0].data.length > 0) {
-                                ProductsById data = snapshot.data[0];
-                                return ListView.separated(
-                                    separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
-                                    itemBuilder: (_, index) => card(data.data[index]),
-                                    itemCount: data.data.length > 0 ? data.data.length : 0);
-                              } else {
-                                return Center(child: Text("Product not found!", style: TextStyle(color: Colors.black)));
-                              }
-                            } else
-                              return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
-                          }))
+                        child: FutureBuilder(
+                            future: Future.wait([ApiService.getProductsById(productId.toString())]),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              print("Snapshot Data" + snapshot.toString());
+                              if (snapshot.connectionState == ConnectionState.done) {
+                                if (snapshot.data != null && snapshot.data[0].data.length > 0) {
+                                  ProductsById data = snapshot.data[0];
+                                  return ListView.separated(
+                                      separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
+                                      itemBuilder: (_, index) => card(data.data[index]),
+                                      itemCount: data.data.length > 0 ? data.data.length : 0);
+                                } else {
+                                  return Center(child: Text("Product not found!", style: TextStyle(color: Colors.black)));
+                                }
+                              } else
+                                return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
+                            }))
                   ]);
                 } else
                   return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
@@ -436,78 +463,75 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                         SizedBox(height: 7),
                         RichText(
                             text: TextSpan(
-                                text: "\u20b9${(item.attributes.specialPrice  * item.quantity)}\t",
+                                text: "\u20b9${(item.attributes.specialPrice * item.quantity)}\t",
                                 style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                                 children: [
-                                  TextSpan(
-                                      text: "\u20b9${item.price * item.quantity}",
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 14,
-                                          decoration: TextDecoration.lineThrough,
-                                          fontWeight: FontWeight.bold)),
-                                  TextSpan(
-                                      text: "\t\tYou Save \u20b9${(item.price - double.parse(item.attributes.specialPrice)) * item.quantity}",
-                                      style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold))
-                                ])),
+                              TextSpan(
+                                  text: "\u20b9${item.price * item.quantity}",
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 14,
+                                      decoration: TextDecoration.lineThrough,
+                                      fontWeight: FontWeight.bold)),
+                              TextSpan(
+                                  text: "\t\tYou Save \u20b9${(item.price - double.parse(item.attributes.specialPrice)) * item.quantity}",
+                                  style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold))
+                            ])),
                         SizedBox(height: 10),
                         item.inCart
                             ? Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                          SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: FlatButton(
-                                  child: Icon(Icons.remove, color: Colors.white),
-                                  onPressed: () {
-                                    if (item.quantity != 1) {
-                                      setState(() => item.quantity--);
-                                    } else {
-                                      setState(() => item.inCart = false);
-                                    }
-                                  },
-                                  color: Myapp.primaryColor,
-                                  padding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)))),
-                          SizedBox(width: 10),
-                          Text(item.quantity.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                          SizedBox(width: 10),
-                          SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: FlatButton(
-                                  child: Icon(Icons.add, color: Colors.white),
-                                  onPressed: item.quantity <= item.maxQuantity
-                                      ? () {
-                                    if (item.quantity != item.maxQuantity) {
-                                      setState(() => item.quantity++);
-                                    }
-                                  }
-                                      : null,
-                                  color: item.quantity >= item.maxQuantity
-                                      ? Myapp.primaryColor.withOpacity(0.7)
-                                      : Myapp.primaryColor,
-                                  disabledColor: Myapp.primaryColor.withOpacity(0.7),
-                                  padding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))))
-                        ])
+                                SizedBox(
+                                    height: 30,
+                                    width: 30,
+                                    child: FlatButton(
+                                        child: Icon(Icons.remove, color: Colors.white),
+                                        onPressed: () {
+                                          if (item.quantity != 1) {
+                                            setState(() => item.quantity--);
+                                          } else {
+                                            setState(() => item.inCart = false);
+                                          }
+                                        },
+                                        color: Myapp.primaryColor,
+                                        padding: EdgeInsets.zero,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)))),
+                                SizedBox(width: 10),
+                                Text(item.quantity.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                                SizedBox(width: 10),
+                                SizedBox(
+                                    height: 30,
+                                    width: 30,
+                                    child: FlatButton(
+                                        child: Icon(Icons.add, color: Colors.white),
+                                        onPressed: item.quantity <= item.maxQuantity
+                                            ? () {
+                                                if (item.quantity != item.maxQuantity) {
+                                                  setState(() => item.quantity++);
+                                                }
+                                              }
+                                            : null,
+                                        color: item.quantity >= item.maxQuantity ? Myapp.primaryColor.withOpacity(0.7) : Myapp.primaryColor,
+                                        disabledColor: Myapp.primaryColor.withOpacity(0.7),
+                                        padding: EdgeInsets.zero,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))))
+                              ])
                             : Align(
-                            alignment: Alignment.centerRight,
-                            child: SizedBox(
-                                height: 32,
-                                width: 95,
-                                child: FlatButton(
-                                    child: Text("ADD", style: TextStyle(color: Colors.white)),
-                                    onPressed: () {
-                                      setState(() => item.inCart = true);
-                                      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Added to cart successfully")));
-                                    },
-                                    color: Myapp.primaryColor)))
+                                alignment: Alignment.centerRight,
+                                child: SizedBox(
+                                    height: 32,
+                                    width: 95,
+                                    child: FlatButton(
+                                        child: Text("ADD", style: TextStyle(color: Colors.white)),
+                                        onPressed: () {
+                                          setState(() => item.inCart = true);
+                                          scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Added to cart successfully")));
+                                        },
+                                        color: Myapp.primaryColor)))
                       ])))
             ])));
   }
 
   void refresh() {
-
     if (list.length > subCatIndex) {
       subCategories = list[subCatIndex].subCategories;
       if (list[subCatIndex].subCategories.length > subCatIndex1) {
@@ -532,64 +556,16 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
       productId = 0;
     }
 
+    bodyData['category_id'] = productId;
 
-    // if (list.length > subCatIndex) {
-    //   subCategories = list[subCatIndex].subCategories;
-    //
-    //   if (list[subCatIndex].subCategories.length > subCatIndex1) {
-    //     list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
-    //     childSubCategoryList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory;
-    //
-    //     if (list[subCatIndex].subCategories[subCatIndex1].childSubCategory.length > subCatIndex2) {
-    //       list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].isSelected = true;
-    //       productsList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].products;
-    //     } else {
-    //       productsList = [];
-    //     }
-    //   } else {
-    //     childSubCategoryList = [];
-    //     productsList = [];
-    //   }
-    // } else {
-    //   childSubCategoryList = [];
-    //   productsList = [];
-    //   subCategories = [];
-    // }
+  //   {
+  //     "category_id" : 1638,
+  //   "filters" : {
+  //   "COLOR" : ["BLACK"],
+  //   "SIZE": ["28 SIZE"],
+  //   "CATEGORY": [1684,1706,1780]
+  //   }
+  // }
 
   }
-
-}
-
-
-class Category {
-  final String title, image;
-  bool isSelected;
-
-  Category({this.title, this.image, this.isSelected: false});
-}
-
-class Item {
-  final String image, name, category;
-  final double price, maxQuantity, discount;
-  int quantity;
-  bool inCart;
-
-  Item({this.image, this.name, this.category, this.price, this.maxQuantity, this.discount, this.inCart: false, this.quantity});
-}
-
-class FilterList {
-  final String title;
-  final bool isMultipleSelection;
-  bool isSelected;
-  final List<FilterItems> filterItems;
-  FilterItems filterItem;
-
-  FilterList({this.title, this.isMultipleSelection: false, this.filterItems, this.isSelected: false});
-}
-
-class FilterItems {
-  bool isSelected;
-  final String title;
-
-  FilterItems({this.title, this.isSelected: false});
 }
