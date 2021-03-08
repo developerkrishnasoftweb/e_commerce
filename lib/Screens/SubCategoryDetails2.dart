@@ -436,77 +436,75 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                         SizedBox(height: 7),
                         RichText(
                             text: TextSpan(
-                                text: "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t",
+                                text: "\u20b9${(item.attributes.specialPrice  * item.quantity)}\t",
                                 style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                                 children: [
-                              TextSpan(
-                                  text: "\u20b9${item.price * item.quantity}",
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 14,
-                                      decoration: TextDecoration.lineThrough,
-                                      fontWeight: FontWeight.bold)),
-                              TextSpan(
-                                  text: "\t\tYou Save \u20b9${item.discount * item.quantity}",
-                                  style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold))
-                            ])),
+                                  TextSpan(
+                                      text: "\u20b9${item.price * item.quantity}",
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 14,
+                                          decoration: TextDecoration.lineThrough,
+                                          fontWeight: FontWeight.bold)),
+                                  TextSpan(
+                                      text: "\t\tYou Save \u20b9${(item.price - double.parse(item.attributes.specialPrice)) * item.quantity}",
+                                      style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold))
+                                ])),
                         SizedBox(height: 10),
                         item.inCart
                             ? Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                                SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: FlatButton(
-                                        child: Icon(Icons.remove, color: Colors.white),
-                                        onPressed: () {
-                                          if (item.quantity != 1) {
-                                            setState(() => item.quantity--);
-                                          } else {
-                                            setState(() => item.inCart = false);
-                                          }
-                                        },
-                                        color: Myapp.primaryColor,
-                                        padding: EdgeInsets.zero,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)))),
-                                SizedBox(width: 10),
-                                Text(item.quantity.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                                SizedBox(width: 10),
-                                SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: FlatButton(
-                                        child: Icon(Icons.add, color: Colors.white),
-                                        onPressed: item.quantity <= item.maxQuantity
-                                            ? () {
-                                                if (item.quantity != item.maxQuantity) {
-                                                  setState(() => item.quantity++);
-                                                }
-                                              }
-                                            : null,
-                                        color: item.quantity >= item.maxQuantity
-                                            ? Myapp.primaryColor.withOpacity(0.7)
-                                            : Myapp.primaryColor,
-                                        disabledColor: Myapp.primaryColor.withOpacity(0.7),
-                                        padding: EdgeInsets.zero,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))))
-                              ])
+                          SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: FlatButton(
+                                  child: Icon(Icons.remove, color: Colors.white),
+                                  onPressed: () {
+                                    if (item.quantity != 1) {
+                                      setState(() => item.quantity--);
+                                    } else {
+                                      setState(() => item.inCart = false);
+                                    }
+                                  },
+                                  color: Myapp.primaryColor,
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)))),
+                          SizedBox(width: 10),
+                          Text(item.quantity.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                          SizedBox(width: 10),
+                          SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: FlatButton(
+                                  child: Icon(Icons.add, color: Colors.white),
+                                  onPressed: item.quantity <= item.maxQuantity
+                                      ? () {
+                                    if (item.quantity != item.maxQuantity) {
+                                      setState(() => item.quantity++);
+                                    }
+                                  }
+                                      : null,
+                                  color: item.quantity >= item.maxQuantity
+                                      ? Myapp.primaryColor.withOpacity(0.7)
+                                      : Myapp.primaryColor,
+                                  disabledColor: Myapp.primaryColor.withOpacity(0.7),
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))))
+                        ])
                             : Align(
-                                alignment: Alignment.centerRight,
-                                child: SizedBox(
-                                    height: 32,
-                                    width: 95,
-                                    child: FlatButton(
-                                        child: Text("ADD", style: TextStyle(color: Colors.white)),
-                                        onPressed: () {
-                                          setState(() => item.inCart = true);
-                                          scaffoldKey.currentState
-                                              .showSnackBar(SnackBar(content: Text("Added to cart successfully")));
-                                        },
-                                        color: Myapp.primaryColor)))
+                            alignment: Alignment.centerRight,
+                            child: SizedBox(
+                                height: 32,
+                                width: 95,
+                                child: FlatButton(
+                                    child: Text("ADD", style: TextStyle(color: Colors.white)),
+                                    onPressed: () {
+                                      setState(() => item.inCart = true);
+                                      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Added to cart successfully")));
+                                    },
+                                    color: Myapp.primaryColor)))
                       ])))
             ])));
   }
-
 
   void refresh() {
 

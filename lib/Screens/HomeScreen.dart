@@ -262,17 +262,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   maxLines: 4,
                                                   overflow: TextOverflow.ellipsis,
                                                   text: TextSpan(
-                                                      text: '₹ ' + data[index].price.toString() + ' ',
+                                                      text: '₹ ' +data[index].attributes.specialPrice  + ' ',
                                                       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
                                                       children: [
                                                         TextSpan(
-                                                            text: '₹ 45.00 \n',
+                                                            text: '₹ ${data[index].price.toString()} \n',
                                                             style: TextStyle(
                                                                 decoration: TextDecoration.lineThrough,
                                                                 color: Colors.black,
                                                                 fontSize: 10.sp)),
                                                         TextSpan(
-                                                            text: "Save ₹ 22.50 \n",
+                                                            text: "Save ${data[index].price - double.parse(data[index].attributes.specialPrice)} \n",
                                                             style: TextStyle(
                                                                 fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green)),
                                                         TextSpan(

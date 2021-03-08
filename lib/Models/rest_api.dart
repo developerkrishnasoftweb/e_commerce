@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/Banners.dart';
 import 'package:e_commerce/Models/BestOffer.dart';
+import 'package:e_commerce/Models/FilterData.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +30,7 @@ class URLS {
   static const String GET_PRODUCTS = '${URLS.SERVER_URL}/api/product?category_id=';
   static const String GET_BEST_OFFERS = '${URLS.SERVER_URL}/api/best-offer';
   static const String GET_OFFERS1 = '${URLS.SERVER_URL}/api/home-section';
+  static const String GET_FILTERS_DATA = '${URLS.SERVER_URL}/api/category/filter?category_id=';
 
   static const String DEPARTMENTS = '${URLS.BASE_URL}department';
   static const String CATEGORIES = '${URLS.BASE_URL}category';
@@ -82,7 +84,6 @@ class ApiService {
     }
   }
 
-
   static Future<MainCategory> getTopCategories() async {
     final response = await http.get(URLS.GET_TOP_CATEGORIES);
     try {
@@ -133,7 +134,7 @@ class ApiService {
   }
 
   static Future<ProductsById> getProductsById(String id) async {
-    print("URL     " + URLS.GET_PRODUCTS + id);
+
     final response = await http.get(URLS.GET_PRODUCTS + id);
     try {
       if (response.statusCode == 200) {
@@ -181,6 +182,20 @@ class ApiService {
     try {
       if (response.statusCode == 200) {
         return ProductsById.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<FiltersData> getFiltersData(String id) async {
+    print("URL     " + URLS.GET_FILTERS_DATA + id);
+    final response = await http.get(URLS.GET_FILTERS_DATA + id);
+    try {
+      if (response.statusCode == 200) {
+        return FiltersData.fromJson(json.decode(response.body));
       } else {
         return null;
       }

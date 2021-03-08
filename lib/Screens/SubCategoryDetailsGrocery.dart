@@ -1,4 +1,5 @@
 import 'package:e_commerce/Models/AllCategories.dart';
+import 'package:e_commerce/Models/FilterData.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/rest_api.dart';
@@ -257,76 +258,94 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                               return BottomSheet(
                                   onClosing: () {},
                                   builder: (_) {
-                                    return Column(children: [
-                                      SizedBox(height: MediaQuery.of(context).padding.top),
-                                      ListTile(
-                                          title: Text("Sort & Filter By", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
-                                          trailing: IconButton(
-                                              icon: Icon(Icons.close), onPressed: () => Navigator.pop(context), splashRadius: 25)),
-                                      Container(
-                                          height: 45,
-                                          width: size.width,
-                                          padding: EdgeInsets.symmetric(vertical: 5),
-                                          child: ListView.builder(
-                                              itemBuilder: (_, index) {
-                                                return Container(
-                                                    margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
-                                                    child: FlatButton(
-                                                        onPressed: () {},
-                                                        child: Text(filterTabs[index]),
-                                                        color: Colors.grey[200],
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(7), side: BorderSide(color: Colors.grey))));
-                                              },
-                                              physics: BouncingScrollPhysics(),
-                                              itemCount: filterTabs.length,
-                                              scrollDirection: Axis.horizontal)),
-                                      Expanded(
-                                          child: Row(children: [
-                                        Flexible(
-                                            flex: 1,
-                                            child: ListView.separated(
-                                                separatorBuilder: (_, index) => Divider(height: 0.5, color: Colors.grey),
-                                                itemBuilder: (_, index) {
-                                                  return GestureDetector(
-                                                      child: Container(
-                                                          height: 50,
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          alignment: Alignment.centerLeft,
-                                                          decoration: BoxDecoration(
-                                                              color: filterList[index].isSelected ? Colors.white : Colors.grey[200]),
-                                                          child: Text(filterList[index].title)),
-                                                      onTap: () {
-                                                        filterList.forEach((element) => state(() => element.isSelected = false));
-                                                        state(() => filterList[index].isSelected = true);
-                                                      });
-                                                },
-                                                itemCount: filterList.length,
-                                                physics: BouncingScrollPhysics())),
-                                        Flexible(
-                                            flex: 2,
-                                            child: ListView.separated(
-                                                separatorBuilder: (_, index) => Divider(height: 0.5, color: Colors.grey),
-                                                itemBuilder: (_, index) {
-                                                  FilterList filter = filterList.where((element) => element.isSelected).first;
-                                                  return filter.isMultipleSelection
-                                                      ? CheckboxListTile(
-                                                          value: filter.filterItems[index].isSelected,
-                                                          onChanged: (value) => state(() =>
-                                                              filter.filterItems[index].isSelected = !filter.filterItems[index].isSelected),
-                                                          title: Text(filter.filterItems[index].title),
-                                                        )
-                                                      : RadioListTile<FilterItems>(
-                                                          value: filter.filterItems[index],
-                                                          groupValue: filter.filterItem,
-                                                          title: Text(filter.filterItems[index].title),
-                                                          onChanged: (value) => state(() => filter.filterItem = value),
-                                                          controlAffinity: ListTileControlAffinity.trailing);
-                                                },
-                                                itemCount: filterList.where((element) => element.isSelected).first.filterItems.length,
-                                                physics: BouncingScrollPhysics()))
-                                      ]))
-                                    ]);
+                                    return FutureBuilder(
+                                        future: Future.wait([ApiService.getFiltersData(widget.id.toString() ?? "1605")]),
+                                        builder: (context, AsyncSnapshot snapshot) {
+                                          if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+                                            FiltersData filterData = snapshot.data[0];
+                                            print("filterData" + filterData.toString());
+                                            return Column(children: [
+                                              SizedBox(height: MediaQuery.of(context).padding.top),
+                                              ListTile(
+                                                  title: Text("Sort & Filter By",
+                                                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                                                  trailing: IconButton(
+                                                      icon: Icon(Icons.close), onPressed: () => Navigator.pop(context), splashRadius: 25)),
+                                              Container(
+                                                  height: 45,
+                                                  width: size.width,
+                                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                                  child: ListView.builder(
+                                                      itemBuilder: (_, index) {
+                                                        return Container(
+                                                            margin: EdgeInsets.only(left: index == 0 ? 10 : 0, right: 10),
+                                                            child: FlatButton(
+                                                                onPressed: () {},
+                                                                child: Text(filterTabs[index]),
+                                                                color: Colors.grey[200],
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(7),
+                                                                    side: BorderSide(color: Colors.grey))));
+                                                      },
+                                                      physics: BouncingScrollPhysics(),
+                                                      itemCount: filterTabs.length,
+                                                      scrollDirection: Axis.horizontal)),
+                                              Expanded(
+                                                  child: Row(children: [
+                                                Flexible(
+                                                    flex: 1,
+                                                    child: ListView.separated(
+                                                        separatorBuilder: (_, index) => Divider(height: 0.5, color: Colors.grey),
+                                                        itemBuilder: (_, index) {
+                                                          return GestureDetector(
+                                                              child: Container(
+                                                                  height: 50,
+                                                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                                                  alignment: Alignment.centerLeft,
+                                                                  decoration: BoxDecoration(
+                                                                      // color: filterData.data[0].optionSelected[index]
+                                                                      //     ? Colors.white
+                                                                      //     : Colors.grey[200]
+                                                                  ),
+                                                                  child: Text(filterData.data[0].option[index])),
+                                                              onTap: () {
+                                                                // filterData.data[0].optionSelected
+                                                                //     .forEach((element) => state(() => element = false));
+                                                                // state(() => filterData.data[0].optionSelected[index] = true);
+                                                              });
+                                                        },
+                                                        itemCount: filterData.data[0].option.length,
+                                                        physics: BouncingScrollPhysics())),
+                                                // Flexible(
+                                                //     flex: 2,
+                                                //     child: ListView.separated(
+                                                //         separatorBuilder: (_, index) => Divider(height: 0.5, color: Colors.grey),
+                                                //         itemBuilder: (_, index) {
+                                                //           FilterList filter = filterList.where((element) => element.isSelected).first;
+                                                //           return filter.isMultipleSelection
+                                                //               ? CheckboxListTile(
+                                                //                   value: filter.filterItems[index].isSelected,
+                                                //                   onChanged: (value) => state(() => filter.filterItems[index].isSelected =
+                                                //                       !filter.filterItems[index].isSelected),
+                                                //                   title: Text(filter.filterItems[index].title),
+                                                //                 )
+                                                //               : RadioListTile<FilterItems>(
+                                                //                   value: filter.filterItems[index],
+                                                //                   groupValue: filter.filterItem,
+                                                //                   title: Text(filter.filterItems[index].title),
+                                                //                   onChanged: (value) => state(() => filter.filterItem = value),
+                                                //                   controlAffinity: ListTileControlAffinity.trailing);
+                                                //         },
+                                                //         itemCount:
+                                                //             filterList.where((element) => element.isSelected).first.filterItems.length,
+                                                //         physics: BouncingScrollPhysics()))
+                                              ]))
+                                            ]);
+                                          } else {
+                                            return Expanded(
+                                                child: Container(color: Colors.white, child: Center(child: CircularProgressIndicator())));
+                                          }
+                                        });
                                   },
                                   backgroundColor: Colors.white,
                                   enableDrag: true);
@@ -407,7 +426,7 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                         SizedBox(height: 7),
                         RichText(
                             text: TextSpan(
-                                text: "\u20b9${(item.price * item.quantity) - (item.quantity * item.discount)}\t",
+                                text: "\u20b9${(item.attributes.specialPrice * item.quantity)}\t",
                                 style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                                 children: [
                               TextSpan(
@@ -418,7 +437,7 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
                                       decoration: TextDecoration.lineThrough,
                                       fontWeight: FontWeight.bold)),
                               TextSpan(
-                                  text: "\t\tYou Save \u20b9${item.discount * item.quantity}",
+                                  text: "\t\tYou Save \u20b9${(item.price - double.parse(item.attributes.specialPrice)) * item.quantity}",
                                   style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold))
                             ])),
                         SizedBox(height: 10),

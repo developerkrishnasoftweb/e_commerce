@@ -65,7 +65,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           children: [
                             TextSpan(
                                 text:
-                                    "₹ ${(widget.products.price * widget.products.quantity) - (widget.products.quantity * widget.products.discount)} ",
+                                    "₹ ${(widget.products.attributes.specialPrice)} ",
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
                             TextSpan(
                                 text: '₹ ' + widget.products.price.toString() + " ",
@@ -110,8 +110,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             // TextSpan(text: 'Veg\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey))
                           ])),
                   Row(children: [
-                    Expanded(
-                        child: Text("Product Rating", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black))),
+                    Expanded(child: Text("Product Rating", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black))),
                     RatingBar.builder(
                         initialRating: 3,
                         minRating: 1,
@@ -151,3 +150,5 @@ class _ProductDetailState extends State<ProductDetail> {
         .toList();
   }
 }
+
+
