@@ -2,6 +2,7 @@ import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/rest_api.dart';
+import 'package:e_commerce/Screens/widgets/ProductItem.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,6 +35,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
   List<SubCategotyLIst> subCategories = [];
   ProductsById products;
   bool productsFound = false;
+  final Map<String, dynamic> bodyData = new Map<String, dynamic>();
+  Map<String, dynamic> filterDataPost;
 
   @override
   void initState() {
@@ -69,9 +72,48 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
       subCategories = [];
       productId = 0;
     }
-    getProducts();
 
+    bodyData['category_id'] = productId;
+    bodyData['filters'] = filterDataPost;
 
+  }
+
+  void refresh1() {
+    print("refresh Call");
+
+    list = widget.list;
+
+    if (list.length > subCatIndex) {
+      subCategories = list[subCatIndex].subCategories;
+      if (list[subCatIndex].subCategories.length > subCatIndex1) {
+        list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
+        childSubCategoryList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory;
+        if (list[subCatIndex].subCategories[subCatIndex1].childSubCategory.length > subCatIndex2) {
+          list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].isSelected = true;
+          productId = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id != 0
+              ? list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id
+              : list[subCatIndex].subCategories[subCatIndex1].id;
+        } else {
+          productId = 0;
+        }
+      } else {
+        childSubCategoryList = [];
+        productId = 0;
+      }
+    } else {
+      childSubCategoryList = [];
+      productsList = [];
+      subCategories = [];
+      productId = 0;
+    }
+
+    setState(() {
+      bodyData['category_id'] = productId;
+      bodyData['filters'] = null;
+    });
+
+    //  productFuture = Future.wait([ApiService.getFilterProducts(bodyData)]);
+    // productFuture = Future.wait([ApiService.getProductsById(productId.toString())]);
   }
 
   getProducts() async {
@@ -104,31 +146,6 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    list = widget.list;
-
-    if (list.length > subCatIndex) {
-      subCategories = list[subCatIndex].subCategories;
-      if (list[subCatIndex].subCategories.length > subCatIndex1) {
-        list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
-        childSubCategoryList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory;
-        if (list[subCatIndex].subCategories[subCatIndex1].childSubCategory.length > subCatIndex2) {
-          list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].isSelected = true;
-          productId = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id != 0
-              ? list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id
-              : list[subCatIndex].subCategories[subCatIndex1].id;
-        } else {
-          productId = 0;
-        }
-      } else {
-        childSubCategoryList = [];
-        productId = 0;
-      }
-    } else {
-      childSubCategoryList = [];
-      productsList = [];
-      subCategories = [];
-      productId = 0;
-    }
 
     return Scaffold(
         key: scaffoldKey,
@@ -208,7 +225,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                                                         subCatIndex1 = 0;
                                                         subCatIndex2 = 0;
                                                         Navigator.of(context).pop();
-                                                        getProducts();
+                                                        refresh1();
                                                       })),
                                               itemCount: list != null ? list.length : 10))
                                     ]),
@@ -223,8 +240,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                               setState(() {
                                 subCatIndex1 = index;
                                 subCategories[index].isSelected = true;
+                                refresh1();
                               });
-                              getProducts();
                             },
                             child: Container(
                                 margin: EdgeInsets.only(left: index == 0 ? 10 : 0, bottom: 7, top: 7, right: 10),
@@ -419,7 +436,29 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                                                         margin: EdgeInsets.only(left: 10, right: 5),
                                                         child: FlatButton(
                                                             onPressed: () {
+                                                              filterDataPost = Map<String, dynamic>();
+                                                              list.asMap().forEach((i, element) {
+                                                                List<dynamic> list = List();
 
+                                                                selectedFilter[i].asMap().forEach((index1, element2) {
+                                                                  if (element2) {
+                                                                    if (element == "CATEGORY") {
+                                                                      list.add(value[i][index1]['id']);
+                                                                    } else {
+                                                                      list.add(value[i][index1]['name']);
+                                                                    }
+                                                                  }
+                                                                });
+                                                                setState(() {
+                                                                  filterDataPost[element] = list;
+                                                                });
+                                                              });
+                                                              print("FilterList" + filterDataPost.toString());
+                                                              Navigator.pop(context);
+                                                              setState(() {
+                                                                bodyData['category_id'] = productId;
+                                                                bodyData['filters'] = filterDataPost;
+                                                              });
                                                             },
                                                             child:
                                                             Text("Apply Filter", style: TextStyle(color: Colors.white)),
@@ -460,8 +499,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                             setState(() {
                               subCatIndex2 = index;
                               childSubCategoryList[index].isSelected = true;
+                              refresh1();
                             });
-                            getProducts();
                           },
                           child: Text(childSubCategoryList[index].name,
                               style: TextStyle(color: childSubCategoryList[index].isSelected ? Colors.white : Colors.black)),
@@ -470,14 +509,15 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                   itemCount: list[subCatIndex].subCategories.length > 0 ? childSubCategoryList.length : 0,
                   scrollDirection: Axis.horizontal)),
           Expanded(
-            child: !productsFound
-                ? products != null
-                    ? ListView.separated(
-                        separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
-                        itemBuilder: (_, index) => card(products.data[index]),
-                        itemCount: products.data.length > 0 ? products.data.length : 0)
-                    : Container(child: Center(child: CircularProgressIndicator()))
-                : Container(child: Center(child: Text("Product not found"))),
+            child: ProductItem(bodyData, scaffoldKey),
+            // child: !productsFound
+            //     ? products != null
+            //         ? ListView.separated(
+            //             separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
+            //             itemBuilder: (_, index) => card(products.data[index]),
+            //             itemCount: products.data.length > 0 ? products.data.length : 0)
+            //         : Container(child: Center(child: CircularProgressIndicator()))
+            //     : Container(child: Center(child: Text("Product not found"))),
           )
         ])));
   }

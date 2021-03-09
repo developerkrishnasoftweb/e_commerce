@@ -2,6 +2,7 @@ import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/rest_api.dart';
+import 'package:e_commerce/Screens/widgets/ProductItem.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -141,6 +142,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                                                       subCatIndex1 = 0;
                                                                       subCatIndex2 = 0;
                                                                       Navigator.of(context).pop();
+                                                                      refresh1();
                                                                     }));
                                                           },
                                                           itemCount: list != null ? list.length : 10))
@@ -162,6 +164,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                             subCatIndex1 = index;
                                             subCatIndex2 = 0;
                                             subCategories[index].isSelected = true;
+                                            refresh1();
                                           });
                                         },
                                         child: Container(
@@ -385,6 +388,12 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                                                             });
                                                                             print("FilterList" + filterDataPost.toString());
                                                                             Navigator.pop(context);
+
+                                                                              setState(() {
+                                                                                bodyData['category_id'] = productId;
+                                                                                bodyData['filters'] = filterDataPost;
+                                                                              });
+
                                                                           },
                                                                           child:
                                                                               Text("Apply Filter", style: TextStyle(color: Colors.white)),
@@ -427,6 +436,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                         setState(() {
                                           subCatIndex2 = index;
                                           childSubCategoryList[index].isSelected = true;
+                                          refresh1();
                                         });
                                       },
                                       child: Text(childSubCategoryList[index].name,
@@ -441,25 +451,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                 : 0,
                             scrollDirection: Axis.horizontal)),
                     Expanded(
-                        child: FutureBuilder(
-                            // future: Future.wait([ApiService.getProductsById(productId.toString())]),
-                            // future: Future.wait([ApiService.getFilterProducts(bodyData)]),
-                            future: productFuture,
-                            builder: (context, AsyncSnapshot snapshot) {
-                              print("Snapshot Data" + snapshot.toString());
-                              if (snapshot.connectionState == ConnectionState.done) {
-                                if (snapshot.data != null && snapshot.data.length > 0 && snapshot.data[0].data.length > 0) {
-                                  ProductsById data = snapshot.data[0];
-                                  return ListView.separated(
-                                      separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
-                                      itemBuilder: (_, index) => card(data.data[index]),
-                                      itemCount: data.data.length > 0 ? data.data.length : 0);
-                                } else {
-                                  return Center(child: Text("Product not found!", style: TextStyle(color: Colors.black)));
-                                }
-                              } else
-                                return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
-                            }))
+                        child: ProductItem(bodyData, scaffoldKey))
                   ]);
                 } else
                   return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
@@ -555,7 +547,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
             ])));
   }
 
-  var productFuture;
+ // var productFuture;
 
   void refresh() {
     print("refresh Call");
@@ -587,7 +579,43 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
     bodyData['category_id'] = productId;
     bodyData['filters'] = filterDataPost;
 
-    productFuture = Future.wait([ApiService.getFilterProducts(bodyData)]);
+  //  productFuture = Future.wait([ApiService.getFilterProducts(bodyData)]);
+    // productFuture = Future.wait([ApiService.getProductsById(productId.toString())]);
+  }
+
+  void refresh1() {
+    print("refresh Call");
+
+    if (list.length > subCatIndex) {
+      subCategories = list[subCatIndex].subCategories;
+      if (list[subCatIndex].subCategories.length > subCatIndex1) {
+        list[subCatIndex].subCategories[subCatIndex1].isSelected = true;
+        childSubCategoryList = list[subCatIndex].subCategories[subCatIndex1].childSubCategory;
+        if (list[subCatIndex].subCategories[subCatIndex1].childSubCategory.length > subCatIndex2) {
+          list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].isSelected = true;
+          productId = list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id != 0
+              ? list[subCatIndex].subCategories[subCatIndex1].childSubCategory[subCatIndex2].id
+              : list[subCatIndex].subCategories[subCatIndex1].id;
+        } else {
+          productId = 0;
+        }
+      } else {
+        childSubCategoryList = [];
+        productId = 0;
+      }
+    } else {
+      childSubCategoryList = [];
+      productsList = [];
+      subCategories = [];
+      productId = 0;
+    }
+
+    setState(() {
+      bodyData['category_id'] = productId;
+      bodyData['filters'] = null;
+    });
+
+    //  productFuture = Future.wait([ApiService.getFilterProducts(bodyData)]);
     // productFuture = Future.wait([ApiService.getProductsById(productId.toString())]);
   }
 }
