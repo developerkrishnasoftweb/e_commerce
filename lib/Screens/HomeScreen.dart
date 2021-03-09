@@ -88,14 +88,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Expanded(
                       child: SingleChildScrollView(
                           child: Column(children: [
-                    categoriesListHorizontal(mainCategory.data),
-                    freeHomeDeliverySlider(topCategoryBanners.data),
-                    topCategories(topCategory.data),
-                    topDeals(topProducts.data),
-                    shopGroceries(shopGrocery.data),
-                    offerListWithCategories(),
-                    collectionWithBestOffers(bestOffers),
-                    kidsFashion(kidsFashionData.data)
+                    mainCategory != null ? categoriesListHorizontal(mainCategory.data) : Container(),
+                    topCategoryBanners != null ? freeHomeDeliverySlider(topCategoryBanners.data) : Container(),
+                    topCategory != null ? topCategories(topCategory.data) : Container(),
+                    topProducts != null ? topDeals(topProducts.data) : Container(),
+                    shopGrocery != null ? shopGroceries(shopGrocery.data) : Container(),
+                    offers!= null ? offerListWithCategories() : Container(),
+                    bestOffers != null ? collectionWithBestOffers(bestOffers) : Container(),
+                    kidsFashionData != null ? kidsFashion(kidsFashionData.data) : Container()
                   ])));
                 } else
                   return Expanded(child: Container(color: Colors.white, child: Center(child: CircularProgressIndicator())));
@@ -262,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   maxLines: 4,
                                                   overflow: TextOverflow.ellipsis,
                                                   text: TextSpan(
-                                                      text: '₹ ' +data[index].attributes.specialPrice  + ' ',
+                                                      text: '₹ ' + data[index].attributes.specialPrice + ' ',
                                                       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
                                                       children: [
                                                         TextSpan(
@@ -272,7 +272,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 color: Colors.black,
                                                                 fontSize: 10.sp)),
                                                         TextSpan(
-                                                            text: "Save ${data[index].price - double.parse(data[index].attributes.specialPrice)} \n",
+                                                            text:
+                                                                "Save ${data[index].price - double.parse(data[index].attributes.specialPrice)} \n",
                                                             style: TextStyle(
                                                                 fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green)),
                                                         TextSpan(

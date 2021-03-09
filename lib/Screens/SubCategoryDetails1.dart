@@ -469,21 +469,19 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
                   physics: BouncingScrollPhysics(),
                   itemCount: list[subCatIndex].subCategories.length > 0 ? childSubCategoryList.length : 0,
                   scrollDirection: Axis.horizontal)),
-              Expanded(
-                child: !productsFound
-                    ? products != null
+          Expanded(
+            child: !productsFound
+                ? products != null
                     ? ListView.separated(
-                    separatorBuilder: (_, index) => Divider(
-                        color: Colors.grey, indent: 20, endIndent: 20),
-                    itemBuilder: (_, index) => card(products.data[index]),
-                    itemCount:
-                    products.data.length > 0 ? products.data.length : 0)
-                    : Container(
-                    child: Center(child: CircularProgressIndicator()))
-                    : Container(child: Center(child: Text("Product not found"))),
-              )
+                        separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
+                        itemBuilder: (_, index) => card(products.data[index]),
+                        itemCount: products.data.length > 0 ? products.data.length : 0)
+                    : Container(child: Center(child: CircularProgressIndicator()))
+                : Container(child: Center(child: Text("Product not found"))),
+          )
         ])));
   }
+
   Widget card(Products item) {
     return GestureDetector(
         onTap: () => Navigator.push(
