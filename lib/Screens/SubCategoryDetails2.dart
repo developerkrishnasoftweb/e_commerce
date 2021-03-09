@@ -30,8 +30,8 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
   List<SubCategotyLIst> subCategories = [];
   var productId = 0;
   final Map<String, dynamic> bodyData = new Map<String, dynamic>();
-  ProductsById products;
-  bool productsFound = false;
+  Map<String, dynamic> filterDataPost;
+
   var future;
 
   @override
@@ -41,8 +41,6 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
     subCatIndex = 0;
     subCatIndex1 = 0;
     subCatIndex2 = 0;
-    productId = int.parse(widget.id);
-    getProducts();
   }
 
   @override
@@ -64,7 +62,6 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                   AllCategory mainCategory = snapshot.data[0];
                   list = mainCategory.data;
                   refresh();
-
                   return Column(children: [
                     GestureDetector(
                         onTap: () {},
@@ -139,15 +136,12 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                                                 //   maxLines: 1,
                                                                 //   overflow: TextOverflow.ellipsis,
                                                                 // ),
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    subCatIndex = index;
-                                                                    subCatIndex1 = 0;
-                                                                    subCatIndex2 = 0;
-                                                                    Navigator.of(context).pop();
-                                                                    getProducts();
-                                                                  });
-                                                                });
+                                                                onTap: () => setState(() {
+                                                                      subCatIndex = index;
+                                                                      subCatIndex1 = 0;
+                                                                      subCatIndex2 = 0;
+                                                                      Navigator.of(context).pop();
+                                                                    }));
                                                           },
                                                           itemCount: list != null ? list.length : 10))
                                                 ]);
@@ -168,9 +162,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                             subCatIndex1 = index;
                                             subCatIndex2 = 0;
                                             subCategories[index].isSelected = true;
-                                            getProducts();
                                           });
-
                                         },
                                         child: Container(
                                             margin: EdgeInsets.only(left: index == 0 ? 10 : 0, bottom: 7, top: 7, right: 10),
@@ -373,7 +365,27 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                                                   child: Container(
                                                                       margin: EdgeInsets.only(left: 10, right: 5),
                                                                       child: FlatButton(
-                                                                          onPressed: () {},
+                                                                          onPressed: () {
+                                                                            filterDataPost = Map<String, dynamic>();
+                                                                            list.asMap().forEach((i, element) {
+                                                                              List<dynamic> list = List();
+
+                                                                              selectedFilter[i].asMap().forEach((index1, element2) {
+                                                                                if (element2) {
+                                                                                  if (element == "CATEGORY") {
+                                                                                    list.add(value[i][index1]['id']);
+                                                                                  } else {
+                                                                                    list.add(value[i][index1]['name']);
+                                                                                  }
+                                                                                }
+                                                                              });
+                                                                              setState(() {
+                                                                                filterDataPost[element] = list;
+                                                                              });
+                                                                            });
+                                                                            print("FilterList" + filterDataPost.toString());
+                                                                            Navigator.pop(context);
+                                                                          },
                                                                           child:
                                                                               Text("Apply Filter", style: TextStyle(color: Colors.white)),
                                                                           color: Myapp.primaryColor,
@@ -415,9 +427,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                         setState(() {
                                           subCatIndex2 = index;
                                           childSubCategoryList[index].isSelected = true;
-                                          getProducts();
                                         });
-
                                       },
                                       child: Text(childSubCategoryList[index].name,
                                           style: TextStyle(color: childSubCategoryList[index].isSelected ? Colors.white : Colors.black)),
@@ -431,15 +441,25 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                 : 0,
                             scrollDirection: Axis.horizontal)),
                     Expanded(
-                      child: !productsFound
-                          ? products != null && products.data.length > 0
-                              ? ListView.separated(
-                                  separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
-                                  itemBuilder: (_, index) => card(products.data[index]),
-                                  itemCount: products.data.length > 0 ? products.data.length : 0)
-                              : Container(child: Center(child: CircularProgressIndicator()))
-                          : Container(child: Center(child: Text("Product not found"))),
-                    )
+                        child: FutureBuilder(
+                            // future: Future.wait([ApiService.getProductsById(productId.toString())]),
+                            // future: Future.wait([ApiService.getFilterProducts(bodyData)]),
+                            future: productFuture,
+                            builder: (context, AsyncSnapshot snapshot) {
+                              print("Snapshot Data" + snapshot.toString());
+                              if (snapshot.connectionState == ConnectionState.done) {
+                                if (snapshot.data != null && snapshot.data.length > 0 && snapshot.data[0].data.length > 0) {
+                                  ProductsById data = snapshot.data[0];
+                                  return ListView.separated(
+                                      separatorBuilder: (_, index) => Divider(color: Colors.grey, indent: 20, endIndent: 20),
+                                      itemBuilder: (_, index) => card(data.data[index]),
+                                      itemCount: data.data.length > 0 ? data.data.length : 0);
+                                } else {
+                                  return Center(child: Text("Product not found!", style: TextStyle(color: Colors.black)));
+                                }
+                              } else
+                                return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
+                            }))
                   ]);
                 } else
                   return Container(color: Colors.white, child: Center(child: CircularProgressIndicator()));
@@ -466,18 +486,18 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                         SizedBox(height: 7),
                         RichText(
                             text: TextSpan(
-                                text: "\u20b9${item.price * item.quantity}\t",
+                                text: "\u20b9${(item.attributes.specialPrice * item.quantity)}\t",
                                 style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                                 children: [
                               TextSpan(
-                                  text: "\u20b9${item.attributes.specialPrice}",
+                                  text: "\u20b9${item.price * item.quantity}",
                                   style: TextStyle(
                                       color: Colors.black87,
                                       fontSize: 14,
                                       decoration: TextDecoration.lineThrough,
                                       fontWeight: FontWeight.bold)),
                               TextSpan(
-                                  text: "\t\tYou Save \u20b9${double.parse(item.attributes.specialPrice) * item.quantity}",
+                                  text: "\t\tYou Save \u20b9${(item.price - double.parse(item.attributes.specialPrice)) * item.quantity}",
                                   style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold))
                             ])),
                         SizedBox(height: 10),
@@ -488,7 +508,13 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                     width: 30,
                                     child: FlatButton(
                                         child: Icon(Icons.remove, color: Colors.white),
-                                        onPressed: () => _removeItemQuantity(item),
+                                        onPressed: () {
+                                          if (item.quantity != 1) {
+                                            setState(() => item.quantity--);
+                                          } else {
+                                            setState(() => item.inCart = false);
+                                          }
+                                        },
                                         color: Myapp.primaryColor,
                                         padding: EdgeInsets.zero,
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)))),
@@ -500,7 +526,14 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                     width: 30,
                                     child: FlatButton(
                                         child: Icon(Icons.add, color: Colors.white),
-                                        onPressed: () => _addItemQuantity(item),
+                                        onPressed: item.quantity <= item.maxQuantity
+                                            ? () {
+                                                if (item.quantity != item.maxQuantity) {
+                                                  //  setState(() => item.quantity++);
+                                                  item.quantity++;
+                                                }
+                                              }
+                                            : null,
                                         color: item.quantity >= item.maxQuantity ? Myapp.primaryColor.withOpacity(0.7) : Myapp.primaryColor,
                                         disabledColor: Myapp.primaryColor.withOpacity(0.7),
                                         padding: EdgeInsets.zero,
@@ -512,59 +545,20 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
                                     height: 32,
                                     width: 95,
                                     child: FlatButton(
-                                        child: item.isLoading
-                                            ? SizedBox(height: 25, width: 25, child: CircularProgressIndicator(strokeWidth: 2))
-                                            : Text("ADD", style: TextStyle(color: Colors.white)),
-                                        onPressed: item.isLoading ? null : () => _addToCart(item),
+                                        child: Text("ADD", style: TextStyle(color: Colors.white)),
+                                        onPressed: () {
+                                          setState(() => item.inCart = true);
+                                          scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Added to cart successfully")));
+                                        },
                                         color: Myapp.primaryColor)))
                       ])))
             ])));
   }
 
-  void _addToCart(Products item) async {
-    setState(() {
-      item.isLoading = true;
-    });
-    int quantity = await ApiService.getProductQuantity(item.id.toString());
-    if (quantity != null) {
-      if (quantity > 0) {
-        setState(() {
-          item.maxQuantity = quantity;
-          item.isLoading = false;
-        });
-        setState(() => item.inCart = true);
-        scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Added to cart successfully")));
-      } else {
-        setState(() {
-          item.isLoading = false;
-        });
-        scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Sorry, Product is out of stock")));
-      }
-    } else {
-      setState(() {
-        item.isLoading = false;
-      });
-      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Something went wrong please try again later")));
-    }
-  }
+  var productFuture;
 
-  _removeItemQuantity(Products item) {
-    if (item.quantity != 1) {
-      setState(() => item.quantity--);
-    } else {
-      setState(() => item.inCart = false);
-    }
-  }
-
-  _addItemQuantity(Products item) {
-    if (item.quantity <= item.maxQuantity) {
-      if (item.quantity != item.maxQuantity) {
-        setState(() => item.quantity++);
-      }
-    }
-  }
-
-  void refresh() async {
+  void refresh() {
+    print("refresh Call");
 
     if (list.length > subCatIndex) {
       subCategories = list[subCatIndex].subCategories;
@@ -590,47 +584,10 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails2> {
       productId = 0;
     }
 
-    // getProducts();
-
     bodyData['category_id'] = productId;
+    bodyData['filters'] = filterDataPost;
 
-    // getProducts();
-
-    //   {
-    //     "category_id" : 1638,
-    //   "filters" : {
-    //   "COLOR" : ["BLACK"],
-    //   "SIZE": ["28 SIZE"],
-    //   "CATEGORY": [1684,1706,1780]
-    //   }
-    // }
-  }
-
-  getProducts() async {
-
-    setState(() {
-      products = null;
-      productsFound = false;
-    });
-
-    ProductsById productsById = await ApiService.getProductsById(productId.toString());
-
-    print("productsById" + productsById.data.toString() + "___" + productId.toString());
-
-    if (productsById == null) {
-      setState(() {
-        productsFound = true;
-      });
-      return;
-    }
-    if (productsById.status) {
-      setState(() {
-        products = productsById;
-      });
-    } else {
-      setState(() {
-        productsFound = true;
-      });
-    }
+    productFuture = Future.wait([ApiService.getFilterProducts(bodyData)]);
+    // productFuture = Future.wait([ApiService.getProductsById(productId.toString())]);
   }
 }

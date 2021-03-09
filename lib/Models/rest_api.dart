@@ -32,6 +32,7 @@ class URLS {
   static const String GET_BEST_OFFERS = '${URLS.SERVER_URL}/api/best-offer';
   static const String GET_OFFERS1 = '${URLS.SERVER_URL}/api/home-section';
   static const String GET_FILTERS_DATA = '${URLS.SERVER_URL}/api/category/filter?category_id=';
+  static const String GET_FILTER_PRODUCTS = '${URLS.SERVER_URL}/api/product';
 
   static const String DEPARTMENTS = '${URLS.BASE_URL}department';
   static const String CATEGORIES = '${URLS.BASE_URL}category';
@@ -135,8 +136,21 @@ class ApiService {
   }
 
   static Future<ProductsById> getProductsById(String id) async {
-
     final response = await http.get(URLS.GET_PRODUCTS + id);
+    try {
+      if (response.statusCode == 200) {
+        return ProductsById.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ProductsById> getFilterProducts(Map<String, dynamic> bodyData) async {
+    final response = await http.post(URLS.GET_FILTER_PRODUCTS, headers: {"Content-Type": "application/json"}, body: json.encode(bodyData));
+    print("Body" + bodyData.toString());
     try {
       if (response.statusCode == 200) {
         return ProductsById.fromJson(json.decode(response.body));
