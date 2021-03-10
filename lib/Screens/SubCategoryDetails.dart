@@ -48,13 +48,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
           actions: [IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {})],
         ),
         body: Container(
-            child:
-                //     FutureBuilder(
-                //      future: Future.wait([ApiService.getSubCategories(widget.id.toString() ?? "1605")]),
-                //      builder: (context, AsyncSnapshot snapshot) {
-                //        if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
-                //         return
-                Column(children: [
+            child: Column(children: [
           GestureDetector(
               onTap: () {},
               child: Container(
@@ -506,4 +500,3 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails> {
             ])));
   }
 }
-

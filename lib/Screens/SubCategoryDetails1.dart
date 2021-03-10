@@ -530,9 +530,7 @@ class _SubcategoryDetailsState extends State<SubcategoryDetails1> {
             padding: EdgeInsets.all(20),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Image.network(
-                  URLS.PAL_IMAGE_URL +
-                      "/pub/media/catalog/product" +
-                      item.images[0].file,
+                  URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + item.images[0].file,
                   width: 100,
                   height: 100,
                   fit: BoxFit.contain),
