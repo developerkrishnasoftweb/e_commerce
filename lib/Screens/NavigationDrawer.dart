@@ -1,4 +1,4 @@
-import 'package:e_commerce/Screens/HomeScreen.dart';
+import 'package:e_commerce/Screens/home/HomeScreen.dart';
 import 'package:e_commerce/Screens/my_account.dart';
 import 'package:e_commerce/Screens/signin_signup/signin.dart';
 import 'package:flutter/cupertino.dart';

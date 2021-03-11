@@ -7,18 +7,18 @@ import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/CartScreen.dart';
-import 'package:e_commerce/Screens/SubCategoryDetails.dart';
-import 'package:e_commerce/Screens/SubCategoryDetailsGrocery.dart';
+import 'package:e_commerce/Screens/home/SubCategoryDetailsGrocery.dart';
+import 'package:e_commerce/Screens/home/TopCategoryDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../main.dart';
-import 'CollectionProducts.dart';
-import 'NavigationDrawer.dart';
-import 'ProductDetail.dart';
-import 'SubCategoryDetails1.dart';
-import 'SubCategoryDetails2.dart';
+import '../../main.dart';
+import '../NavigationDrawer.dart';
+import '../ProductDetail.dart';
+import 'AllCategoryDetailHorizontal.dart';
+import 'BannerDetails.dart';
+import 'ProductList.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -87,16 +87,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   return Expanded(
                       child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
                           child: Column(children: [
-                    mainCategory != null ? categoriesListHorizontal(mainCategory.data) : Container(),
-                    topCategoryBanners != null ? freeHomeDeliverySlider(topCategoryBanners.data) : Container(),
-                    topCategory != null ? topCategories(topCategory.data) : Container(),
-                    topProducts != null ? topDeals(topProducts.data) : Container(),
-                    shopGrocery != null ? shopGroceries(shopGrocery.data) : Container(),
-                    offers!= null ? offerListWithCategories() : Container(),
-                    bestOffers != null ? collectionWithBestOffers(bestOffers) : Container(),
-                    kidsFashionData != null ? kidsFashion(kidsFashionData.data) : Container()
-                  ])));
+                            mainCategory != null ? categoriesListHorizontal(mainCategory.data) : Container(),
+                            topCategoryBanners != null ? freeHomeDeliverySlider(topCategoryBanners.data) : Container(),
+                            topCategory != null ? topCategories(topCategory.data) : Container(),
+                            topProducts != null ? topDeals(topProducts.data) : Container(),
+                            shopGrocery != null ? shopGroceries(shopGrocery.data) : Container(),
+                            offers != null ? offerListWithCategories() : Container(),
+                            bestOffers != null ? collectionWithBestOffers(bestOffers) : Container(),
+                            kidsFashionData != null ? kidsFashion(kidsFashionData.data) : Container()
+                          ])));
                 } else
                   return Expanded(child: Container(color: Colors.white, child: Center(child: CircularProgressIndicator())));
               })
@@ -115,7 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
               physics: BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails1(id: index, list: data))),
+                    onTap: () =>
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => AllCategoryDetailHorizontal(id: index, list: data))),
                     child: Container(
                         width: 70.sp,
                         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
   imageSlideView(List<Data> data) => data
       .map((item) => GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails2(id: item.linkUrl)));
+              Navigator.push(context, MaterialPageRoute(builder: (_) => BannerDetails(id: item.linkUrl)));
             },
             child: Container(
                 child: Container(
@@ -192,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                           onTap: () =>
-                              Navigator.push(context, MaterialPageRoute(builder: (_) => SubcategoryDetails(id: index, list: data))),
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => TopCategoryDetails(id: index, list: data))),
                           child: Container(
                               child: Stack(children: [
                             Container(
@@ -416,7 +418,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onTap: () => Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (_) => CollectionProducts(id: offers.data[index].collections[index1].categoryId))),
+                                                builder: (_) => ProductList(id: offers.data[index].collections[index1].categoryId))),
                                         child: Container(
                                             child: Stack(children: [
                                           Container(
@@ -493,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                             onTap: () => Navigator.push(
-                                context, MaterialPageRoute(builder: (_) => CollectionProducts(id: bestOffers.data[index].categoryId))),
+                                context, MaterialPageRoute(builder: (_) => ProductList(id: bestOffers.data[index].categoryId))),
                             child: Container(
                                 child: Stack(children: [
                               Container(
@@ -565,7 +567,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                             onTap: () => Navigator.push(
-                                context, MaterialPageRoute(builder: (_) => CollectionProducts(id: data[0].subCategories[index].id))),
+                                context, MaterialPageRoute(builder: (_) => ProductList(id: data[0].subCategories[index].id))),
                             child: Column(children: [
                               Expanded(
                                   child: Container(

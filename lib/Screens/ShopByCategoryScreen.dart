@@ -3,7 +3,7 @@ import 'package:e_commerce/Models/rest_api.dart';
 import 'package:flutter/material.dart';
 
 import 'CartScreen.dart';
-import 'CollectionProducts.dart';
+import 'home/ProductList.dart';
 import 'NavigationDrawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -81,7 +81,7 @@ class _ShopByCategoryScreenState extends State<ShopByCategoryScreen> {
     for (var i = 0; i < childSubCategory.length; i++)
       columnContent.add(ListTile(
           onTap: () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => CollectionProducts(id: childSubCategory[i].id != 0 ? childSubCategory[i].id : id))),
+              MaterialPageRoute(builder: (_) => ProductList(id: childSubCategory[i].id != 0 ? childSubCategory[i].id : id))),
           dense: true,
           contentPadding: EdgeInsets.only(left: 70.sp, right: 25.sp, top: 0, bottom: 0),
           title: Text(childSubCategory[i].name, style: TextStyle(fontSize: 12.sp)),
