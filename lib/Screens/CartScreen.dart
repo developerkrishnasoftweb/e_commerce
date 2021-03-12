@@ -193,7 +193,7 @@ class _CartScreenState extends State<CartScreen> {
                           ])),
                 ])),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: isLoading
+        floatingActionButton: totalPayable != 0 ? isLoading
             ? null
             : Container(
                 decoration: BoxDecoration(
@@ -232,7 +232,7 @@ class _CartScreenState extends State<CartScreen> {
                               color: Myapp.primaryColor,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 15))))
-                ])));
+                ])) : null);
   }
 
   Widget amountRow(
@@ -322,6 +322,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ? null
                                           : () => _addToCart(item),
                                       color: Myapp.primaryColor,
+                                      disabledColor: Myapp.primaryColor.withOpacity(0.6),
                                       padding: EdgeInsets.zero,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -339,17 +340,35 @@ class _CartScreenState extends State<CartScreen> {
         await ApiService.getProductQuantity(item.cartItem.sku.toString());
     if (quantity != null) {
       if (quantity > item.cartItem.qty) {
-        setState(() {
-          item.cartItem.qty++;
-          item.isLoading = false;
-        });
+        ResponseData responseData = await ApiService.generateToken({"username": "i@gmail.com", "password": "Abc@123456"});
+        if(responseData.status) {
+          ResponseData cartId = await ApiService.cartId(responseData.token);
+          if(cartId.status) {
+            setState(() {
+              item.cartItem.qty++;
+              item.isLoading = false;
+            });
+          } else {
+            setState(() {
+              item.isLoading = false;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(cartId.message)));
+          }
+        } else {
+          setState(() {
+            item.isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseData.message)));
+        }
         countTotalPayable();
       } else {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Maximum limit of product has been reached")));
         setState(() {
           item.isLoading = false;
         });
+        scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text("Maximum limit of product has been reached")));
       }
     } else {
       setState(() {
