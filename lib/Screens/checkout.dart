@@ -19,8 +19,26 @@ class _CheckoutState extends State<Checkout> {
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text("Address Information"),
-          input(context: context, text: ""),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Text("Address Information", style: TextStyle(
+          //     color: Colors.black,
+          //     fontWeight: FontWeight.bold,
+          //     fontSize: 17.sp
+          //   )),
+          // ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+            child: Text("Shipping Information", style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 15.sp
+            )),
+          ),
+          input(context: context, text: "First Name"),
+          input(context: context, text: "Last Name"),
+          input(context: context, text: "Email"),
+          input(context: context, text: "Telephone"),
         ]),
       ),
     );
