@@ -12,7 +12,7 @@ class URLS {
   // const String SERVER_URL = 'http://ecommerce.krishnasoftweb.com/';
 // static const String SERVER_URL = 'https://palshopie.com';
 
-  static const String SERVER_URL = 'http://ecommerce.krishnasoftweb.com';
+  static const String SERVER_URL = 'https://ecommerce.krishnasoftweb.com';
   static const String GET_BANNERS = '${URLS.SERVER_URL}/api/banner';
 
   static const String BASE_URL = '${URLS.SERVER_URL}/rest/default/V1/';

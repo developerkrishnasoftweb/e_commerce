@@ -35,23 +35,22 @@ class _FilterButtonState extends State<FilterButton> {
                         Map<String, dynamic> filter = Map<String, dynamic>();
                         filter = filterData.data;
 
-                        List<dynamic> list = List();
-                        List<dynamic> list1 = List();
-                        List<bool> selected = List();
-                        List<dynamic> value = List();
-                        List<dynamic> selectedFilter = List();
+                        List<dynamic> list = [];
+                        List<dynamic> list1 = [];
+                        List<bool> selected = [];
+                        List<dynamic> value = [];
+                        List<dynamic> selectedFilter = [];
                         var filterSelectedIndex = 0;
 
                         list1 = filter['data'];
                         if (list1.length > 0) {
                           list = filter['data'][0]['option'];
                           value = filter['data'][0]['value'];
-
                           print("filterData" + value.toString());
                           list.forEach((element) => selected.add(false));
                           selected[filterSelectedIndex] = true;
                           value.forEach((element) {
-                            List<bool> selected = List();
+                            List<bool> selected = [];
                             element.forEach((element1) => selected.add(false));
                             selectedFilter.add(selected);
                           });
@@ -79,8 +78,7 @@ class _FilterButtonState extends State<FilterButton> {
                                                       onPressed: () {},
                                                       child: Text(filterTabs[index]),
                                                       color: Colors.grey[200],
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(7), side: BorderSide(color: Colors.grey))));
+                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7), side: BorderSide(color: Colors.grey))));
                                             },
                                             physics: BouncingScrollPhysics(),
                                             itemCount: filterTabs.length,
@@ -161,14 +159,14 @@ class _FilterButtonState extends State<FilterButton> {
                                                   onPressed: () {
                                                     Map<String, dynamic> filterDataPost = Map<String, dynamic>();
                                                     list.asMap().forEach((i, element) {
-                                                      List<dynamic> list = List();
+                                                      List<dynamic> list = [];
                                                       selectedFilter[i].asMap().forEach((index1, element2) {
                                                         if (element2) {
                                                           if (element == "CATEGORY") {
                                                             list.add(value[i][index1]['id']);
                                                           } else if (element == "RANGE") {
                                                             var x = value[i][index1]['name'].toString().split(" - ");
-                                                            List<dynamic> rangeArray = List();
+                                                            List<dynamic> rangeArray = [];
                                                             rangeArray.add(x[0]);
                                                             rangeArray.add(x[1]);
                                                             list.add(rangeArray);
