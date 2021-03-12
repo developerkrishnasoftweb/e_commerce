@@ -90,7 +90,7 @@ class _AllCategoryDetailHorizontalState extends State<AllCategoryDetailHorizonta
               width: size.width,
               height: 40,
               child: Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text("5 products"),
+                Text("0 products"),
                 FilterButton(
                     id: list != null ? list[subCatIndex].id.toString() : "",
                     onApplyFilter: (filterData) => setState(() {

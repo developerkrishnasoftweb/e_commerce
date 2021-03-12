@@ -23,6 +23,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.products);
     return Scaffold(
         appBar:
             AppBar(toolbarHeight: 50.sp, title: Text(widget.products.name, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),

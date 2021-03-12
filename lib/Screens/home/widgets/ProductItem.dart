@@ -22,6 +22,12 @@ class ProductItem extends StatefulWidget {
 class _ProductItemState extends State<ProductItem> {
   var productFuture;
 
+  setItemLoading (Products item, bool status) {
+    setState(() {
+      item.isLoading = status;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -132,23 +138,52 @@ class _ProductItemState extends State<ProductItem> {
   }
 
   void _addToCart(Products item) async {
-    setState(() => item.isLoading = true);
+    setItemLoading(item, true);
     int quantity = await ApiService.getProductQuantity(item.id.toString());
     if (quantity != null) {
       if (quantity > 0) {
-        setState(() {
-          item.maxQuantity = quantity;
-          item.isLoading = false;
-          item.inCart = true;
-        });
-        widget.scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Added to cart successfully")));
+        ResponseData responseData = await ApiService.generateToken({"username": "i@gmail.com", "password": "Abc@123456"});
+        if(responseData.status) {
+          ResponseData cartId = await ApiService.cartId(responseData.token);
+          if(cartId.status) {
+            Map<String, dynamic> bodyData = {
+              "cartItem" : {
+                "sku": item.sku,
+                "qty": item.quantity,
+                "quote_id": int.parse(cartId.data.toString())
+              }
+            };
+            ResponseData cartStatus = await ApiService.addToCart(bodyData, responseData.token);
+            if(cartStatus.status) {
+              setState(() {
+                item.maxQuantity = quantity;
+              });
+              setItemLoading(item, false);
+              setState(() => item.inCart = true);
+            } else {
+              setItemLoading(item, false);
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(cartStatus.message)));
+            }
+          } else {
+            setItemLoading(item, false);
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(cartId.message)));
+          }
+        } else {
+          setItemLoading(item, false);
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseData.message)));
+        }
       } else {
-        setState(() => item.isLoading = false);
-        widget.scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Sorry, Product is out of stock")));
+        setItemLoading(item, false);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Sorry, Product is out of stock")));
       }
     } else {
-      setState(() => item.isLoading = false);
-      widget.scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Something went wrong please try again later")));
+      setItemLoading(item, false);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Something went wrong please try again later")));
     }
   }
 

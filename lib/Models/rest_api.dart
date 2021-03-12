@@ -44,6 +44,11 @@ class URLS {
   static const String REGISTER = '${URLS.PAL_SHOPPIE_BASE_URL}customers/';
   static const String GENERATE_TOKEN = '${URLS.PAL_SHOPPIE_BASE_URL}integration/customer/token';
   static const String LOGIN = '${URLS.PAL_SHOPPIE_BASE_URL}customers/me';
+  static const String CART_ID = '${URLS.PAL_SHOPPIE_BASE_URL}carts/mine';
+  static const String ADD_TO_CART = 'https://palshopie.com/rest/default/V1/carts/mine/items';
+  static const String CART_IMAGE_URL = 'https://palshopie.com/pub/media/catalog/product/cache/2cfd04eb5b7e64aa1c314f5f4f514b1d';
+  static const String CART = '${URLS.PAL_SHOPPIE_BASE_URL}carts/mine/items';
+  static const String SKU_WISE_PRODUCT = 'https://palshopie.com/rest/default/V1/products/';
 }
 
 class ApiService {
@@ -139,9 +144,13 @@ class ApiService {
 
   static Future<int> getProductQuantity(String id) async {
     final response = await http.get(URLS.GET_PRODUCT_QUANTITY + id);
-
     if (response.statusCode == 200) {
-      return json.decode(response.body)['data'][0]['quantity'];
+      final jsonResponse = await json.decode(response.body);
+      if(jsonResponse['status']) {
+        return jsonResponse['data'][0]['quantity'];
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
@@ -216,9 +225,61 @@ class ApiService {
   static Future<ResponseData> login(String token) async {
     final response = await http.get(URLS.LOGIN, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
-      return ResponseData(status: true, message: "Logged in successfully", data: await jsonDecode(response.body));
+      return ResponseData(status: true, message: "Logged in successfully", data: await jsonDecode(response.body), token: token);
     } else {
       return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
+    }
+  }
+
+  static Future<ResponseData> cartId(String token) async {
+    try {
+      final response = await http.post(URLS.CART_ID, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'});
+      if (response.statusCode == 200) {
+        return ResponseData(status: true, message: "Cart id generated successfully", data: response.body, token: token);
+      } else {
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> addToCart(Map<String, dynamic> body, String token) async {
+    try {
+      final response = await http.post(URLS.ADD_TO_CART, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'}, body: jsonEncode(body), encoding: Encoding.getByName("utf-8"));
+      if (response.statusCode == 200) {
+        return ResponseData(status: true, message: "Added to cart successfully", data: await jsonDecode(response.body));
+      } else {
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> skuWiseProduct(String sku) async {
+    try {
+      final response = await http.get(URLS.SKU_WISE_PRODUCT + sku);
+      if (response.statusCode == 200) {
+        return ResponseData(status: true, message: "Item details fetched successfully", data: await jsonDecode(response.body));
+      } else {
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> cart(String token) async {
+    try {
+      final response = await http.get(URLS.CART, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'});
+      if (response.statusCode == 200) {
+        return ResponseData(status: true, message: "Cart items are listed successfully", data: await jsonDecode(response.body), token: token);
+      } else {
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
+      }
+    } catch (_) {
+      throw (_);
     }
   }
 }
@@ -227,8 +288,9 @@ class ResponseData {
   final bool status;
   final String message;
   final dynamic data;
+  final String token;
 
-  ResponseData({this.status, this.message, this.data});
+  ResponseData({this.status, this.message, this.data, this.token});
 
   factory ResponseData.fromJson(Map<String, dynamic> json) {
     return ResponseData(data: json['data'], message: json['message'], status: json['status']);
