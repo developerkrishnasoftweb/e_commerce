@@ -39,6 +39,12 @@ class _CheckoutState extends State<Checkout> {
           input(context: context, text: "Last Name"),
           input(context: context, text: "Email"),
           input(context: context, text: "Telephone"),
+          input(context: context, text: "Postal Code"),
+          input(context: context, text: "Region"),
+          input(context: context, text: "Region Code"),
+          input(context: context, text: "Country ID"),
+          input(context: context, text: "Street"),
+
         ]),
       ),
     );
