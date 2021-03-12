@@ -1,5 +1,6 @@
 import 'package:e_commerce/Models/cart_item_model.dart';
 import 'package:e_commerce/Models/rest_api.dart';
+import 'package:e_commerce/Screens/checkout.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -88,7 +89,7 @@ class _CartScreenState extends State<CartScreen> {
         drawer: navigationDrawer(),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
+            : cartItems.length > 0 ? SingleChildScrollView(
                 padding: EdgeInsets.only(bottom: 80),
                 child: Column(children: [
                   GestureDetector(
@@ -191,7 +192,7 @@ class _CartScreenState extends State<CartScreen> {
                                         fontSize: 16,
                                         color: Colors.green)))
                           ])),
-                ])),
+                ])) : Center(child: Text("Your cart is empty!!!")),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: totalPayable != 0 ? isLoading
             ? null
@@ -226,7 +227,9 @@ class _CartScreenState extends State<CartScreen> {
                               child: Text("Place Order",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18)),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => Checkout()));
+                              },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(7)),
                               color: Myapp.primaryColor,

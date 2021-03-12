@@ -23,11 +23,11 @@ class _EditProfileState extends State<EditProfile> {
         body: SingleChildScrollView(
             padding: EdgeInsets.all(10),
             child: Column(children: [
-              input(
+              addAddressInputField(
                   labelText: "First Name",
                   textInputAction: TextInputAction.next,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
-              input(
+              addAddressInputField(
                   labelText: "Last Name",
                   textInputAction: TextInputAction.next,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
@@ -48,7 +48,7 @@ class _EditProfileState extends State<EditProfile> {
                             onChanged: (gender) => setState(() => selectedGender = gender)))),
                 SizedBox(width: 10),
                 Expanded(
-                    child: input(
+                    child: addAddressInputField(
                         labelText: "Date Of Birth",
                         margin: EdgeInsets.zero,
                         keyboardType: TextInputType.datetime,
@@ -67,12 +67,12 @@ class _EditProfileState extends State<EditProfile> {
                         readOnly: true))
               ]),
               SizedBox(height: 10),
-              input(
+              addAddressInputField(
                   labelText: "Email",
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
-              input(
+              addAddressInputField(
                   labelText: "Mobile No",
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.phone,

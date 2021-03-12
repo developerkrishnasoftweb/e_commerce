@@ -50,12 +50,12 @@ class _AddAddressState extends State<AddAddress> {
         body: SingleChildScrollView(
             padding: EdgeInsets.all(10),
             child: Column(children: [
-              input(labelText: "Name *", controller: name),
-              input(labelText: "Mobile No *", controller: mobile),
-              input(labelText: "Address *", controller: address),
-              input(labelText: "Pin Code *", controller: pinCode),
-              input(labelText: "State *", controller: state),
-              input(labelText: "City *", controller: city),
+              addAddressInputField(labelText: "Name *", controller: name),
+              addAddressInputField(labelText: "Mobile No *", controller: mobile),
+              addAddressInputField(labelText: "Address *", controller: address),
+              addAddressInputField(labelText: "Pin Code *", controller: pinCode),
+              addAddressInputField(labelText: "State *", controller: state),
+              addAddressInputField(labelText: "City *", controller: city),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Text("Save as", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
                 Row(
@@ -82,7 +82,7 @@ class _AddAddressState extends State<AddAddress> {
   }
 }
 
-Widget input(
+Widget addAddressInputField(
     {String hintText,
     String labelText,
     TextEditingController controller,
