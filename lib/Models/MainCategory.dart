@@ -184,6 +184,7 @@ class Products {
   bool inStock;
   List<Images> images;
   Attributes attributes;
+  Variations variations;
 
   Products(
       {this.id,
@@ -203,6 +204,7 @@ class Products {
         this.discount,
         this.inCart,
         this.inStock,
+        this.variations,
         this.attributes, this.isLoading});
 
   Products.fromJson(Map<String, dynamic> json) {
@@ -223,6 +225,7 @@ class Products {
         images.add(new Images.fromJson(v));
       });
     }
+    variations = json['variations'] != null ? Variations.fromJson(json['variations']) : Variations();
     attributes = new Attributes.fromJson(json['attributes']);
     maxQuantity = json['quantity'] ?? 1;
     discount = 5;
@@ -336,6 +339,129 @@ class Attributes {
     data['special_price'] = this.specialPrice;
     data['manufacturer'] = this.manufacturer;
     data['short_description'] = this.shortDescription;
+    return data;
+  }
+}
+
+class Variations {
+  List<COLOR> color;
+  List<SIZE> size;
+
+  Variations({this.color, this.size});
+
+  Variations.fromJson(Map<String, dynamic> json) {
+    if (json['COLOR'] != null) {
+      color = new List<COLOR>();
+      json['COLOR'].forEach((v) {
+        color.add(new COLOR.fromJson(v));
+      });
+    }
+    if (json['SIZE'] != null) {
+      size = new List<SIZE>();
+      json['SIZE'].forEach((v) {
+        size.add(new SIZE.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.color != null) {
+      data['COLOR'] = this.color.map((v) => v.toJson()).toList();
+    }
+    if (this.size != null) {
+      data['SIZE'] = this.size.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class COLOR {
+  int id;
+  int productId;
+  int variationId;
+  int productVariationCode;
+  String productVariationName;
+  String createdAt;
+  String updatedAt;
+  String variationName;
+
+  COLOR(
+      {this.id,
+        this.productId,
+        this.variationId,
+        this.productVariationCode,
+        this.productVariationName,
+        this.createdAt,
+        this.updatedAt,
+        this.variationName});
+
+  COLOR.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    productId = json['product_id'];
+    variationId = json['variation_id'];
+    productVariationCode = json['product_variation_code'];
+    productVariationName = json['product_variation_name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    variationName = json['variation_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['product_id'] = this.productId;
+    data['variation_id'] = this.variationId;
+    data['product_variation_code'] = this.productVariationCode;
+    data['product_variation_name'] = this.productVariationName;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['variation_name'] = this.variationName;
+    return data;
+  }
+}
+
+class SIZE {
+  int id;
+  int productId;
+  int variationId;
+  int productVariationCode;
+  String productVariationName;
+  String createdAt;
+  String updatedAt;
+  String variationName;
+
+  SIZE(
+      {this.id,
+        this.productId,
+        this.variationId,
+        this.productVariationCode,
+        this.productVariationName,
+        this.createdAt,
+        this.updatedAt,
+        this.variationName});
+
+  SIZE.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    productId = json['product_id'];
+    variationId = json['variation_id'];
+    productVariationCode = json['product_variation_code'];
+    productVariationName = json['product_variation_name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    variationName = json['variation_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['product_id'] = this.productId;
+    data['variation_id'] = this.variationId;
+    data['product_variation_code'] = this.productVariationCode;
+    data['product_variation_name'] = this.productVariationName;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['variation_name'] = this.variationName;
     return data;
   }
 }
