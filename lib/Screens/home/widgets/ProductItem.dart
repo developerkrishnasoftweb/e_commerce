@@ -162,6 +162,7 @@ class _ProductItemState extends State<ProductItem> {
               setState(() => item.inCart = true);
             } else {
               setItemLoading(item, false);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail(item)));
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(cartStatus.message)));
             }

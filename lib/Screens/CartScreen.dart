@@ -325,7 +325,6 @@ class _CartScreenState extends State<CartScreen> {
                                           ? null
                                           : () => _addToCart(item),
                                       color: Myapp.primaryColor,
-                                      disabledColor: Myapp.primaryColor.withOpacity(0.6),
                                       padding: EdgeInsets.zero,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
