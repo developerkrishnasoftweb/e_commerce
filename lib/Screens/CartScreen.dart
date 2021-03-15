@@ -351,31 +351,23 @@ class _CartScreenState extends State<CartScreen> {
               item.isLoading = false;
             });
           } else {
-            setState(() {
-              item.isLoading = false;
-            });
+            setState(() => item.isLoading = false);
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(cartId.message)));
           }
         } else {
-          setState(() {
-            item.isLoading = false;
-          });
+          setState(() => item.isLoading = false);
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(responseData.message)));
         }
         countTotalPayable();
       } else {
-        setState(() {
-          item.isLoading = false;
-        });
+        setState(() => item.isLoading = false);
         scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text("Maximum limit of product has been reached")));
       }
     } else {
-      setState(() {
-        item.isLoading = false;
-      });
+      setState(() => item.isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Something went wrong, Please try again later")));
     }
@@ -392,3 +384,5 @@ class CartInfo {
 
   CartInfo({this.image, this.cartItem, this.isLoading: false});
 }
+
+

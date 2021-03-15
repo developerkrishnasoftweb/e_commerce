@@ -1,11 +1,14 @@
+import 'dart:math' as math;
+
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/ProductsById.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../main.dart';
-import '../../ProductDetail.dart';
+import '../ProductDetail.dart';
 
 // ignore: must_be_immutable
 class ProductItem extends StatefulWidget {
@@ -22,7 +25,7 @@ class ProductItem extends StatefulWidget {
 class _ProductItemState extends State<ProductItem> {
   var productFuture;
 
-  setItemLoading (Products item, bool status) {
+  setItemLoading(Products item, bool status) {
     setState(() {
       item.isLoading = status;
     });
@@ -64,13 +67,37 @@ class _ProductItemState extends State<ProductItem> {
   }
 
   Widget card(Products item) {
+    double specialPrice = double.parse(item.attributes.specialPrice) * 100;
+    double discount = (specialPrice / item.price);
+
     return GestureDetector(
         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail(item))),
         child: Container(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(10.sp),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Image.network(URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + item.images[0].file,
-                  width: 100, height: 100, fit: BoxFit.contain),
+              Stack(children: [
+                Padding(
+                  padding: EdgeInsets.all(5.sp),
+                  child: Image.network(URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + item.images[0].file,
+                      width: 80.sp, height: 80.sp, fit: BoxFit.contain),
+                ),
+                item.attributes.specialPrice != "0" && item.price != 0
+                    ? Transform.rotate(
+                        angle: -math.pi / 6,
+                        child: Stack(children: [
+                          Image.asset('assets/badge.png', width: 40.sp, height: 40.sp),
+                          Container(
+                              width: 40.sp,
+                              height: 40.sp,
+                              child: Center(
+                                  child: Text("${100 - discount.toInt()}%\nOFF",
+                                      style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.bold),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis)))
+                        ]),
+                      )
+                    : Container()
+              ]),
               Expanded(
                   child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -82,18 +109,21 @@ class _ProductItemState extends State<ProductItem> {
                         SizedBox(height: 7),
                         RichText(
                             text: TextSpan(
-                                text: "\u20b9${item.price * item.quantity}\t",
+                                text:
+                                    "\u20b9${item.attributes.specialPrice != "0" ? item.attributes.specialPrice : item.price * item.quantity}\t",
                                 style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                                 children: [
                               TextSpan(
-                                  text: "\u20b9${item.attributes.specialPrice}",
+                                  text: item.attributes.specialPrice != "0" && item.price != 0 ? "\u20b9${item.price}" : '',
                                   style: TextStyle(
                                       color: Colors.black87,
                                       fontSize: 14,
                                       decoration: TextDecoration.lineThrough,
                                       fontWeight: FontWeight.bold)),
                               TextSpan(
-                                  text: "\t\tYou Save \u20b9${double.parse(item.attributes.specialPrice) * item.quantity}",
+                                  text: item.attributes.specialPrice != "0" && item.price != 0
+                                      ? "\t\tYou Save \u20b9${(item.price - double.parse(item.attributes.specialPrice)) * item.quantity}"
+                                      : '',
                                   style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold))
                             ])),
                         SizedBox(height: 10),
@@ -117,7 +147,9 @@ class _ProductItemState extends State<ProductItem> {
                                     child: FlatButton(
                                         child: Icon(Icons.add, color: Colors.white),
                                         onPressed: () => _addItemQuantity(item),
-                                        color: item.quantity >= item.maxQuantity ? Myapp.primaryColor.withOpacity(0.7) : Myapp.primaryColor,
+                                        color: item.quantity >= item.maxQuantity
+                                            ? Myapp.primaryColor.withOpacity(0.7)
+                                            : Myapp.primaryColor,
                                         disabledColor: Myapp.primaryColor.withOpacity(0.7),
                                         padding: EdgeInsets.zero,
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))))
@@ -143,18 +175,14 @@ class _ProductItemState extends State<ProductItem> {
     if (quantity != null) {
       if (quantity > 0) {
         ResponseData responseData = await ApiService.generateToken({"username": "i@gmail.com", "password": "Abc@123456"});
-        if(responseData.status) {
+        if (responseData.status) {
           ResponseData cartId = await ApiService.cartId(responseData.token);
-          if(cartId.status) {
+          if (cartId.status) {
             Map<String, dynamic> bodyData = {
-              "cartItem" : {
-                "sku": item.sku,
-                "qty": item.quantity,
-                "quote_id": int.parse(cartId.data.toString())
-              }
+              "cartItem": {"sku": item.sku, "qty": item.quantity, "quote_id": int.parse(cartId.data.toString())}
             };
             ResponseData cartStatus = await ApiService.addToCart(bodyData, responseData.token);
-            if(cartStatus.status) {
+            if (cartStatus.status) {
               setState(() {
                 item.maxQuantity = quantity;
               });
@@ -163,28 +191,23 @@ class _ProductItemState extends State<ProductItem> {
             } else {
               setItemLoading(item, false);
               Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail(item)));
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(cartStatus.message)));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(cartStatus.message)));
             }
           } else {
             setItemLoading(item, false);
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(cartId.message)));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(cartId.message)));
           }
         } else {
           setItemLoading(item, false);
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(responseData.message)));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(responseData.message)));
         }
       } else {
         setItemLoading(item, false);
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Sorry, Product is out of stock")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sorry, Product is out of stock")));
       }
     } else {
       setItemLoading(item, false);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Something went wrong please try again later")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Something went wrong please try again later")));
     }
   }
 

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/rest_api.dart';
@@ -7,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../main.dart';
+import '../../main.dart';
 
 class ProductDetail extends StatefulWidget {
   Products products;
@@ -23,6 +25,9 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+    double specialPrice = double.parse(widget.products.attributes.specialPrice) * 100;
+    double discount = (specialPrice / widget.products.price);
+
     // print(widget.products);
     return Scaffold(
         appBar:
@@ -36,13 +41,30 @@ class _ProductDetailState extends State<ProductDetail> {
                       style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey)),
                   SizedBox(height: 15),
                   Column(children: [
-                    CarouselSlider(
-                        options: CarouselOptions(
-                            autoPlay: false,
-                            viewportFraction: 1.0,
-                            enlargeCenterPage: false,
-                            onPageChanged: (index, reason) => setState(() => _current = index)),
-                        items: imageSlideView(widget.products.images)),
+                    Stack(children: [
+                      CarouselSlider(
+                          options: CarouselOptions(
+                              autoPlay: false,
+                              viewportFraction: 1.0,
+                              enlargeCenterPage: false,
+                              onPageChanged: (index, reason) => setState(() => _current = index)),
+                          items: imageSlideView(widget.products.images)),
+                      widget.products.attributes.specialPrice != "0" && widget.products.price != 0
+                          ? Transform.rotate(
+                              angle: -math.pi / 6,
+                              child: Stack(children: [
+                                Image.asset('assets/badge.png', width: 60.sp, height: 60.sp),
+                                Container(
+                                    width: 60.sp,
+                                    height: 60.sp,
+                                    child: Center(
+                                        child: Text("${100 - discount.toInt()}%\nOFF",
+                                            style: TextStyle(color: Colors.white, fontSize: 13.sp, fontWeight: FontWeight.bold),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis)))
+                              ]))
+                          : Container()
+                    ]),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: widget.products.images.map((url) {
@@ -61,15 +83,19 @@ class _ProductDetailState extends State<ProductDetail> {
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
                       text: TextSpan(
-                          text: 'You Save ₹ ${widget.products.price - double.parse(widget.products.attributes.specialPrice)} \n',
+                          text: widget.products.attributes.specialPrice != "0" && widget.products.price != 0
+                              ? "You Save \u20b9${(widget.products.price - double.parse(widget.products.attributes.specialPrice)) * widget.products.quantity}\n"
+                              : '',
                           style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 16.sp),
                           children: [
                             TextSpan(
                                 text:
-                                    "₹ ${(widget.products.attributes.specialPrice)} ",
+                                    "\u20b9${widget.products.attributes.specialPrice != "0" ? widget.products.attributes.specialPrice : widget.products.price * widget.products.quantity} ",
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
                             TextSpan(
-                                text: '₹ ' + widget.products.price.toString() + " ",
+                                text: widget.products.attributes.specialPrice != "0" && widget.products.price != 0
+                                    ? "\u20b9${widget.products.price} "
+                                    : ' ',
                                 style: TextStyle(decoration: TextDecoration.lineThrough, color: Colors.blueGrey, fontSize: 14.sp)),
                             TextSpan(text: "(Incl. of all taxes)", style: TextStyle(fontSize: 14.sp, color: Colors.blueGrey))
                           ])),
@@ -111,7 +137,8 @@ class _ProductDetailState extends State<ProductDetail> {
                             // TextSpan(text: 'Veg\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey))
                           ])),
                   Row(children: [
-                    Expanded(child: Text("Product Rating", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black))),
+                    Expanded(
+                        child: Text("Product Rating", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black))),
                     RatingBar.builder(
                         initialRating: 3,
                         minRating: 1,
@@ -151,5 +178,3 @@ class _ProductDetailState extends State<ProductDetail> {
         .toList();
   }
 }
-
-

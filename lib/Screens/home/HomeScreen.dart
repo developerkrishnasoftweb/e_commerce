@@ -15,7 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../main.dart';
 import '../NavigationDrawer.dart';
-import '../ProductDetail.dart';
+import 'ProductDetail.dart';
 import 'AllCategoryDetailHorizontal.dart';
 import 'BannerDetails.dart';
 import 'ProductList.dart';
