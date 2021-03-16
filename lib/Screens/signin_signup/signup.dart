@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
-import '../widgets/textinput.dart';
 import '../../constant/color.dart';
+import '../widgets/textinput.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -36,8 +36,7 @@ class _SignUpState extends State<SignUp> {
         alignment: Alignment.center,
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top, left: 20, right: 20),
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 20, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -59,10 +58,10 @@ class _SignUpState extends State<SignUp> {
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Text(
                   "Let's Get Started!",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                      color: Color(0xff000000),
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(color: Color(0xff000000), fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
@@ -71,10 +70,10 @@ class _SignUpState extends State<SignUp> {
                 padding: const EdgeInsets.only(top: 5, bottom: 20),
                 child: Text(
                   "Create an account on to use all the features",
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                      color: Color(0xffA8A8A8),
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(color: Color(0xffA8A8A8), fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ),
               input(
@@ -126,8 +125,7 @@ class _SignUpState extends State<SignUp> {
                         initialDate: DateTime(DateTime.now().year),
                         firstDate: DateTime(DateTime.now().year - 100),
                         lastDate: DateTime(DateTime.now().year));
-                    if (date != null)
-                      dob.text = DateFormat('yyyy-M-d').format(date);
+                    if (date != null) dob.text = DateFormat('yyyy-M-d').format(date);
                   },
                   controller: dob,
                   textInputAction: TextInputAction.next,
@@ -138,25 +136,21 @@ class _SignUpState extends State<SignUp> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Gender",
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(color: Colors.black, fontSize: 13, fontWeight: FontWeight.bold)),
                     SizedBox(height: 5),
                     Container(
                         width: double.infinity,
                         height: 50,
                         padding: EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Colors.grey)),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), border: Border.all(color: Colors.grey)),
                         child: DropdownButton(
                             value: gender,
                             isExpanded: true,
                             items: genders.map((e) {
-                              return DropdownMenuItem(
-                                  child: Text(e.toUpperCase()),
-                                  value: genders.indexOf(e));
+                              return DropdownMenuItem(child: Text(e.toUpperCase()), value: genders.indexOf(e));
                             }).toList(),
                             underline: SizedBox(),
                             onChanged: (v) {
@@ -179,8 +173,7 @@ class _SignUpState extends State<SignUp> {
                   text: "Password"),
               Container(
                 width: size.width,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 alignment: Alignment.centerLeft,
                 child: CheckboxListTile(
                     value: terms,
@@ -189,10 +182,10 @@ class _SignUpState extends State<SignUp> {
                     contentPadding: EdgeInsets.zero,
                     title: Text(
                       "By signing up you agree to our terms and policy",
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          color: Color(0xffa8a8a8),
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .copyWith(color: Color(0xffa8a8a8), fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                     onChanged: (value) {
                       setState(() {
@@ -219,8 +212,7 @@ class _SignUpState extends State<SignUp> {
                               color: Colors.white,
                               fontSize: 18,
                             )),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                     onPressed: !isLoading ? _signUp : null,
                     color: primaryColor,
                   )),
@@ -229,10 +221,10 @@ class _SignUpState extends State<SignUp> {
                 child: RichText(
                   text: TextSpan(
                       text: "Already have an account?\t",
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          color: Color(0xffa8a8a8),
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .copyWith(color: Color(0xffa8a8a8), fontSize: 16, fontWeight: FontWeight.bold),
                       children: [
                         WidgetSpan(
                             child: GestureDetector(
@@ -241,10 +233,7 @@ class _SignUpState extends State<SignUp> {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1
-                                .copyWith(
-                                    color: primaryColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
+                                .copyWith(color: primaryColor, fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
                             Navigator.pop(context);
@@ -270,18 +259,10 @@ class _SignUpState extends State<SignUp> {
         gender != 0 &&
         password.isNotEmpty) {
       if (terms) {
-        if (RegExp(
-                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-            .hasMatch(email)) {
+        if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email)) {
           setLoading(true);
           Map<String, dynamic> body = {
-            "customer": {
-              "email": email,
-              "firstname": firstName,
-              "lastname": lastName,
-              "dob": dob.text,
-              "gender": gender
-            },
+            "customer": {"email": email, "firstname": firstName, "lastname": lastName, "dob": dob.text, "gender": gender},
             "password": password
           };
           await ApiService.register(body).then((value) {
@@ -290,8 +271,7 @@ class _SignUpState extends State<SignUp> {
               setLoading(true);
               Navigator.pop(context, email);
             } else {
-              Fluttertoast.showToast(
-                  msg: value.message, toastLength: Toast.LENGTH_LONG);
+              Fluttertoast.showToast(msg: value.message, toastLength: Toast.LENGTH_LONG);
               setLoading(false);
             }
           });
