@@ -1,3 +1,4 @@
+import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/cart_item_model.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/checkout.dart';
@@ -35,17 +36,12 @@ class _CartScreenState extends State<CartScreen> {
         for (int i = 0; i < cartData.data.length; i++) {
           ResponseData productInfo =
               await ApiService.skuWiseProduct(cartData.data[i]['sku']);
-          for (int j = 0;
-              j < productInfo.data['custom_attributes'].length;
-              j++) {
-            if (productInfo.data['custom_attributes'][j]['attribute_code'] ==
-                'image') {
-              setState(() {
-                cartItems.add(CartInfo(
-                    image: productInfo.data['custom_attributes'][j]['value'],
-                    cartItem: CartItem.fromJson(cartData.data[i])));
-              });
-            }
+          if(productInfo.status) {
+            setState(() {
+              cartItems.add(CartInfo(
+                  products: productInfo.data['data'].length > 0 ? Products.fromJson(productInfo.data['data'][0]) : Products(),
+                  cartItem: CartItem.fromJson(cartData.data[i])));
+            });
           }
         }
         countTotalPayable();
@@ -258,7 +254,7 @@ class _CartScreenState extends State<CartScreen> {
     return Container(
         padding: EdgeInsets.all(20),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Image.network(URLS.CART_IMAGE_URL + item.image,
+          Image.network(URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + (item.products.images != null ? item.products.images[0].file : ""),
               width: 70, height: 70, fit: BoxFit.contain),
           Expanded(
               child: Padding(
@@ -267,18 +263,26 @@ class _CartScreenState extends State<CartScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(item.cartItem.name ?? "N/A",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis),
                         SizedBox(height: 10),
-                        Text("\u20b9${item.cartItem.price * item.cartItem.qty}",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold)),
+                        RichText(
+                            text: TextSpan(
+                                text: "\u20b9100" + "\t",
+                                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                                children: [
+                                  TextSpan(
+                                      text: "0",
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 14,
+                                          decoration: TextDecoration.lineThrough,
+                                          fontWeight: FontWeight.bold)),
+                                  TextSpan(
+                                      text: '\n' + "You Save \u20b9100",
+                                      style: TextStyle(color: Colors.green, fontSize: 13, fontWeight: FontWeight.bold))
+                                ])),
                         SizedBox(height: 10),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -378,11 +382,11 @@ class _CartScreenState extends State<CartScreen> {
 }
 
 class CartInfo {
-  final String image;
+  final Products products;
   final CartItem cartItem;
   bool isLoading;
 
-  CartInfo({this.image, this.cartItem, this.isLoading: false});
+  CartInfo({this.products, this.cartItem, this.isLoading: false});
 }
 
 

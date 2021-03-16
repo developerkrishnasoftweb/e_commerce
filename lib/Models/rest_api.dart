@@ -48,7 +48,7 @@ class URLS {
   static const String ADD_TO_CART = 'https://palshopie.com/rest/default/V1/carts/mine/items';
   static const String CART_IMAGE_URL = 'https://palshopie.com/pub/media/catalog/product/cache/2cfd04eb5b7e64aa1c314f5f4f514b1d';
   static const String CART = '${URLS.PAL_SHOPPIE_BASE_URL}carts/mine/items';
-  static const String SKU_WISE_PRODUCT = 'https://palshopie.com/rest/default/V1/products/';
+  static const String SKU_WISE_PRODUCT = 'http://ecommerce.krishnasoftweb.com/api/product?product_id=';
 }
 
 class ApiService {
@@ -259,6 +259,7 @@ class ApiService {
 
   static Future<ResponseData> skuWiseProduct(String sku) async {
     try {
+      print(URLS.SKU_WISE_PRODUCT + sku);
       final response = await http.get(URLS.SKU_WISE_PRODUCT + sku);
       if (response.statusCode == 200) {
         return ResponseData(status: true, message: "Item details fetched successfully", data: await jsonDecode(response.body));

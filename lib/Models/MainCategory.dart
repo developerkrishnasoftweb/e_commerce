@@ -211,22 +211,22 @@ class Products {
     id = json['id'];
     sku = json['sku'];
     name = json['name'];
-    attributeSetId = json['attribute_set_id'];
+    attributeSetId = json['attribute_set_id'].toString();
     categoryId = json['category_id'];
     price = json['price'];
-    status = json['status'];
-    visibility = json['visibility'];
+    status = json['status'].toString();
+    visibility = json['visibility'].toString();
     typeId = json['type_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     if (json['images'] != null) {
-      images = new List<Images>();
+      images = [];
       json['images'].forEach((v) {
-        images.add(new Images.fromJson(v));
+        images.add(Images.fromJson(v));
       });
     }
-    variations = json['variations'] != null ? Variations.fromJson(json['variations']) : Variations();
-    attributes = new Attributes.fromJson(json['attributes']);
+    variations = json['variations'] != null ? Variations.fromJson(json['variations']) : null;
+    attributes = json['attributes'] != null ? Attributes.fromJson(json['attributes']) : null;
     maxQuantity = json['quantity'] ?? 1;
     discount = 5;
     inCart = false;
