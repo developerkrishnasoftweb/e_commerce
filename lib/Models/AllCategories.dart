@@ -11,7 +11,7 @@ class AllCategory {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = new List<MainData>();
+      data = <MainData>[];
       json['data'].forEach((v) {
         data.add(new MainData.fromJson(v));
       });

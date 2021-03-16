@@ -3,13 +3,12 @@ import 'dart:math' as math;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/rest_api.dart';
-import 'package:e_commerce/Screens/CartScreen.dart';
+import 'package:e_commerce/Screens/home/widgets/AddtoCartButton.dart';
 import 'package:e_commerce/constant/global.dart';
+import 'package:e_commerce/constant/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../main.dart';
 
 class ProductDetail extends StatefulWidget {
   Products products;
@@ -25,13 +24,10 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
-    double specialPrice = double.parse(widget.products.attributes.specialPrice) * 100;
-    double discount = (specialPrice / widget.products.price);
-
-    // print(widget.products);
     return Scaffold(
-        appBar:
-            AppBar(toolbarHeight: 50.sp, title: Text(widget.products.name, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
+        appBar: AppBar(
+            toolbarHeight: 50.sp,
+            title: Text(widget.products.name, style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
         body: SingleChildScrollView(
             child: Padding(
                 padding: EdgeInsets.all(10.sp),
@@ -58,7 +54,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     width: 60.sp,
                                     height: 60.sp,
                                     child: Center(
-                                        child: Text("${100 - discount.toInt()}%\nOFF",
+                                        child: Text(getDiscountPercentage(widget.products),
                                             style: TextStyle(color: Colors.white, fontSize: 13.sp, fontWeight: FontWeight.bold),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis)))
@@ -83,20 +79,16 @@ class _ProductDetailState extends State<ProductDetail> {
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
                       text: TextSpan(
-                          text: widget.products.attributes.specialPrice != "0" && widget.products.price != 0
-                              ? "You Save \u20b9${(widget.products.price - double.parse(widget.products.attributes.specialPrice)) * widget.products.quantity}\n"
-                              : '',
+                          text: getSavingPrice(widget.products) + "\n",
                           style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 16.sp),
                           children: [
                             TextSpan(
-                                text:
-                                    "\u20b9${widget.products.attributes.specialPrice != "0" ? widget.products.attributes.specialPrice : widget.products.price * widget.products.quantity} ",
+                                text: getPrice(widget.products) + ' ',
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black)),
                             TextSpan(
-                                text: widget.products.attributes.specialPrice != "0" && widget.products.price != 0
-                                    ? "\u20b9${widget.products.price} "
-                                    : ' ',
-                                style: TextStyle(decoration: TextDecoration.lineThrough, color: Colors.blueGrey, fontSize: 14.sp)),
+                                text: getMRP(widget.products) + ' ',
+                                style:
+                                    TextStyle(decoration: TextDecoration.lineThrough, color: Colors.blueGrey, fontSize: 14.sp)),
                             TextSpan(text: "(Incl. of all taxes)", style: TextStyle(fontSize: 14.sp, color: Colors.blueGrey))
                           ])),
                   Container(height: 10),
@@ -118,27 +110,23 @@ class _ProductDetailState extends State<ProductDetail> {
                           text: 'Description \n',
                           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.sp),
                           children: [
-                            TextSpan(text: widget.products.attributes.description, style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+                            TextSpan(
+                                text: widget.products.attributes.description,
+                                style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
                             TextSpan(text: '\n\nFeatures & Details\n', style: TextStyle(fontSize: 16.sp, color: Colors.black)),
                             TextSpan(
                                 text: removeHtmlTags(data: widget.products.attributes.shortDescription),
                                 style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
                             TextSpan(text: '\n\nProduct Information\n\n', style: TextStyle(fontSize: 16.sp, color: Colors.black)),
-                            // TextSpan(text: 'Brand : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
-                            // TextSpan(text: 'Amul\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
                             TextSpan(text: 'Manufacturer : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
                             TextSpan(
                                 text: '${widget.products.attributes.manufacturer}\n',
-                                style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
-                            // TextSpan(
-                            //     text: 'Country of Origin : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
-                            // TextSpan(text: 'India\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey)),
-                            // TextSpan(text: 'Food Type : ', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
-                            // TextSpan(text: 'Veg\n', style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey))
+                                style: TextStyle(fontSize: 12.sp, color: Colors.blueGrey))
                           ])),
                   Row(children: [
                     Expanded(
-                        child: Text("Product Rating", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black))),
+                        child: Text("Product Rating",
+                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black))),
                     RatingBar.builder(
                         initialRating: 3,
                         minRating: 1,
@@ -152,16 +140,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         onRatingUpdate: (rating) => print(rating))
                   ]),
                   Container(height: 20.h),
-                  Container(
-                      width: double.infinity,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          boxShadow: <BoxShadow>[BoxShadow(color: Colors.lightBlue[100], blurRadius: 10, offset: Offset(0, 5))]),
-                      child: FlatButton(
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen())),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          child: Text("Add to Cart", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)),
-                          color: Myapp.primaryColor))
+                  SizedBox(height: 50, width: double.infinity, child: AddtoCartButton(widget.products, "Add to Cart"))
                 ]))));
   }
 
@@ -173,7 +152,8 @@ class _ProductDetailState extends State<ProductDetail> {
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     child: Stack(children: <Widget>[
-                      Image.network(URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + item.file, fit: BoxFit.cover, height: 500.sp)
+                      Image.network(URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + item.file,
+                          fit: BoxFit.cover, height: 500.sp)
                     ])))))
         .toList();
   }
