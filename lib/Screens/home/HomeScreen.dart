@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/Models/AllCategories.dart';
 import 'package:e_commerce/Models/AllCollection.dart';
@@ -9,15 +11,17 @@ import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/CartScreen.dart';
 import 'package:e_commerce/Screens/home/SubCategoryDetailsGrocery.dart';
 import 'package:e_commerce/Screens/home/TopCategoryDetails.dart';
+import 'package:e_commerce/Screens/home/widgets/AddtoCartButton.dart';
+import 'package:e_commerce/constant/preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../main.dart';
 import '../NavigationDrawer.dart';
-import '../ProductDetail.dart';
 import 'AllCategoryDetailHorizontal.dart';
 import 'BannerDetails.dart';
+import 'ProductDetail.dart';
 import 'ProductList.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,18 +42,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 50.sp,
-          title: Text("Pal", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
-          elevation: 0,
-          actions: [
-            IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {}),
-            IconButton(
-                icon: Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
-                })
-          ],
-        ),
+            toolbarHeight: 50.sp,
+            title: Text("Pal", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+            elevation: 0,
+            actions: [
+              IconButton(icon: Icon(Icons.account_circle, color: Colors.white), onPressed: () {}),
+              IconButton(
+                  icon: Icon(Icons.shopping_cart, color: Colors.white),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen())))
+            ]),
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
         drawer: navigationDrawer(),
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -116,8 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
               physics: BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                    onTap: () =>
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => AllCategoryDetailHorizontal(id: index, list: data))),
+                    onTap: () => Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => AllCategoryDetailHorizontal(id: index, list: data))),
                     child: Container(
                         width: 70.sp,
                         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center,
@@ -152,23 +153,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(5.ssp)),
                   hintText: "Search for Products and Brand"))));
 
-  freeHomeDeliverySlider(List<Data> data) =>
-      CarouselSlider(options: CarouselOptions(autoPlay: true, aspectRatio: 2.0, enlargeCenterPage: true), items: imageSlideView(data));
+  freeHomeDeliverySlider(List<Data> data) => CarouselSlider(
+      options: CarouselOptions(autoPlay: true, aspectRatio: 2.0, enlargeCenterPage: true), items: imageSlideView(data));
 
   imageSlideView(List<Data> data) => data
       .map((item) => GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) => BannerDetails(id: item.linkUrl)));
-            },
-            child: Container(
-                child: Container(
-                    margin: EdgeInsets.all(5.0),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        child: Stack(children: <Widget>[
-                          Image.network(URLS.IMAGE_URL + "/" + item.image, fit: BoxFit.cover, width: 800.sp, height: 400.sp)
-                        ])))),
-          ))
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BannerDetails(id: item.linkUrl))),
+          child: Container(
+              child: Container(
+                  margin: EdgeInsets.all(5.0),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      child: Stack(children: <Widget>[
+                        Image.network(URLS.IMAGE_URL + "/" + item.image, fit: BoxFit.cover, width: 800.sp, height: 400.sp)
+                      ]))))))
       .toList();
 
   topCategories(List<Categories> data) => Container(
@@ -193,8 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
-                          onTap: () =>
-                              Navigator.push(context, MaterialPageRoute(builder: (_) => TopCategoryDetails(id: index, list: data))),
+                          onTap: () => Navigator.push(
+                              context, MaterialPageRoute(builder: (_) => TopCategoryDetails(id: index, list: data))),
                           child: Container(
                               child: Stack(children: [
                             Container(
@@ -240,6 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
+
                         return GestureDetector(
                             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail(data[index]))),
                             child: Container(
@@ -248,52 +247,65 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Padding(
                                     padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
                                     child: Column(children: [
-                                      Container(
-                                          width: 100.h,
-                                          height: 100.h,
-                                          alignment: Alignment.bottomCenter,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      URLS.PAL_IMAGE_URL + "/pub/media/catalog/product" + data[index].images[0].file),
-                                                  fit: BoxFit.cover))),
+                                      Stack(children: [
+                                        Container(
+                                            width: 100.h,
+                                            height: 100.h,
+                                            alignment: Alignment.bottomCenter,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                    image: NetworkImage(URLS.PAL_IMAGE_URL +
+                                                        "/pub/media/catalog/product" +
+                                                        data[index].images[0].file),
+                                                    fit: BoxFit.cover))),
+                                        data[index].attributes.specialPrice != "0" && data[index].price != 0
+                                            ? Transform.rotate(
+                                                angle: -math.pi / 6,
+                                                child: Stack(children: [
+                                                  Image.asset('assets/badge.png', width: 40.sp, height: 40.sp),
+                                                  Container(
+                                                      width: 40.sp,
+                                                      height: 40.sp,
+                                                      child: Center(
+                                                          child: Text(getDiscountPercentage(data[index]),
+                                                              style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontSize: 10.sp,
+                                                                  fontWeight: FontWeight.bold),
+                                                              maxLines: 2,
+                                                              overflow: TextOverflow.ellipsis)))
+                                                ]))
+                                            : Container()
+                                      ]),
                                       Expanded(
                                           child: Center(
                                               child: RichText(
                                                   maxLines: 4,
                                                   overflow: TextOverflow.ellipsis,
                                                   text: TextSpan(
-                                                      text: '₹ ' + data[index].attributes.specialPrice + ' ',
-                                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
+                                                      text: getPrice(data[index]) +" ",
+                                                      style: TextStyle(
+                                                          color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12.sp),
                                                       children: [
                                                         TextSpan(
-                                                            text: '₹ ${data[index].price.toString()} \n',
+                                                            text: getMRP(data[index]) +"\n",
                                                             style: TextStyle(
                                                                 decoration: TextDecoration.lineThrough,
                                                                 color: Colors.black,
                                                                 fontSize: 10.sp)),
                                                         TextSpan(
-                                                            text:
-                                                                "Save ${data[index].price - double.parse(data[index].attributes.specialPrice)} \n",
+                                                            text: getSavingPrice(data[index]) + "\n",
                                                             style: TextStyle(
-                                                                fontSize: 10.sp, fontWeight: FontWeight.bold, color: Colors.green)),
+                                                                fontSize: 10.sp,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.green)),
                                                         TextSpan(
                                                             text: data[index].name,
                                                             style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.bold))
                                                       ])))),
-                                      RaisedButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5.sp), side: BorderSide(color: Myapp.primaryColor)),
-                                          onPressed: () {},
-                                          elevation: 0,
-                                          color: Myapp.primaryColor,
-                                          textColor: Colors.white,
-                                          padding: EdgeInsets.all(0.h),
-                                          child: SizedBox(
-                                              width: double.infinity,
-                                              child: Text("Add".toUpperCase(),
-                                                  style: TextStyle(fontSize: 12.sp), textAlign: TextAlign.center)))
+                                      SizedBox(height: 10),
+                                      SizedBox(height: 32, width: double.infinity, child: AddtoCartButton(data[index], "ADD"))
                                     ]))));
                       }))
             ])));
@@ -321,16 +333,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                            onTap: () => Navigator.push(context,
-                                MaterialPageRoute(builder: (_) => SubCategoryDetailsGrocery(id: index, list: data[0].subCategories))),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => SubCategoryDetailsGrocery(id: index, list: data[0].subCategories))),
                             child: Container(
                                 width: 170.h,
                                 height: 90.h,
                                 child: Padding(
                                     padding: EdgeInsets.fromLTRB(index == 0 ? 10.h : 0, 10.h, 10.h, 0),
                                     child: Container(
-                                        decoration:
-                                            BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.h))),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.h))),
                                         child: Padding(
                                             padding: EdgeInsets.all(5.h),
                                             child: Row(children: [
@@ -341,8 +355,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(3.h),
                                                       image: DecorationImage(
-                                                          image:
-                                                              NetworkImage(URLS.PAL_IMAGE_URL + data[0].subCategories[index].image ?? ''),
+                                                          image: NetworkImage(
+                                                              URLS.PAL_IMAGE_URL + data[0].subCategories[index].image ?? ''),
                                                           fit: BoxFit.cover))),
                                               Expanded(
                                                   child: Center(
@@ -396,8 +410,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.only(bottomLeft: Radius.circular(30.h), bottomRight: Radius.circular(30.h))),
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(30.h), bottomRight: Radius.circular(30.h))),
                                   child: Padding(
                                       padding: EdgeInsets.all(10.sp),
                                       child: Text(offers.data[index].title.toUpperCase(),
@@ -418,7 +432,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onTap: () => Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (_) => ProductList(id: offers.data[index].collections[index1].categoryId))),
+                                                builder: (_) =>
+                                                    ProductList(id: offers.data[index].collections[index1].categoryId))),
                                         child: Container(
                                             child: Stack(children: [
                                           Container(
@@ -426,8 +441,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(10),
                                                   image: DecorationImage(
-                                                      image:
-                                                          NetworkImage(URLS.IMAGE_URL + '/' + offers.data[index].collections[index1].image),
+                                                      image: NetworkImage(
+                                                          URLS.IMAGE_URL + '/' + offers.data[index].collections[index1].image),
                                                       fit: BoxFit.cover)),
                                               child: Align(
                                                   alignment: Alignment.bottomCenter,
@@ -452,7 +467,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       fontSize: 15.sp),
                                                                   children: [
                                                                     TextSpan(
-                                                                        text: offers.data[index].collections[index1].offerString + '\n',
+                                                                        text: offers.data[index].collections[index1].offerString +
+                                                                            '\n',
                                                                         style: TextStyle(
                                                                             color: Colors.red,
                                                                             fontSize: 15.sp,
@@ -503,7 +519,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5.sp),
                                       image: DecorationImage(
-                                          image: NetworkImage(URLS.IMAGE_URL + '/' + bestOffers.data[index].image), fit: BoxFit.cover)),
+                                          image: NetworkImage(URLS.IMAGE_URL + '/' + bestOffers.data[index].image),
+                                          fit: BoxFit.cover)),
                                   child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -566,8 +583,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                            onTap: () => Navigator.push(
-                                context, MaterialPageRoute(builder: (_) => ProductList(id: data[0].subCategories[index].id))),
+                            onTap: () => Navigator.push(context,
+                                MaterialPageRoute(builder: (_) => ProductList(id: data[0].subCategories[index].id))),
                             child: Column(children: [
                               Expanded(
                                   child: Container(

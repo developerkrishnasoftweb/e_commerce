@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:e_commerce/Models/UserDetails.dart';
 import 'package:e_commerce/Screens/add_address.dart';
+import 'package:e_commerce/constant/preferences.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -12,7 +17,31 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   String selectedGender = "gender";
   List<String> genders = ["gender", "male", "female", "other"];
-  TextEditingController dob = TextEditingController();
+  TextEditingController fnameController,lnameController, emailController, dobController, mobile, address, pinCode, state, city;
+
+  String email = '';
+  String fname = '';
+  String dob = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    dobController = TextEditingController();
+
+    SharedPreferences.getInstance().then((pref) {
+      setState(() {
+        Map userMap = jsonDecode(pref.getString(Preferences.user));
+        UserDetails user = UserDetails.fromJson(userMap);
+        dob =  user.dob ?? '';
+        fnameController = TextEditingController(text: user.firstname ?? '');
+        lnameController = TextEditingController(text: user.lastname ?? '');
+        emailController = TextEditingController(text: user.email ?? '');
+        dobController = TextEditingController(text: dob);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +54,12 @@ class _EditProfileState extends State<EditProfile> {
             child: Column(children: [
               addAddressInputField(
                   labelText: "First Name",
+                  controller: fnameController,
                   textInputAction: TextInputAction.next,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
               addAddressInputField(
                   labelText: "Last Name",
+                  controller: lnameController,
                   textInputAction: TextInputAction.next,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
               Row(children: [
@@ -52,23 +83,24 @@ class _EditProfileState extends State<EditProfile> {
                         labelText: "Date Of Birth",
                         margin: EdgeInsets.zero,
                         keyboardType: TextInputType.datetime,
-                        controller: dob,
+                        controller: dobController,
                         onTap: () async {
-                          DateTime date = DateTime.now();
+                          DateTime date = dob.isNotEmpty ? DateTime.parse(dob) : DateTime.now();
                           FocusScope.of(context).requestFocus(new FocusNode());
                           date = await showDatePicker(
                               context: context,
-                              initialDate: DateTime(DateTime.now().year),
+                              initialDate: date,
                               firstDate: DateTime(DateTime.now().year - 100),
-                              lastDate: DateTime(DateTime.now().year));
+                              lastDate: DateTime.now());
                           if (date != null)
-                            dob.text = DateFormat('yyyy-M-d').format(date);
+                            dobController.text = DateFormat('yyyy-MM-dd').format(date);
                         },
                         readOnly: true))
               ]),
               SizedBox(height: 10),
               addAddressInputField(
                   labelText: "Email",
+                  controller: emailController,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
