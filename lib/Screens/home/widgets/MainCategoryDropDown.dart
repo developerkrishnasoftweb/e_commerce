@@ -48,7 +48,7 @@ class _MainCategoryDropDownState extends State<MainCategoryDropDown> {
                                 itemBuilder: (_, index) {
                                   return ListTile(
                                     leading: Image.network(
-                                        widget.list != null ? URLS.PAL_IMAGE_URL + widget.list[index].image : URLS.EMPTY_IMAGE_URL,
+                                        widget.list != null ? URLS.PAL_IMAGE_URL + widget.list[index].image : "",
                                         width: 40.sp,
                                         height: 40.sp),
                                     title: Text(widget.list != null ? widget.list[index].name : "Fruits & Vegetables",

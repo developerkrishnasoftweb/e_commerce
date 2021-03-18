@@ -20,7 +20,6 @@ class URLS {
   // static const String BASE_URL = '${URLS.SERVER_URL}api/';
   static const String IMAGE_URL = SERVER_URL;
   static const String PAL_IMAGE_URL = 'https://palshopie.com';
-  static const String EMPTY_IMAGE_URL = 'https://www.jiomart.com/images/category/141/thumb/fruits-vegetables-20200520.png';
   static const String GET_CATEGORIES = '${URLS.SERVER_URL}/api/category';
   static const String GET_TOP_CATEGORIES = '${URLS.SERVER_URL}/api/top-category';
   static const String GET_SUBCATEGORIES = '${URLS.SERVER_URL}/api/category?category_id=';
@@ -46,7 +45,6 @@ class URLS {
   static const String LOGIN = '${URLS.PAL_SHOPPIE_BASE_URL}customers/me';
   static const String CART_ID = '${URLS.PAL_SHOPPIE_BASE_URL}carts/mine';
   static const String ADD_TO_CART = 'https://palshopie.com/rest/default/V1/carts/mine/items';
-  static const String CART_IMAGE_URL = 'https://palshopie.com/pub/media/catalog/product/cache/2cfd04eb5b7e64aa1c314f5f4f514b1d';
   static const String CART = '${URLS.PAL_SHOPPIE_BASE_URL}carts/mine/items';
   static const String SKU_WISE_PRODUCT = 'http://ecommerce.krishnasoftweb.com/api/product?product_id=';
 }
@@ -194,7 +192,7 @@ class ApiService {
   }
 
   static Future<ResponseData> getFiltersData(String id) async {
-    print("URL     " + URLS.GET_FILTERS_DATA + id);
+    print("URL" + URLS.GET_FILTERS_DATA + id);
     final response = await http.get(URLS.GET_FILTERS_DATA + id);
 
     if (response.statusCode == 200) {
@@ -259,8 +257,8 @@ class ApiService {
 
   static Future<ResponseData> skuWiseProduct(String sku) async {
     try {
-      print(URLS.SKU_WISE_PRODUCT + sku);
       final response = await http.get(URLS.SKU_WISE_PRODUCT + sku);
+      print(response.body);
       if (response.statusCode == 200) {
         return ResponseData(status: true, message: "Item details fetched successfully", data: await jsonDecode(response.body));
       } else {
