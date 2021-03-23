@@ -70,9 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ApiService.getOffers1()
               ]),
               builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.hasError) {
-                  throw (snapshot.error);
-                }
+              
                 if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
                   topCategoryBanners = snapshot.data[0];
                   bestDealsBanners = snapshot.data[1];
@@ -238,7 +236,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-
                         return GestureDetector(
                             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetail(data[index]))),
                             child: Container(

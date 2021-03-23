@@ -105,3 +105,4 @@ class _SubcategoryDetailsState extends State<SubCategoryDetailsGrocery> {
         : widget.list[subCatIndex].childSubCategory[subCatIndex1].id.toString();
   }
 }
+

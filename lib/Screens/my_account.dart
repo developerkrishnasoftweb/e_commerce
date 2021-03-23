@@ -18,7 +18,6 @@ class MyAccount extends StatefulWidget {
 }
 
 class _MyAccountState extends State<MyAccount> {
-
   String email = '';
   String fname = '';
   String lname = '';
