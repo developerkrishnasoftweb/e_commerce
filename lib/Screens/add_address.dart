@@ -1,6 +1,7 @@
 import 'package:e_commerce/Models/UserDetails.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/my_addresses.dart';
+import 'package:e_commerce/constant/color.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,24 +17,24 @@ class AddAddress extends StatefulWidget {
 
 class _AddAddressState extends State<AddAddress> {
   int selectedIndex;
-  List<String> option = ['HOME', 'WORK', 'OTHER'];
-  TextEditingController firstName,
-      lastName,
-      company,
-      mobile,
-      address,
-      pinCode,
-      state,
-      city,
-      country;
+  TextEditingController firstName = TextEditingController(),
+      middleName = TextEditingController(),
+      lastName = TextEditingController(),
+      company = TextEditingController(),
+      phoneNumber = TextEditingController(),
+      street = TextEditingController(),
+      city = TextEditingController(),
+      state = TextEditingController(),
+      pinCode = TextEditingController(),
+      country = TextEditingController();
   String type;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     if (widget.addressDetail != null) {
       // setState(() => selectedIndex = option.indexOf(widget.addressDetail.type.toUpperCase()));
-    } else {
     }
   }
 
@@ -48,106 +49,78 @@ class _AddAddressState extends State<AddAddress> {
             automaticallyImplyLeading: true),
         body: SingleChildScrollView(
             padding: EdgeInsets.all(10),
-            child: Column(children: [
-              addAddressInputField(labelText: "First Name *", controller: firstName),
-              addAddressInputField(labelText: "Last Name *", controller: lastName),
-              addAddressInputField(labelText: "Company", controller: lastName),
-              addAddressInputField(
-                  labelText: "Mobile No *", controller: mobile),
-              addAddressInputField(labelText: "Street *", controller: address),
-              addAddressInputField(labelText: "City *", controller: city),
-              addAddressInputField(
-                  labelText: "Pin Code *", controller: pinCode),
-              addAddressInputField(labelText: "State *", controller: state),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text("Save as",
-                    style:
-                        TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                Row(
-                    children: option.map((e) {
-                  return Container(
-                      margin: EdgeInsets.only(right: 5),
-                      child: ChoiceChip(
-                          label: Text(e,
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          selected: option.indexOf(e) == selectedIndex,
-                          onSelected: (value) =>
-                              setState(() => selectedIndex = option.indexOf(e)),
-                          pressElevation: 1));
-                }).toList())
+            child: Form(
+              key: formKey,
+              child: Column(children: [
+                addAddressInputField(
+                    labelText: "First Name *",
+                    controller: firstName,
+                    validator: validate),
+                addAddressInputField(
+                    labelText: "Middle Name", controller: middleName),
+                addAddressInputField(
+                    labelText: "Last Name *", controller: lastName, validator: validate),
+                addAddressInputField(labelText: "Company", controller: company),
+                addAddressInputField(
+                    labelText: "Phone Number *", controller: phoneNumber, validator: validate),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("ADDRESS",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
+                    )),
+                Divider(
+                  thickness: 1,
+                  color: Colors.black,
+                  indent: 7,
+                  endIndent: 7,
+                ),
+                SizedBox(height: 20),
+                addAddressInputField(labelText: "Street *", controller: street, validator: validate),
+                addAddressInputField(labelText: "City *", controller: city, validator: validate),
+                addAddressInputField(
+                    labelText: "State/Province *", controller: state, validator: validate),
+                addAddressInputField(
+                    labelText: "Zip/Postal Code *", controller: pinCode, validator: validate),
+                addAddressInputField(
+                    labelText: "Country *", controller: country, validator: validate),
+                FlatButton(
+                    onPressed: addAddress,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7)),
+                    child: Text(
+                        widget.addressDetail != null
+                            ? "Update Address"
+                            : "Save Address",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                    height: 45,
+                    minWidth: double.infinity,
+                    color: Myapp.primaryColor)
               ]),
-              SizedBox(height: 10),
-              FlatButton(
-                  onPressed: addAddress,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7)),
-                  child: Text(
-                      widget.addressDetail != null
-                          ? "Update Address"
-                          : "Save Address",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white)),
-                  height: 45,
-                  minWidth: double.infinity,
-                  color: Myapp.primaryColor)
-            ])));
+            )));
   }
 
   void addAddress() async {
-    if (firstName.text.isNotEmpty &&
-        mobile.text.isNotEmpty &&
-        address.text.isNotEmpty &&
-        pinCode.text.isNotEmpty &&
-        state.text.isNotEmpty &&
-        city.text.isNotEmpty) {
-      Map<String, dynamic> bodyData = {
-        "customer": {
-          "firstname": "Rohan",
-          "lastname": "Hapani",
-          "website_id": 1,
-          "addresses": [
-            {
-              "region": {
-                "region_code": "PB",
-                "region": "PUNJAB",
-                "region_id": 43
-              },
-              "country_id": "IN",
-              "street": ["Add", "Add2"],
-              "firstname": "Rohan",
-              "lastname": "Hapani",
-              "default_shipping": true,
-              "default_billing": true,
-              "telephone": "1234567890",
-              "postcode": "98761",
-              "city": "New York"
-            },
-            {
-              "region": {
-                "region_code": "NY",
-                "region": "New York",
-                "region_id": 43
-              },
-              "country_id": "US",
-              "street": ["Add3", "Add4"],
-              "firstname": "Rohan",
-              "lastname": "Hapani",
-              "defaultShipping": false,
-              "defaultBilling": false,
-              "telephone": "9876543210",
-              "postcode": "10755",
-              "city": "New York"
-            }
-          ]
-        }
-      };
-      ResponseData responseData = await ApiService.generateToken(
-          {"username": "i@gmail.com", "password": "Abc@123456"});
-      ResponseData addressResponseData = await ApiService.addAddress(
-          token: responseData.token, body: bodyData);
-    }
+    print(formKey.currentState.validate());
+    Map<String, dynamic> bodyData = {};
+    ResponseData responseData = await ApiService.generateToken(
+        {"username": "i@gmail.com", "password": "Abc@123456"});
+    ResponseData addressResponseData =
+        await ApiService.addAddress(token: responseData.token, body: bodyData);
+  }
+
+  String validate(String value) {
+    if (value.isNotEmpty)
+      return null;
+    else
+      return "This is required field";
   }
 }
 
@@ -163,6 +136,7 @@ Widget addAddressInputField(
     double height,
     GestureTapCallback onTap,
     EdgeInsetsGeometry margin,
+    FormFieldValidator<String> validator,
     bool readOnly: false}) {
   return Container(
       height: height,
@@ -174,13 +148,12 @@ Widget addAddressInputField(
           onTap: onTap,
           onEditingComplete: onEditingComplete,
           textInputAction: textInputAction ?? TextInputAction.next,
+          validator: validator,
           keyboardType: keyboardType,
           readOnly: readOnly,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           decoration: InputDecoration(
-              border: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: BorderSide(color: Colors.grey, width: 2)),
+              border: OutlineInputBorder(),
               contentPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
               labelText: labelText,
               hintText: hintText),

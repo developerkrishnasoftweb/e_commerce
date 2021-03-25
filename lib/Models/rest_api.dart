@@ -287,6 +287,12 @@ class ApiService {
 
   static Future<ResponseData> updateCartItemQuantity({String token, String itemId, String qty, quoteId}) async {
     try {
+      print(URLS.UPDATE_CART_QUANTITY + quoteId);
+      print({
+        "cartItem": {
+          "item_id": itemId, "qty": qty, "quote_id": quoteId
+        }
+      });
       final response = await http.put(URLS.UPDATE_CART_QUANTITY + quoteId, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'}, body: jsonEncode({
           "cartItem": {
             "item_id": itemId, "qty": qty, "quote_id": quoteId
