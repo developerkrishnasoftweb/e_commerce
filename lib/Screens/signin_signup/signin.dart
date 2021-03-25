@@ -71,7 +71,7 @@ class _SignInState extends State<SignIn> {
         showNotification(message);
       },
       onResume: (Map<String, dynamic> message) async {
-        print('on resume $message');
+        showNotification(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
         print('on launch $message');
@@ -222,7 +222,6 @@ class _SignInState extends State<SignIn> {
       await ApiService.generateToken(body).then((value) async {
         if (value.status) {
           Map<String, dynamic> map = value.data;
-          print(map);
           setLoading(false);
           Fluttertoast.showToast(msg: value.message);
           SharedPreferences prefs = await SharedPreferences.getInstance();

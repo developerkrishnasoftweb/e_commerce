@@ -46,6 +46,9 @@ class URLS {
   static const String CART_ID = '${URLS.PAL_SHOPPIE_BASE_URL}carts/mine';
   static const String ADD_TO_CART = 'https://palshopie.com/rest/default/V1/carts/mine/items';
   static const String CART = '${URLS.PAL_SHOPPIE_BASE_URL}carts/mine/items';
+  static const String UPDATE_CART_QUANTITY = '${PAL_SHOPPIE_BASE_URL}carts/mine/items/';
+  static const String REMOVE_CART_ITEM = '${PAL_SHOPPIE_BASE_URL}carts/mine/items/';
+  static const String ADD_ADDRESS = '${PAL_SHOPPIE_BASE_URL}customers/me';
   static const String SKU_WISE_PRODUCT = 'http://ecommerce.krishnasoftweb.com/api/product?product_id=';
 }
 
@@ -274,6 +277,49 @@ class ApiService {
       final response = await http.get(URLS.CART, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'});
       if (response.statusCode == 200) {
         return ResponseData(status: true, message: "Cart items are listed successfully", data: await jsonDecode(response.body), token: token);
+      } else {
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> updateCartItemQuantity({String token, String itemId, String qty, quoteId}) async {
+    try {
+      final response = await http.put(URLS.UPDATE_CART_QUANTITY + quoteId, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'}, body: jsonEncode({
+          "cartItem": {
+            "item_id": itemId, "qty": qty, "quote_id": quoteId
+          }
+      }));
+      if (response.statusCode == 200) {
+        return ResponseData(status: true, message: "Cart updated successfully", data: await jsonDecode(response.body), token: token);
+      } else {
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> removeItemFromCart({String token, String itemId}) async {
+    try {
+      final response = await http.delete(URLS.REMOVE_CART_ITEM + itemId, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'});
+      if (response.statusCode == 200) {
+        return ResponseData(status: true, message: "Cart item deleted successfully", data: await jsonDecode(response.body), token: token);
+      } else {
+        return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> addAddress({String token, Map<String, dynamic> body}) async {
+    try {
+      final response = await http.put(URLS.ADD_ADDRESS, headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'}, body: jsonEncode(body));
+      if (response.statusCode == 200) {
+        return ResponseData(status: true, message: "Address added successfully", data: await jsonDecode(response.body), token: token);
       } else {
         return ResponseData(status: false, message: await jsonDecode(response.body)['message'], data: null);
       }

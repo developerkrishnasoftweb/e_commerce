@@ -18,12 +18,13 @@ dependencies:
   carousel_slider: 3.0.0
   flutter_rating_bar:
   intl:
-  firebase_messaging:
+  firebase_messaging: ^7.0.3
   dio:
   flutter_local_notifications:
   fluttertoast:
   shared_preferences:
   firebase_core:
+  url_launcher: ^6.0.2
 
 dev_dependencies:
   flutter_test:

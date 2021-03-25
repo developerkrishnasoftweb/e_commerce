@@ -21,15 +21,15 @@ class _MyAccountState extends State<MyAccount> {
   String email = '';
   String fname = '';
   String lname = '';
+  UserDetails user;
 
   @override
-  Future<void> initState() {
-    // TODO: implement initState
+  void initState() {
     super.initState();
     SharedPreferences.getInstance().then((pref) {
       setState(() {
         Map userMap = jsonDecode(pref.getString(Preferences.user));
-        UserDetails user = UserDetails.fromJson(userMap);
+        user = UserDetails.fromJson(userMap);
         email = user.email ?? '';
         fname = user.firstname ?? '';
         lname = user.lastname ?? '';

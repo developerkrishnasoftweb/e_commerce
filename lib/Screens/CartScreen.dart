@@ -291,17 +291,13 @@ class _CartScreenState extends State<CartScreen> {
                                   height: 30,
                                   width: 30,
                                   child: FlatButton(
-                                      child: Icon(Icons.remove,
+                                      child: item.isDeleting ? SizedBox(
+                                          height: 25,
+                                          width: 25,
+                                          child: CircularProgressIndicator(
+                                              strokeWidth: 2)) : Icon(Icons.remove,
                                           color: Colors.white),
-                                      onPressed: () {
-                                        if (item.cartItem.qty != 1) {
-                                          setState(() => item.cartItem.qty--);
-                                        } else {
-                                          setState(
-                                              () => cartItems.remove(item));
-                                        }
-                                        countTotalPayable();
-                                      },
+                                      onPressed: item.isDeleting ? null : () => _removeQuantity(item),
                                       color: Myapp.primaryColor,
                                       padding: EdgeInsets.zero,
                                       shape: RoundedRectangleBorder(
@@ -350,10 +346,19 @@ class _CartScreenState extends State<CartScreen> {
         if(responseData.status) {
           ResponseData cartId = await ApiService.cartId(responseData.token);
           if(cartId.status) {
-            setState(() {
-              item.cartItem.qty++;
-              item.isLoading = false;
-            });
+            ResponseData updateQuantity = await ApiService.updateCartItemQuantity(token: responseData.token, itemId: item.cartItem.itemId.toString(), qty: (item.cartItem.qty + 1).toString(), quoteId: cartId.data.toString());
+            if(updateQuantity.status) {
+              setState(() {
+                item.cartItem.qty++;
+                item.isLoading = false;
+              });
+            } else {
+              setState(() {
+                item.isLoading = false;
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(updateQuantity.message)));
+            }
           } else {
             setState(() => item.isLoading = false);
             ScaffoldMessenger.of(context).showSnackBar(
@@ -379,14 +384,64 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget greyStrip() => Container(
       height: 25, width: double.infinity, color: Color.fromRGBO(0, 0, 0, 0.2));
+
+  _removeQuantity(CartInfo item) async {
+    setState(() {
+      item.isDeleting = true;
+    });
+    ResponseData responseData = await ApiService.generateToken({"username": "i@gmail.com", "password": "Abc@123456"});
+    if (item.cartItem.qty != 1) {
+      if(responseData.status) {
+        ResponseData cartId = await ApiService.cartId(responseData.token);
+        if(cartId.status) {
+          ResponseData updateQuantity = await ApiService.updateCartItemQuantity(token: responseData.token, itemId: item.cartItem.itemId.toString(), qty: (item.cartItem.qty - 1).toString(), quoteId: cartId.data.toString());
+          if(updateQuantity.status) {
+            setState(() {
+              item.cartItem.qty--;
+              item.isDeleting = false;
+            });
+          } else {
+            setState(() {
+              item.isDeleting = false;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(updateQuantity.message)));
+          }
+        } else {
+          setState(() => item.isDeleting = false);
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(cartId.message)));
+        }
+      } else {
+        setState(() => item.isDeleting = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(responseData.message)));
+      }
+    } else {
+      ResponseData deleteCartItem = await ApiService.removeItemFromCart(itemId: item.cartItem.itemId.toString(), token: responseData.token);
+      if(deleteCartItem.status) {
+        setState(() {
+          item.isDeleting = false;
+          cartItems.remove(item);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(deleteCartItem.message)));
+      } else {
+        setState(() => item.isDeleting = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(deleteCartItem.message)));
+      }
+    }
+    countTotalPayable();
+  }
 }
 
 class CartInfo {
   final Products products;
   final CartItem cartItem;
-  bool isLoading;
+  bool isLoading, isDeleting;
 
-  CartInfo({this.products, this.cartItem, this.isLoading: false});
+  CartInfo({this.products, this.cartItem, this.isLoading: false, this.isDeleting : false});
 }
 
 

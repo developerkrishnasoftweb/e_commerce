@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:e_commerce/Models/UserDetails.dart';
 import 'package:e_commerce/Screens/add_address.dart';
+import 'package:e_commerce/constant/preferences.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyAddress extends StatefulWidget {
   @override
@@ -10,24 +15,16 @@ class MyAddress extends StatefulWidget {
 }
 
 class _MyAddressState extends State<MyAddress> {
-  List<AddressDetail> addresses = [
-    AddressDetail(
-        name: "Krishna Softweb",
-        type: "work",
-        address: "208, Siddhivinayak platinum, Althan Road",
-        mobileNo: "8758431417",
-        pinCode: "394221",
-        city: "Surat",
-        state: "Gujarat"),
-    AddressDetail(
-        name: "Gaurav",
-        type: "home",
-        address: "46, Apeksha Nagar, Althan Road",
-        mobileNo: "8758431417",
-        pinCode: "394221",
-        city: "Surat",
-        state: "Gujarat")
-  ];
+  List<Addresses> addresses = [];
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((pref) {
+      Map userMap = jsonDecode(pref.getString(Preferences.user));
+      addresses = UserDetails.fromJson(userMap).addresses;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,26 +62,26 @@ class _MyAddressState extends State<MyAddress> {
                                   children: [
                                 Expanded(
                                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                  Text(addresses[index].name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                                  Text(addresses[index].firstname + ' ' + addresses[index].lastname, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                                   SizedBox(height: 5),
-                                  Text("${addresses[index].address}",
+                                  Text("${addresses[index].street[0]}",
                                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.grey),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis),
-                                  Text("${addresses[index].city} - ${addresses[index].pinCode}",
+                                  Text("${addresses[index].city} - ${addresses[index].postcode}",
                                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.grey),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis),
-                                  Text(addresses[index].state,
+                                  Text(addresses[index].region.region,
                                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.grey),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis),
-                                  Text(addresses[index].mobileNo,
+                                  Text(addresses[index].telephone,
                                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.grey))
                                 ])),
                                 Container(
                                     padding: EdgeInsets.all(4),
-                                    child: Text(addresses[index].type.toUpperCase(),
+                                    child: Text('home'.toUpperCase(),
                                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[300]))
                               ])),
@@ -101,10 +98,4 @@ class _MyAddressState extends State<MyAddress> {
                   physics: BouncingScrollPhysics()))
         ]));
   }
-}
-
-class AddressDetail {
-  final String name, mobileNo, address, pinCode, state, city, type;
-
-  AddressDetail({this.name, this.mobileNo, this.address, this.pinCode, this.state, this.city, this.type});
 }
