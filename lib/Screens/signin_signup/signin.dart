@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:e_commerce/Models/UserDetails.dart';
 import 'package:e_commerce/Models/rest_api.dart';
+import 'package:e_commerce/constant/models.dart';
 import 'package:e_commerce/constant/preferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -226,7 +228,7 @@ class _SignInState extends State<SignIn> {
           Fluttertoast.showToast(msg: value.message);
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setBool(Preferences.isLogin, true);
-          prefs.setString(Preferences.user, jsonEncode(map));
+          prefs.setString(Preferences.user, jsonEncode(UserDetails.fromJson(map)..password = password..toJson()));
           Navigator.pop(context);
           Navigator.pop(context);
         } else {

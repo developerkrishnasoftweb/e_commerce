@@ -17,6 +17,7 @@ class UserDetails {
   int disableAutoGroupChange;
   ExtensionAttributes extensionAttributes;
   List<CustomAttributes> customAttributes;
+  String password;
 
   UserDetails(
       {this.id,
@@ -36,7 +37,7 @@ class UserDetails {
         this.addresses,
         this.disableAutoGroupChange,
         this.extensionAttributes,
-        this.customAttributes});
+        this.customAttributes, this.password});
 
   UserDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -69,6 +70,7 @@ class UserDetails {
         customAttributes.add(new CustomAttributes.fromJson(v));
       });
     }
+    password = json['password'];
   }
 
   Map<String, dynamic> toJson() {
@@ -98,6 +100,7 @@ class UserDetails {
       data['custom_attributes'] =
           this.customAttributes.map((v) => v.toJson()).toList();
     }
+    data['password'] = password;
     return data;
   }
 }

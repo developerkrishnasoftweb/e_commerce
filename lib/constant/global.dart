@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:e_commerce/Models/UserDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,7 +11,7 @@ const String mandatoryChar = "*";
 const String lastNotificationId = "last_notification_id";
 
 SharedPreferences sharedPreferences;
-Userdata userdata;
+UserDetails userdata;
 Config config;
 Locale appLocale;
 
