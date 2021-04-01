@@ -62,6 +62,7 @@ class URLS {
   static const String REMOVE_CART_ITEM =
       '${PAL_SHOPPIE_BASE_URL}carts/mine/items/';
   static const String ADD_ADDRESS = '${PAL_SHOPPIE_BASE_URL}customers/me';
+  static const String UPDATE_ADDRESS = '${PAL_SHOPPIE_BASE_URL}customers/';
   static const String GET_COUNTRIES =
       '${PAL_SHOPPIE_BASE_URL}directory/countries';
   static const String SKU_WISE_PRODUCT =
@@ -241,15 +242,20 @@ class ApiService {
     }
   }
 
-  static Future<ResponseData> generateToken(Map<String, dynamic> body, {bool getOnlyToken : false}) async {
+  static Future<ResponseData> generateToken(Map<String, dynamic> body,
+      {bool getOnlyToken: false}) async {
     final response = await http.post(URLS.GENERATE_TOKEN,
         body: jsonEncode(body), headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
-      if(getOnlyToken) {
-        return ResponseData(token: response.body.replaceAll('"', ""), status: true, message: "Token fetched successfully");
+      if (getOnlyToken) {
+        return ResponseData(
+            token: response.body.replaceAll('"', ""),
+            status: true,
+            message: "Token fetched successfully");
       }
       return await login(response.body.replaceAll('"', ""));
     } else {
+      print(response.body);
       return ResponseData(
           status: false,
           message: await jsonDecode(response.body)['message'],
@@ -436,6 +442,33 @@ class ApiService {
             data: await jsonDecode(response.body),
             token: token);
       } else {
+        return ResponseData(
+            status: false,
+            message: await jsonDecode(response.body)['message'],
+            data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> updateAddress(
+      {String token, Map<String, dynamic> body, String addressId}) async {
+    try {
+      final response = await http.put(URLS.UPDATE_ADDRESS + "$addressId",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: jsonEncode(body));
+      if (response.statusCode == 200) {
+        return ResponseData(
+            status: true,
+            message: "Address updated successfully",
+            data: await jsonDecode(response.body),
+            token: token);
+      } else {
+        print(response.body);
         return ResponseData(
             status: false,
             message: await jsonDecode(response.body)['message'],
