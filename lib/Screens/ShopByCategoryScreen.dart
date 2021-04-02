@@ -28,7 +28,7 @@ class _ShopByCategoryScreenState extends State<ShopByCategoryScreen> {
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen())))
             ]),
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
-        drawer: navigationDrawer(),
+        drawer: NavigationDrawer(),
         body: FutureBuilder(
             future: Future.wait([ApiService.getHomeCategories()]),
             builder: (context, AsyncSnapshot snapshot) {

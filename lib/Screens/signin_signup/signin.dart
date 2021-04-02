@@ -4,14 +4,13 @@ import 'dart:math';
 
 import 'package:e_commerce/Models/UserDetails.dart';
 import 'package:e_commerce/Models/rest_api.dart';
-import 'package:e_commerce/constant/models.dart';
+import 'package:e_commerce/Screens/home/HomeScreen.dart';
 import 'package:e_commerce/constant/preferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/color.dart';
 import '../../constant/global.dart';
@@ -226,11 +225,10 @@ class _SignInState extends State<SignIn> {
           Map<String, dynamic> map = value.data;
           setLoading(false);
           Fluttertoast.showToast(msg: value.message);
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setBool(Preferences.isLogin, true);
-          prefs.setString(Preferences.user, jsonEncode(UserDetails.fromJson(map)..password = password..toJson()));
-          Navigator.pop(context);
-          Navigator.pop(context);
+          sharedPreferences.setBool(Preferences.isLogin, true);
+          sharedPreferences.setString(Preferences.user, jsonEncode(UserDetails.fromJson(map)..password = password..toJson()));
+          userdata = UserDetails.fromJson(jsonDecode(sharedPreferences.getString(Preferences.user)));
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => HomeScreen()), (route) => false);
         } else {
           setLoading(false);
           Fluttertoast.showToast(msg: value.message, toastLength: Toast.LENGTH_LONG);

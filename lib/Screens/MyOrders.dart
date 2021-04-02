@@ -13,7 +13,7 @@ class _MyOrdersState extends State<MyOrders> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(toolbarHeight: 50.sp,title: Text("My Orders", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
-        drawer: navigationDrawer(),
+        drawer: NavigationDrawer(),
         body: Padding(
             padding: EdgeInsets.all(10.sp),
             child: ListView.builder(

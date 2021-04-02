@@ -62,7 +62,8 @@ class URLS {
   static const String REMOVE_CART_ITEM =
       '${PAL_SHOPPIE_BASE_URL}carts/mine/items/';
   static const String ADD_ADDRESS = '${PAL_SHOPPIE_BASE_URL}customers/me';
-  static const String UPDATE_ADDRESS = '${PAL_SHOPPIE_BASE_URL}customers/';
+  static const String UPDATE_ADDRESS = '${PAL_SHOPPIE_BASE_URL}customers/me';
+  static const String DELETE_ADDRESS = '${PAL_SHOPPIE_BASE_URL}addresses/';
   static const String GET_COUNTRIES =
       '${PAL_SHOPPIE_BASE_URL}directory/countries';
   static const String SKU_WISE_PRODUCT =
@@ -453,9 +454,9 @@ class ApiService {
   }
 
   static Future<ResponseData> updateAddress(
-      {String token, Map<String, dynamic> body, String addressId}) async {
+      {String token, Map<String, dynamic> body}) async {
     try {
-      final response = await http.put(URLS.UPDATE_ADDRESS + "$addressId",
+      final response = await http.put(URLS.UPDATE_ADDRESS,
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token'
@@ -469,6 +470,31 @@ class ApiService {
             token: token);
       } else {
         print(response.body);
+        return ResponseData(
+            status: false,
+            message: await jsonDecode(response.body)['message'],
+            data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> removeAddress(
+      {String addressId, String token}) async {
+    try {
+      final response = await http.delete(URLS.DELETE_ADDRESS + "$addressId",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          });
+      if (response.statusCode == 200) {
+        return ResponseData(
+            status: true,
+            message: "Address deleted successfully",
+            data: await jsonDecode(response.body),
+            token: token);
+      } else {
         return ResponseData(
             status: false,
             message: await jsonDecode(response.body)['message'],

@@ -4,12 +4,12 @@ import 'package:e_commerce/Models/UserDetails.dart';
 import 'package:e_commerce/Models/countries_model.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/home/widgets/custom_dropdown.dart';
+import 'package:e_commerce/constant/global.dart';
 import 'package:e_commerce/constant/preferences.dart';
 import 'package:e_commerce/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AddAddress extends StatefulWidget {
   final Addresses addressDetail;
@@ -23,7 +23,6 @@ class AddAddress extends StatefulWidget {
 class _AddAddressState extends State<AddAddress> {
   TextEditingController firstName = TextEditingController(),
       lastName = TextEditingController(),
-      email = TextEditingController(),
       phoneNumber = TextEditingController(),
       street = TextEditingController(),
       street1 = TextEditingController(),
@@ -49,10 +48,6 @@ class _AddAddressState extends State<AddAddress> {
       street.text = widget.addressDetail.street[0];
       street1.text = widget.addressDetail.street[1];
       city.text = widget.addressDetail.city;
-      // selectedRegion = Regions(
-      //     name: widget.addressDetail.region.region,
-      //     code: widget.addressDetail.region.regionCode,
-      //     id: widget.addressDetail.region.regionId.toString());
       pinCode.text = widget.addressDetail.postcode;
     }
     getCountries();
@@ -60,20 +55,27 @@ class _AddAddressState extends State<AddAddress> {
   }
 
   getUser() async {
-    await SharedPreferences.getInstance().then((pref) {
-      Map userMap = jsonDecode(pref.getString(Preferences.user));
-      setState(() {
-        userDetails = UserDetails.fromJson(userMap);
-      });
+    Map userMap = jsonDecode(sharedPreferences.getString(Preferences.user));
+    setState(() {
+      userDetails = UserDetails.fromJson(userMap);
     });
   }
 
   getCountries() async {
     List<Countries> tempCountries = await ApiService.getCountries();
-    setState(() {
-      countries = tempCountries;
-      selectedCountry = countries.where((element) => element.id == "IN").first;
-    });
+    if (tempCountries.length > 0) {
+      setState(() {
+        countries = tempCountries;
+        selectedCountry =
+            countries.where((element) => element.id == "IN").first;
+        if (widget.addressDetail != null) {
+          selectedRegion = selectedCountry.availableRegions
+              .where((element) =>
+                  element.id == widget.addressDetail.region.regionId.toString())
+              .first;
+        }
+      });
+    }
   }
 
   @override
@@ -98,7 +100,6 @@ class _AddAddressState extends State<AddAddress> {
                     labelText: "Last Name *",
                     controller: lastName,
                     validator: validate),
-                addAddressInputField(labelText: "Email *", controller: email),
                 addAddressInputField(
                     labelText: "Phone Number *",
                     controller: phoneNumber,
@@ -137,7 +138,11 @@ class _AddAddressState extends State<AddAddress> {
                             margin: EdgeInsets.only(bottom: 20),
                             items: selectedCountry.availableRegions
                                 .map((region) => DropdownMenuItem<Regions>(
-                                    child: Text(region.name), value: region))
+                                    child: Text("${region.name}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500)),
+                                    value: region))
                                 .toList(),
                             label: "State/Province *",
                             onChanged: (region) {
@@ -174,7 +179,10 @@ class _AddAddressState extends State<AddAddress> {
                         label: "Country *",
                         items: countries
                             .map((country) => DropdownMenuItem<Countries>(
-                                child: Text("${country.fullNameEnglish}"),
+                                child: Text("${country.fullNameEnglish}",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500)),
                                 value: country))
                             .toList(),
                         value: selectedCountry)
@@ -204,50 +212,65 @@ class _AddAddressState extends State<AddAddress> {
   }
 
   void updateAddress() async {
-    Map<String, dynamic> bodyData = {
-      "customer": {
-        "email": email.text,
-        "firstname": firstName.text,
-        "lastname": lastName.text,
-        "dob": userDetails.dob,
-        "gender": userDetails.gender,
-        "website_id": userDetails.websiteId,
-        "addresses": [
-          {
-            "region": {
-              "region_code": selectedRegion.code,
-              "region": selectedRegion.name,
-              "region_id": selectedRegion.id
-            },
-            "country_id": selectedCountry.id,
-            "street": [street.text, street1.text],
-            "firstname": firstName.text,
-            "lastname": lastName.text,
-            "default_shipping": true,
-            "default_billing": true,
-            "telephone": phoneNumber.text,
-            "postcode": pinCode.text,
-            "city": city.text
-          }
-        ]
+    if (formKey.currentState.validate()) {
+      if (selectedRegion == null && selectedCountry == null) {
+        Fluttertoast.showToast(msg: "All fields are required");
+        return;
       }
-    };
-    await ApiService.generateToken(
-            {"username": userDetails.email, "password": "Abc@123456"},
-            getOnlyToken: true)
-        .then((value) async {
-      if (value.status) {
-        await ApiService.updateAddress(body: bodyData, token: value.token, addressId: widget.addressDetail.id.toString()).then((value) {
-          if(value.status) {
-            Fluttertoast.showToast(msg: value.message);
-          } else {
-            Fluttertoast.showToast(msg: value.message);
-          }
-        });
-      } else {
-        Fluttertoast.showToast(msg: value.message);
-      }
-    });
+      Map<String, dynamic> bodyData = {
+        "customer": {
+          "email": userdata.email,
+          "firstname": firstName.text,
+          "lastname": lastName.text,
+          "dob": userDetails.dob,
+          "gender": userDetails.gender,
+          "website_id": userDetails.websiteId,
+          "addresses": [
+            {
+              "id": widget.addressDetail.id.toString(),
+              "customerId": userdata.id,
+              "region": {
+                "region_code": selectedRegion.code,
+                "region": selectedRegion.name,
+                "region_id": selectedRegion.id
+              },
+              "country_id": selectedCountry.id,
+              "street": [street.text, street1.text],
+              "firstname": firstName.text,
+              "lastname": lastName.text,
+              "default_shipping": true,
+              "default_billing": true,
+              "telephone": phoneNumber.text,
+              "postcode": pinCode.text,
+              "city": city.text
+            }
+          ]
+        }
+      };
+      await ApiService.generateToken(
+              {"username": userDetails.email, "password": "Abc@123456"},
+              getOnlyToken: true)
+          .then((value) async {
+        if (value.status) {
+          await ApiService.updateAddress(body: bodyData, token: value.token)
+              .then((value) async {
+            if (value.status) {
+              await sharedPreferences.setString(
+                  Preferences.user,
+                  jsonEncode(UserDetails.fromJson(value.data)
+                    ..password = userdata.password
+                    ..toJson()));
+              Fluttertoast.showToast(msg: value.message);
+              Navigator.pop(context);
+            } else {
+              Fluttertoast.showToast(msg: value.message);
+            }
+          });
+        } else {
+          Fluttertoast.showToast(msg: value.message);
+        }
+      });
+    }
   }
 
   void addAddress() async {
@@ -258,7 +281,7 @@ class _AddAddressState extends State<AddAddress> {
       }
       Map<String, dynamic> bodyData = {
         "customer": {
-          "email": email.text,
+          "email": userdata.email,
           "firstname": firstName.text,
           "lastname": lastName.text,
           "dob": userDetails.dob,
@@ -295,8 +318,11 @@ class _AddAddressState extends State<AddAddress> {
               .then((value) async {
             if (value.status) {
               await ApiService.login(token).then((value) async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setString(Preferences.user, jsonEncode(value.data));
+                await sharedPreferences.setString(
+                    Preferences.user,
+                    jsonEncode(UserDetails.fromJson(value.data)
+                      ..password = userdata.password
+                      ..toJson()));
               });
               Navigator.pop(context);
             } else {

@@ -2,6 +2,7 @@ import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/cart_item_model.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/checkout.dart';
+import 'package:e_commerce/constant/global.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -29,7 +30,7 @@ class _CartScreenState extends State<CartScreen> {
     setLoading(true);
     cartItems.clear();
     ResponseData responseData = await ApiService.generateToken(
-        {"username": "i@gmail.com", "password": "Abc@123456"});
+        {"username": userdata.email, "password": userdata.password});
     if (responseData.status) {
       ResponseData cartData = await ApiService.cart(responseData.token);
       if (cartData.status) {
@@ -84,7 +85,7 @@ class _CartScreenState extends State<CartScreen> {
                   onPressed: () {})
             ]),
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
-        drawer: navigationDrawer(),
+        drawer: NavigationDrawer(),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
             : cartItems.length > 0
@@ -360,7 +361,7 @@ class _CartScreenState extends State<CartScreen> {
       item.isLoading = true;
     });
     ResponseData responseData = await ApiService.generateToken(
-        {"username": "i@gmail.com", "password": "Abc@123456"});
+        {"username": userdata.email, "password": userdata.password});
     if (responseData.status) {
       ResponseData cartId = await ApiService.cartId(responseData.token);
       if (cartId.status) {
@@ -405,7 +406,7 @@ class _CartScreenState extends State<CartScreen> {
       item.isDeleting = true;
     });
     ResponseData responseData = await ApiService.generateToken(
-        {"username": "i@gmail.com", "password": "Abc@123456"});
+        {"username": userdata.email, "password": userdata.password});
     if (item.cartItem.qty != 1) {
       if (responseData.status) {
         ResponseData cartId = await ApiService.cartId(responseData.token);
