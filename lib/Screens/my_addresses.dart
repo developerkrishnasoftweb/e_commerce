@@ -140,7 +140,7 @@ class _MyAddressState extends State<MyAddress> {
                                                   addresses[index]))).then((value) {
                                                     getAddresses();
                                   })),
-                              FlatButton(
+                              /* FlatButton(
                                   child: !isDeletingAddress
                                       ? Text("Delete",
                                           style:
@@ -153,7 +153,7 @@ class _MyAddressState extends State<MyAddress> {
                                   onPressed: !isDeletingAddress
                                       ? () => deleteAddress(
                                           addresses[index].id.toString())
-                                      : null),
+                                      : null), */
                             ],
                           ),
                         ]));

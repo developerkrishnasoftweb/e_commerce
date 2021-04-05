@@ -77,7 +77,6 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               input(
-                  context: context,
                   onChanged: (value) {
                     setState(() {
                       firstName = value;
@@ -86,7 +85,6 @@ class _SignUpState extends State<SignUp> {
                   textInputAction: TextInputAction.next,
                   text: "First name $mandatoryChar"),
               input(
-                  context: context,
                   onChanged: (value) {
                     setState(() {
                       lastName = value;
@@ -95,7 +93,6 @@ class _SignUpState extends State<SignUp> {
                   textInputAction: TextInputAction.next,
                   text: "Last name $mandatoryChar"),
               input(
-                  context: context,
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (value) {
                     setState(() {
@@ -105,7 +102,6 @@ class _SignUpState extends State<SignUp> {
                   textInputAction: TextInputAction.next,
                   text: "Email $mandatoryChar"),
               input(
-                  context: context,
                   keyboardType: TextInputType.phone,
                   onChanged: (value) {
                     setState(() {
@@ -115,7 +111,6 @@ class _SignUpState extends State<SignUp> {
                   textInputAction: TextInputAction.next,
                   text: "Mobile $mandatoryChar"),
               input(
-                  context: context,
                   keyboardType: TextInputType.datetime,
                   onTap: () async {
                     DateTime date = DateTime.now();
@@ -162,7 +157,6 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               input(
-                  context: context,
                   onChanged: (value) {
                     setState(() {
                       password = value;

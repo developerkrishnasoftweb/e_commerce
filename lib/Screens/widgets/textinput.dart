@@ -3,54 +3,53 @@ import 'package:flutter/material.dart';
 import '../../constant/color.dart';
 
 Widget input(
-    {@required BuildContext context,
-      InputDecoration decoration,
-      TextStyle style,
-      GestureTapCallback onTap,
-      TextEditingController controller,
-      bool obscureText,
-      bool autoFocus,
-      ValueChanged<String> onChanged,
-      VoidCallback onEditingComplete,
-      String text,
-      TextInputType keyboardType,
-      bool readOnly,
-      EdgeInsetsGeometry margin,
-      double width,
-      TextStyle labelStyle,
-      TextInputAction textInputAction,
-      FocusNode focusNode,
-      double height,
-      int maxLines}) {
-  Size size = MediaQuery.of(context).size;
+    {InputDecoration decoration,
+    TextStyle style,
+    GestureTapCallback onTap,
+    TextEditingController controller,
+    bool obscureText,
+    bool autoFocus,
+    ValueChanged<String> onChanged,
+    VoidCallback onEditingComplete,
+    String text,
+    TextInputType keyboardType,
+    bool readOnly,
+    EdgeInsetsGeometry margin,
+    double width,
+    TextStyle labelStyle,
+    TextInputAction textInputAction,
+    FocusNode focusNode,
+    double height,
+    FormFieldValidator<String> validator,
+    int maxLines}) {
   return Container(
     margin: margin ?? const EdgeInsets.all(10),
-    width: width ?? size.width,
+    width: double.infinity,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         text != null
             ? Text(
-          text,
-          style: labelStyle ??
-              Theme.of(context).textTheme.bodyText1.copyWith(
-                  color: Colors.black,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-        )
+                text,
+                style: labelStyle ??
+                    TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff8B8B8B)),
+              )
             : SizedBox(),
         SizedBox(
           height: text != null ? 5 : 0,
         ),
         Container(
-          height: height ?? 50,
+          height: height,
           child: TextFormField(
             autofocus: autoFocus ?? false,
             maxLines: maxLines ?? 1,
-            decoration: decoration ?? InputDecoration(
-                contentPadding: EdgeInsets.all(10),
-                border: border()
-            ),
+            decoration: decoration ??
+                InputDecoration(
+                    contentPadding: EdgeInsets.all(10), border: border()),
+            validator: validator,
             style: style ?? null,
             onTap: onTap ?? null,
             controller: controller ?? null,

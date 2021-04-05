@@ -2,7 +2,9 @@ import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/cart_item_model.dart';
 import 'package:e_commerce/Models/rest_api.dart';
 import 'package:e_commerce/Screens/checkout.dart';
+import 'package:e_commerce/Screens/signin_signup/signin.dart';
 import 'package:e_commerce/constant/global.dart';
+import 'package:e_commerce/constant/preferences.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -19,6 +21,8 @@ class _CartScreenState extends State<CartScreen> {
   double totalPayable = 0;
   bool isLoading = false;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isLoggedIn =
+      sharedPreferences.getString(Preferences.user) != null ?? false;
 
   setLoading(bool status) {
     setState(() {
@@ -71,6 +75,12 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -78,127 +88,114 @@ class _CartScreenState extends State<CartScreen> {
         appBar: AppBar(
             toolbarHeight: 50.sp,
             title: Text("My Cart",
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
-            actions: [
-              IconButton(
-                  icon: Icon(Icons.account_circle, color: Colors.white),
-                  onPressed: () {})
-            ]),
+                style:
+                    TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
         // leading: IconButton(icon: ImageIcon(AssetImage("assets/icons/left-arrow.png"), color: Colors.white))),
         drawer: NavigationDrawer(),
-        body: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : cartItems.length > 0
-                ? SingleChildScrollView(
-                    padding: EdgeInsets.only(bottom: 80),
-                    child: Column(children: [
-                      GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              color: Colors.grey[100],
+        body: isLoggedIn
+            ? isLoading
+                ? Center(child: CircularProgressIndicator())
+                : cartItems.length > 0
+                    ? SingleChildScrollView(
+                        padding: EdgeInsets.only(bottom: 80),
+                        child: Column(children: [
+                          GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  color: Colors.grey[100],
+                                  width: size.width,
+                                  child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.location_on_rounded,
+                                            color: Colors.grey),
+                                        SizedBox(width: 10),
+                                        RichText(
+                                            text: TextSpan(
+                                                text: "Deliver to\t\t",
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 13,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                children: [
+                                                  TextSpan(
+                                                      text: "394221",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold))
+                                                ]),
+                                            textAlign: TextAlign.center)
+                                      ]))),
+                          SizedBox(height: 10),
+                          ListView.separated(
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (_, index) => card(cartItems[index]),
+                              separatorBuilder: (_, index) => Divider(
+                                  color: Colors.grey,
+                                  endIndent: 20,
+                                  indent: 20),
+                              itemCount: cartItems.length,
+                              shrinkWrap: true),
+                          greyStrip(),
+                          Container(
                               width: size.width,
-                              child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 20),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Icon(Icons.location_on_rounded,
-                                        color: Colors.grey),
-                                    SizedBox(width: 10),
-                                    RichText(
-                                        text: TextSpan(
-                                            text: "Deliver to\t\t",
+                                    Text("Payment Details",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(height: 20),
+                                    amountRow(
+                                        title: "MRP Total",
+                                        amount: "$totalPayable"),
+                                    Divider(color: Colors.grey),
+                                    amountRow(
+                                        title: "Total Amount",
+                                        amount: "$totalPayable",
+                                        titleColor: Colors.black,
+                                        amountColor: Colors.black),
+                                    SizedBox(height: 10),
+                                    Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text("You Save \u20b90.00",
                                             style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
-                                            children: [
-                                              TextSpan(
-                                                  text: "394221",
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold))
-                                            ]),
-                                        textAlign: TextAlign.center)
-                                  ]))),
-                      SizedBox(height: 10),
-                      ListView.separated(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (_, index) => card(cartItems[index]),
-                          separatorBuilder: (_, index) => Divider(
-                              color: Colors.grey, endIndent: 20, indent: 20),
-                          itemCount: cartItems.length,
-                          shrinkWrap: true),
-                      greyStrip(),
-                      Container(
-                          width: size.width,
-                          padding: EdgeInsets.symmetric(
-                              vertical: 30, horizontal: 20),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Apply Coupon",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold)),
-                                SizedBox(height: 20),
-                                RichText(
-                                    text: TextSpan(
-                                        text: "Log in",
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold),
-                                        children: [
-                                      TextSpan(
-                                          text:
-                                              " to see best offers and cashback deals",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w500))
-                                    ])),
-                                Container(
-                                    color: Colors.blue, width: 48, height: 2)
-                              ])),
-                      greyStrip(),
-                      Container(
-                          width: size.width,
-                          padding: EdgeInsets.symmetric(
-                              vertical: 30, horizontal: 20),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Payment Details",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold)),
-                                SizedBox(height: 20),
-                                amountRow(
-                                    title: "MRP Total",
-                                    amount: "$totalPayable"),
-                                Divider(color: Colors.grey),
-                                amountRow(
-                                    title: "Total Amount",
-                                    amount: "$totalPayable",
-                                    titleColor: Colors.black,
-                                    amountColor: Colors.black),
-                                SizedBox(height: 10),
-                                Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text("You Save \u20b90.00",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: Colors.green)))
-                              ])),
-                    ]))
-                : Center(child: Text("Your cart is empty!!!")),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                color: Colors.green)))
+                                  ])),
+                        ]))
+                    : Center(child: Text("Your cart is empty!!!"))
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text("Log in to see best offers and cashback deals",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.center),
+                    TextButton(
+                        onPressed: () => Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => SignIn())),
+                        child: Text("SIGN IN")),
+                  ],
+                ),
+              ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: totalPayable != 0
             ? isLoading
@@ -297,10 +294,12 @@ class _CartScreenState extends State<CartScreen> {
                                 color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold)),
-                        Text("You Save \u20b9${item.products.attributes?.specialPrice ?? "0"}", style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold)),
+                        Text(
+                            "You Save \u20b9${item.products.attributes?.specialPrice ?? "0"}",
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold)),
                         SizedBox(height: 10),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -379,17 +378,16 @@ class _CartScreenState extends State<CartScreen> {
           setState(() {
             item.isLoading = false;
           });
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(updateQuantity.message)));
+          scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(updateQuantity.message)));
         }
       } else {
         setState(() => item.isLoading = false);
-        ScaffoldMessenger.of(context)
+        scaffoldKey.currentState
             .showSnackBar(SnackBar(content: Text(cartId.message)));
       }
     } else {
       setState(() => item.isLoading = false);
-      ScaffoldMessenger.of(context)
+      scaffoldKey.currentState
           .showSnackBar(SnackBar(content: Text(responseData.message)));
     }
     countTotalPayable();
@@ -425,17 +423,17 @@ class _CartScreenState extends State<CartScreen> {
             setState(() {
               item.isDeleting = false;
             });
-            ScaffoldMessenger.of(context)
+            scaffoldKey.currentState
                 .showSnackBar(SnackBar(content: Text(updateQuantity.message)));
           }
         } else {
           setState(() => item.isDeleting = false);
-          ScaffoldMessenger.of(context)
+          scaffoldKey.currentState
               .showSnackBar(SnackBar(content: Text(cartId.message)));
         }
       } else {
         setState(() => item.isDeleting = false);
-        ScaffoldMessenger.of(context)
+        scaffoldKey.currentState
             .showSnackBar(SnackBar(content: Text(responseData.message)));
       }
     } else {
@@ -446,11 +444,11 @@ class _CartScreenState extends State<CartScreen> {
           item.isDeleting = false;
           cartItems.remove(item);
         });
-        ScaffoldMessenger.of(context)
+        scaffoldKey.currentState
             .showSnackBar(SnackBar(content: Text(deleteCartItem.message)));
       } else {
         setState(() => item.isDeleting = false);
-        ScaffoldMessenger.of(context)
+        scaffoldKey.currentState
             .showSnackBar(SnackBar(content: Text(deleteCartItem.message)));
       }
     }

@@ -1,6 +1,7 @@
 
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/rest_api.dart';
+import 'package:e_commerce/constant/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +69,7 @@ class _AddtoCartButtonState extends State<AddtoCartButton> {
     int quantity = await ApiService.getProductQuantity(item.id.toString());
     if (quantity != null) {
       if (quantity > 0) {
-        ResponseData responseData = await ApiService.generateToken({"username": "i@gmail.com", "password": "Abc@123456"});
+        ResponseData responseData = await ApiService.generateToken({"username": userdata.email, "password": userdata.password}, getToken: true);
         if (responseData.status) {
           ResponseData cartId = await ApiService.cartId(responseData.token);
           if (cartId.status) {

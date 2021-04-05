@@ -8,7 +8,7 @@ Widget dropDown<T>(
       double height,
       ValueChanged<T> onChanged}) {
   return Padding(
-    padding: margin ?? EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    padding: margin ?? EdgeInsets.all(10),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

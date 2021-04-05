@@ -2,7 +2,6 @@
 import 'package:e_commerce/Models/MainCategory.dart';
 
 class Preferences{
-  static String isLogin = 'isLogin';
   static String user = 'user';
 }
 

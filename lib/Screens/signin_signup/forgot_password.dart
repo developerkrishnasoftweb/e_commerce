@@ -33,7 +33,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               input(
                   style: TextStyle(fontSize: 17),
                   autoFocus: true,
-                  context: context,
                   text: "Mobile Number",
                   onChanged: (value) {
                     setState(() {

@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'widgets/textinput.dart';
+
 class EditProfile extends StatefulWidget {
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -17,7 +19,15 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   String selectedGender = "gender";
   List<String> genders = ["gender", "male", "female", "other"];
-  TextEditingController fnameController,lnameController, emailController, dobController, mobile, address, pinCode, state, city;
+  TextEditingController fnameController,
+      lnameController,
+      emailController,
+      dobController,
+      mobile,
+      address,
+      pinCode,
+      state,
+      city;
 
   String email = '';
   String fname = '';
@@ -34,7 +44,7 @@ class _EditProfileState extends State<EditProfile> {
       setState(() {
         Map userMap = jsonDecode(pref.getString(Preferences.user));
         UserDetails user = UserDetails.fromJson(userMap);
-        dob =  user.dob ?? '';
+        dob = user.dob ?? '';
         fnameController = TextEditingController(text: user.firstname ?? '');
         lnameController = TextEditingController(text: user.lastname ?? '');
         emailController = TextEditingController(text: user.email ?? '');
@@ -47,18 +57,19 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 50.sp,
-            title: Text("Edit Profile", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)), automaticallyImplyLeading: true),
+            toolbarHeight: 50.sp,
+            title: Text("Edit Profile",
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+            automaticallyImplyLeading: true),
         body: SingleChildScrollView(
-            padding: EdgeInsets.all(10),
             child: Column(children: [
-              addAddressInputField(
-                  labelText: "First Name",
+              input(
+                  text: "First Name",
                   controller: fnameController,
                   textInputAction: TextInputAction.next,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
-              addAddressInputField(
-                  labelText: "Last Name",
+              input(
+                  text: "Last Name",
                   controller: lnameController,
                   textInputAction: TextInputAction.next,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
@@ -67,25 +78,34 @@ class _EditProfileState extends State<EditProfile> {
                     child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         margin: EdgeInsets.only(left: 2),
-                        decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1))),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom:
+                                    BorderSide(color: Colors.grey, width: 1))),
                         child: DropdownButton(
                             items: genders
                                 .map((e) => DropdownMenuItem(
-                                    child: Text(e.capitalize(), style: TextStyle(fontWeight: FontWeight.w500)), value: e))
+                                    child: Text(e.capitalize(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500)),
+                                    value: e))
                                 .toList(),
                             value: selectedGender,
                             underline: SizedBox(),
                             isExpanded: true,
-                            onChanged: (gender) => setState(() => selectedGender = gender)))),
+                            onChanged: (gender) =>
+                                setState(() => selectedGender = gender)))),
                 SizedBox(width: 10),
                 Expanded(
-                    child: addAddressInputField(
-                        labelText: "Date Of Birth",
+                    child: input(
+                        text: "Date Of Birth",
                         margin: EdgeInsets.zero,
                         keyboardType: TextInputType.datetime,
                         controller: dobController,
                         onTap: () async {
-                          DateTime date = dob.isNotEmpty ? DateTime.parse(dob) : DateTime.now();
+                          DateTime date = dob.isNotEmpty
+                              ? DateTime.parse(dob)
+                              : DateTime.now();
                           FocusScope.of(context).requestFocus(new FocusNode());
                           date = await showDatePicker(
                               context: context,
@@ -93,19 +113,20 @@ class _EditProfileState extends State<EditProfile> {
                               firstDate: DateTime(DateTime.now().year - 100),
                               lastDate: DateTime.now());
                           if (date != null)
-                            dobController.text = DateFormat('yyyy-MM-dd').format(date);
+                            dobController.text =
+                                DateFormat('yyyy-MM-dd').format(date);
                         },
                         readOnly: true))
               ]),
               SizedBox(height: 10),
-              addAddressInputField(
-                  labelText: "Email",
+              input(
+                  text: "Email",
                   controller: emailController,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
-              addAddressInputField(
-                  labelText: "Mobile No",
+              input(
+                  text: "Mobile No",
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.phone,
                   onEditingComplete: () => FocusScope.of(context).nextFocus()),
@@ -114,8 +135,10 @@ class _EditProfileState extends State<EditProfile> {
                   height: 50,
                   child: FlatButton(
                       onPressed: () {},
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                      child: Text("SAVE CHANGES", style: TextStyle(color: Colors.white)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)),
+                      child: Text("SAVE CHANGES",
+                          style: TextStyle(color: Colors.white)),
                       color: Myapp.primaryColor))
             ])));
   }

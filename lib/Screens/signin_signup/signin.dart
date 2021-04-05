@@ -126,7 +126,6 @@ class _SignInState extends State<SignIn> {
                     fit: BoxFit.fill,
                   ),
                   input(
-                      context: context,
                       style: TextStyle(fontSize: 17),
                       text: "Username",
                       autoFocus: true,
@@ -135,7 +134,6 @@ class _SignInState extends State<SignIn> {
                       textInputAction: TextInputAction.next,
                       controller: emailController),
                   input(
-                      context: context,
                       style: TextStyle(fontSize: 17),
                       text: "Password",
                       obscureText: true,
@@ -225,7 +223,6 @@ class _SignInState extends State<SignIn> {
           Map<String, dynamic> map = value.data;
           setLoading(false);
           Fluttertoast.showToast(msg: value.message);
-          sharedPreferences.setBool(Preferences.isLogin, true);
           sharedPreferences.setString(Preferences.user, jsonEncode(UserDetails.fromJson(map)..password = password..toJson()));
           userdata = UserDetails.fromJson(jsonDecode(sharedPreferences.getString(Preferences.user)));
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => HomeScreen()), (route) => false);

@@ -39,7 +39,6 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
             ),
             input(
-                context: context,
                 text: "New Password",
                 onChanged: (value) {
                   setState(() {
@@ -62,7 +61,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                         },
                         color: showPassword ? primaryColor : Colors.grey))),
             input(
-                context: context,
                 text: "Confirm Password",
                 obscureText: true,
                 onChanged: (value) {

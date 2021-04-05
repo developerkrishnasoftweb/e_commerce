@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'widgets/textinput.dart';
+
 class AddAddress extends StatefulWidget {
   final Addresses addressDetail;
 
@@ -92,16 +94,16 @@ class _AddAddressState extends State<AddAddress> {
             child: Form(
               key: formKey,
               child: Column(children: [
-                addAddressInputField(
-                    labelText: "First Name *",
+                input(
+                    text: "First Name *",
                     controller: firstName,
                     validator: validate),
-                addAddressInputField(
-                    labelText: "Last Name *",
+                input(
+                    text: "Last Name *",
                     controller: lastName,
                     validator: validate),
-                addAddressInputField(
-                    labelText: "Phone Number *",
+                input(
+                    text: "Phone Number *",
                     controller: phoneNumber,
                     validator: validate),
                 Align(
@@ -121,21 +123,19 @@ class _AddAddressState extends State<AddAddress> {
                   endIndent: 7,
                 ),
                 SizedBox(height: 20),
-                addAddressInputField(
-                    labelText: "Street 1 *",
+                input(
+                    text: "Street 1 *",
                     controller: street,
                     validator: validate),
-                addAddressInputField(
-                    labelText: "Street 2 *",
+                input(
+                    text: "Street 2 *",
                     controller: street1,
                     validator: validate),
-                addAddressInputField(
-                    labelText: "City *", controller: city, validator: validate),
+                input(text: "City *", controller: city, validator: validate),
                 selectedCountry?.availableRegions != null
                     ? selectedCountry.availableRegions.length > 0
                         ? dropDown<Regions>(
                             value: selectedRegion,
-                            margin: EdgeInsets.only(bottom: 20),
                             items: selectedCountry.availableRegions
                                 .map((region) => DropdownMenuItem<Regions>(
                                     child: Text("${region.name}",
@@ -150,27 +150,26 @@ class _AddAddressState extends State<AddAddress> {
                                 selectedRegion = region;
                               });
                             })
-                        : addAddressInputField(
-                            labelText: "State/Province *",
+                        : input(
+                            text: "State/Province *",
                             controller: state,
                             readOnly: selectedCountry != null
                                 ? !(selectedCountry.id == "IN")
                                 : false,
                             validator: validate)
-                    : addAddressInputField(
-                        labelText: "State/Province *",
+                    : input(
+                        text: "State/Province *",
                         controller: state,
                         readOnly: selectedCountry != null
                             ? !(selectedCountry.id == "IN")
                             : false,
                         validator: validate),
-                addAddressInputField(
-                    labelText: "Zip/Postal Code *",
+                input(
+                    text: "Zip/Postal Code *",
                     controller: pinCode,
                     validator: validate),
                 countries.length > 0
                     ? dropDown<Countries>(
-                        margin: EdgeInsets.only(bottom: 20),
                         onChanged: (Countries country) {
                           setState(() {
                             selectedCountry = country;
@@ -186,8 +185,8 @@ class _AddAddressState extends State<AddAddress> {
                                 value: country))
                             .toList(),
                         value: selectedCountry)
-                    : addAddressInputField(
-                        labelText: "Country *",
+                    : input(
+                        text: "Country *",
                         controller: country,
                         validator: validate),
                 FlatButton(
@@ -249,7 +248,7 @@ class _AddAddressState extends State<AddAddress> {
       };
       await ApiService.generateToken(
               {"username": userDetails.email, "password": "Abc@123456"},
-              getOnlyToken: true)
+              getToken: true)
           .then((value) async {
         if (value.status) {
           await ApiService.updateAddress(body: bodyData, token: value.token)
@@ -309,7 +308,7 @@ class _AddAddressState extends State<AddAddress> {
       };
       await ApiService.generateToken(
               {"username": userDetails.email, "password": "Abc@123456"},
-              getOnlyToken: true)
+              getToken: true)
           .then((value) async {
         print(value.message);
         if (value.status) {
@@ -342,47 +341,6 @@ class _AddAddressState extends State<AddAddress> {
     if (value.isNotEmpty)
       return null;
     else
-      return "This is required field";
+      return "This field is required";
   }
-}
-
-Widget addAddressInputField(
-    {String labelText,
-    TextEditingController controller,
-    ValueChanged<String> onChanged,
-    VoidCallback onEditingComplete,
-    TextInputAction textInputAction,
-    TextInputType keyboardType,
-    double width,
-    double height,
-    GestureTapCallback onTap,
-    EdgeInsetsGeometry margin,
-    FormFieldValidator<String> validator,
-    bool readOnly: false}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(labelText),
-      SizedBox(height: 3),
-      Container(
-          height: height,
-          width: width,
-          margin: margin ?? EdgeInsets.only(bottom: 20),
-          child: TextFormField(
-              controller: controller,
-              onChanged: onChanged,
-              onTap: onTap,
-              onEditingComplete: onEditingComplete,
-              textInputAction: textInputAction ?? TextInputAction.next,
-              validator: validator,
-              keyboardType: keyboardType,
-              readOnly: readOnly,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 7, horizontal: 10)),
-              cursorColor: Myapp.primaryColor)),
-    ],
-  );
 }

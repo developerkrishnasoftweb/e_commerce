@@ -64,6 +64,13 @@ class URLS {
   static const String ADD_ADDRESS = '${PAL_SHOPPIE_BASE_URL}customers/me';
   static const String UPDATE_ADDRESS = '${PAL_SHOPPIE_BASE_URL}customers/me';
   static const String DELETE_ADDRESS = '${PAL_SHOPPIE_BASE_URL}addresses/';
+  /*
+  * place order
+  * */
+  static const String ESTIMATE_SHIPPING_METHODS = '${PAL_SHOPPIE_BASE_URL}carts/mine/estimate-shipping-methods';
+  static const String SHIPPING_INFORMATION = '${PAL_SHOPPIE_BASE_URL}carts/mine/shipping-information';
+  static const String PAYMENT_INFORMATION = '${PAL_SHOPPIE_BASE_URL}carts/mine/payment-information';
+
   static const String GET_COUNTRIES =
       '${PAL_SHOPPIE_BASE_URL}directory/countries';
   static const String SKU_WISE_PRODUCT =
@@ -244,11 +251,11 @@ class ApiService {
   }
 
   static Future<ResponseData> generateToken(Map<String, dynamic> body,
-      {bool getOnlyToken: false}) async {
+      {bool getToken: false}) async {
     final response = await http.post(URLS.GENERATE_TOKEN,
         body: jsonEncode(body), headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
-      if (getOnlyToken) {
+      if (getToken) {
         return ResponseData(
             token: response.body.replaceAll('"', ""),
             status: true,
@@ -440,6 +447,87 @@ class ApiService {
         return ResponseData(
             status: true,
             message: "Address added successfully",
+            data: await jsonDecode(response.body),
+            token: token);
+      } else {
+        return ResponseData(
+            status: false,
+            message: await jsonDecode(response.body)['message'],
+            data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  /*
+  * place order
+  * */
+  static Future<ResponseData> estimateShippingMethods(
+      {String token, Map<String, dynamic> body}) async {
+    try {
+      final response = await http.post(URLS.ESTIMATE_SHIPPING_METHODS,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: jsonEncode(body));
+      if (response.statusCode == 200) {
+        return ResponseData(
+            status: true,
+            message: "Estimate shipping methods fetched successfully",
+            data: await jsonDecode(response.body),
+            token: token);
+      } else {
+        return ResponseData(
+            status: false,
+            message: await jsonDecode(response.body)['message'],
+            data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> shippingAddress(
+      {String token, Map<String, dynamic> body}) async {
+    try {
+      final response = await http.post(URLS.SHIPPING_INFORMATION,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: jsonEncode(body));
+      if (response.statusCode == 200) {
+        return ResponseData(
+            status: true,
+            message: "Shipping information fetched successfully",
+            data: await jsonDecode(response.body),
+            token: token);
+      } else {
+        return ResponseData(
+            status: false,
+            message: await jsonDecode(response.body)['message'],
+            data: null);
+      }
+    } catch (_) {
+      throw (_);
+    }
+  }
+
+  static Future<ResponseData> paymentMethods(
+      {String token, Map<String, dynamic> body}) async {
+    try {
+      final response = await http.post(URLS.PAYMENT_INFORMATION,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: jsonEncode(body));
+      if (response.statusCode == 200) {
+        return ResponseData(
+            status: true,
+            message: "Payment methods fetched successfully",
             data: await jsonDecode(response.body),
             token: token);
       } else {
