@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class PaymentDetails {
   List<PaymentMethods> paymentMethods;
   Totals totals;
@@ -195,7 +197,7 @@ class Items {
       weeeTaxAppliedAmount,
       weeeTaxApplied,
       name;
-  List options;
+  List<Option> options;
 
   Items(
       {this.itemId,
@@ -238,10 +240,14 @@ class Items {
     basePriceInclTax = json['base_price_incl_tax']?.toString();
     rowTotalInclTax = json['row_total_incl_tax']?.toString();
     baseRowTotalInclTax = json['base_row_total_incl_tax']?.toString();
-    options = json['options'];
     weeeTaxAppliedAmount = json['weee_tax_applied_amount']?.toString();
     weeeTaxApplied = json['weee_tax_applied']?.toString();
     name = json['name']?.toString();
+    List itemOptions = jsonDecode(json['options'] ?? "[]");
+    options = <Option>[];
+    itemOptions.forEach((v) {
+      options.add(Option.fromJson(v));
+    });
   }
 
   Map<String, dynamic> toJson() {
@@ -268,6 +274,14 @@ class Items {
     data['weee_tax_applied'] = this.weeeTaxApplied;
     data['name'] = this.name;
     return data;
+  }
+}
+
+class Option {
+  String value, label;
+  Option.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    label = json['label'];
   }
 }
 

@@ -34,6 +34,7 @@ class _CheckoutState extends State<Checkout> {
       billingCity = "";
   bool isSameAddressAsShipping = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  ScrollController scrollController = ScrollController();
 
   getCountries() async {
     List<Countries> tempCountries = await ApiService.getCountries();
@@ -53,6 +54,12 @@ class _CheckoutState extends State<Checkout> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -60,6 +67,7 @@ class _CheckoutState extends State<Checkout> {
           title: Text("Checkout",
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold))),
       body: SingleChildScrollView(
+        controller: scrollController,
         padding: EdgeInsets.only(bottom: 60),
         child: Form(
           key: formKey,
@@ -154,6 +162,15 @@ class _CheckoutState extends State<Checkout> {
                   setState(() {
                     isSameAddressAsShipping = !isSameAddressAsShipping;
                   });
+                  if(!isSameAddressAsShipping) {
+                    Future.delayed(Duration(milliseconds: 100), (){
+                      scrollController.animateTo(
+                        scrollController.position.maxScrollExtent / 2,
+                        curve: Curves.easeOut,
+                        duration: const Duration(milliseconds: 500),
+                      );
+                    });
+                  }
                 }),
             Visibility(
               visible: !isSameAddressAsShipping,
