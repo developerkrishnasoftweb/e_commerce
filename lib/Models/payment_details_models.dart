@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 class PaymentDetails {
-  List<PaymentMethods> paymentMethods;
+  List<Methods> paymentMethods;
   Totals totals;
 
   PaymentDetails({this.paymentMethods, this.totals});
 
   PaymentDetails.fromJson(Map<String, dynamic> json) {
     if (json['payment_methods'] != null) {
-      paymentMethods = new List<PaymentMethods>();
+      paymentMethods = new List<Methods>();
       json['payment_methods'].forEach((v) {
-        paymentMethods.add(new PaymentMethods.fromJson(v));
+        paymentMethods.add(new Methods.fromJson(v));
       });
     }
     totals =
@@ -30,12 +30,12 @@ class PaymentDetails {
   }
 }
 
-class PaymentMethods {
+class Methods {
   String code, title;
 
-  PaymentMethods({this.code, this.title});
+  Methods({this.code, this.title});
 
-  PaymentMethods.fromJson(Map<String, dynamic> json) {
+  Methods.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     title = json['title'];
   }

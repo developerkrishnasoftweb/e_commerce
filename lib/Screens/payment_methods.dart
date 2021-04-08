@@ -9,6 +9,7 @@ import 'package:e_commerce/constant/global.dart';
 import 'package:e_commerce/constant/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/size_extension.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class PaymentMethods extends StatefulWidget {
   final EstimateShippingMethod estimateShippingMethod;
@@ -27,18 +28,8 @@ class PaymentMethods extends StatefulWidget {
 
 class _PaymentMethodsState extends State<PaymentMethods> {
   PaymentDetails paymentDetails;
-  int selectedPaymentMethod = 0, selectedAddressIndex = 0;
-  List<Addresses> addresses;
+  int selectedPaymentMethod = 0;
   bool paymentDetailsFound = true;
-
-  void getUserDetails() async {
-    var data = sharedPreferences.getString(Preferences.user);
-    if (data != null) {
-      setState(() {
-        addresses = UserDetails.fromJson(jsonDecode(data)).addresses;
-      });
-    }
-  }
 
   void getPaymentMethods() async {
     Map<String, dynamic> paymentMethodsBody = {
@@ -64,6 +55,7 @@ class _PaymentMethodsState extends State<PaymentMethods> {
           setState(() {
             paymentDetailsFound = false;
           });
+          Fluttertoast.showToast(msg: methods.message);
         }
       });
     });
@@ -73,7 +65,6 @@ class _PaymentMethodsState extends State<PaymentMethods> {
   void initState() {
     super.initState();
     getPaymentMethods();
-    getUserDetails();
   }
 
   @override
@@ -92,27 +83,6 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: Text("SHIPPING ADDRESS",
-                              style: TextStyle(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      if((addresses?.length ?? 0) > 0)
-                        for (int i = 0; i < (addresses?.length ?? 0); i++)
-                          Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: i == selectedAddressIndex
-                                    ? primaryColor
-                                    : Colors.grey),
-                            borderRadius: BorderRadius.circular(7)
-                          ),
-                        ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
                           child: Text("PAYMENT METHOD(S)",
                               style: TextStyle(
                                   fontSize: 15.sp,
@@ -121,38 +91,8 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                       ),
                       ListView.builder(
                           itemBuilder: (_, index) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              child: TextButton(
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        index == selectedPaymentMethod
-                                            ? primaryColor
-                                            : primaryColor.shade50),
-                                    overlayColor: MaterialStateProperty.all(
-                                        primaryColor.shade50),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(6))),
-                                    padding: MaterialStateProperty.all(
-                                        EdgeInsets.symmetric(vertical: 20))),
-                                child: Text(
-                                  "${paymentDetails.paymentMethods[index].title}",
-                                  style: TextStyle(
-                                      color: index == selectedPaymentMethod
-                                          ? Colors.white
-                                          : primaryColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    selectedPaymentMethod = index;
-                                  });
-                                },
-                              ),
-                            );
+                            return buildPaymentMethods(
+                                index, paymentDetails.paymentMethods[index]);
                           },
                           itemCount:
                               (paymentDetails?.paymentMethods?.length ?? 0),
@@ -298,7 +238,29 @@ class _PaymentMethodsState extends State<PaymentMethods> {
                         itemCount: (paymentDetails?.totals?.items?.length ?? 0),
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                      )
+                      ),
+                      paymentDetails != null
+                          ? Container(
+                              height: 50,
+                              width: double.infinity,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: TextButton(
+                                  onPressed: placeOrder,
+                                  child: Text("PLACE ORDER",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17)),
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              primaryColor),
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(0))))))
+                          : SizedBox(),
                     ],
                   ),
                 )
@@ -306,26 +268,51 @@ class _PaymentMethodsState extends State<PaymentMethods> {
           : Center(
               child: Text("Unable to fetch payment methods"),
             ),
-      floatingActionButton: paymentDetails != null
-          ? Container(
-              height: 50,
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: TextButton(
-                  onPressed: placeOrder,
-                  child: Text("PLACE ORDER",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17)),
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(primaryColor),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0))))))
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-  void placeOrder() async {}
+  void placeOrder() async {
+    Map<String, dynamic> orderDetails = {
+      "paymentMethod": {
+        "method": paymentDetails.paymentMethods[selectedPaymentMethod].code
+      },
+      "billing_address": widget.billingAddress['address']
+    };
+    print("Method called");
+    await ApiService.generateToken({"username" : userdata.email, "password": userdata.password}, getToken: true).then((token) async {
+      await ApiService.paymentInformation(body: orderDetails, token: token.token).then((paymentDetails) {
+        print(paymentDetails.message);
+      });
+    });
+  }
+
+  Widget buildPaymentMethods(int index, Methods paymentMethod) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      child: TextButton(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+                index == selectedPaymentMethod
+                    ? primaryColor
+                    : primaryColor.shade50),
+            overlayColor: MaterialStateProperty.all(primaryColor.shade50),
+            shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))),
+            padding:
+                MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 20))),
+        child: Text(
+          "${paymentMethod.title}",
+          style: TextStyle(
+              color:
+                  index == selectedPaymentMethod ? Colors.white : primaryColor,
+              fontWeight: FontWeight.bold),
+        ),
+        onPressed: () {
+          setState(() {
+            selectedPaymentMethod = index;
+          });
+        },
+      ),
+    );
+  }
 }

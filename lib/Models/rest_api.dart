@@ -465,6 +465,8 @@ class ApiService {
   * */
   static Future<ResponseData> estimateShippingMethods(
       {String token, Map<String, dynamic> body}) async {
+    print(jsonEncode(body));
+    print(token);
     try {
       final response = await http.post(URLS.ESTIMATE_SHIPPING_METHODS,
           headers: {
@@ -515,7 +517,7 @@ class ApiService {
     }
   }
 
-  static Future<ResponseData> paymentMethods(
+  static Future<ResponseData> paymentInformation(
       {String token, Map<String, dynamic> body}) async {
     try {
       final response = await http.post(URLS.PAYMENT_INFORMATION,
@@ -524,10 +526,12 @@ class ApiService {
             'Authorization': 'Bearer $token'
           },
           body: jsonEncode(body));
+      print("Response");
+      print(response.body);
       if (response.statusCode == 200) {
         return ResponseData(
             status: true,
-            message: "Payment methods fetched successfully",
+            message: "Order placed successfully",
             data: await jsonDecode(response.body),
             token: token);
       } else {
