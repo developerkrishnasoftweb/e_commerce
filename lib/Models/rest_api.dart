@@ -4,6 +4,7 @@ import 'package:e_commerce/Models/Banners.dart';
 import 'package:e_commerce/Models/BestOffer.dart';
 import 'package:e_commerce/Models/MainCategory.dart';
 import 'package:e_commerce/Models/ProductsById.dart';
+import 'package:e_commerce/constant/global.dart';
 import 'package:http/http.dart' as http;
 
 import 'AllCollection.dart';
@@ -57,6 +58,7 @@ class URLS {
   static const String ADD_TO_CART =
       'https://palshopie.com/rest/default/V1/carts/mine/items';
   static const String CART = '${URLS.PAL_SHOPPIE_BASE_URL}carts/mine/items';
+  static const String GET_ORDERS = '${URLS.PAL_SHOPPIE_BASE_URL}orders';
   static const String UPDATE_CART_QUANTITY =
       '${PAL_SHOPPIE_BASE_URL}carts/mine/items/';
   static const String REMOVE_CART_ITEM =
@@ -378,6 +380,39 @@ class ApiService {
       }
     } catch (_) {
       throw (_);
+    }
+  }
+
+  static Future<ResponseData> getOrders() async {
+    if(userdata?.id != null) {
+      try {
+        final response = await http.get(URLS.GET_ORDERS + '?' + Uri(queryParameters: {
+          'searchCriteria[filterGroups][0][filters][0][field]': 'customer_id',
+          'searchCriteria[filterGroups][0][filters][0][value]': userdata.id.toString(),
+          'searchCriteria[filterGroups][0][filters][0][conditionType]': 'eq',
+        }).query, headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer 5jqjyhc6surebagcadh5xnzve77lajh9'
+        });
+        if (response.statusCode == 200) {
+          return ResponseData(
+              status: true,
+              message: "Orders fetched successfully",
+              data: await jsonDecode(response.body)['items']);
+        } else {
+          return ResponseData(
+              status: false,
+              message: await jsonDecode(response.body)['message'],
+              data: null);
+        }
+      } catch (_) {
+        throw (_);
+      }
+    } else {
+      return ResponseData(
+          status: false,
+          message: 'Invalid user id',
+          data: null);
     }
   }
 
