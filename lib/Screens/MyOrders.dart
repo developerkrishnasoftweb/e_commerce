@@ -56,48 +56,96 @@ class _MyOrdersState extends State<MyOrders> {
                           elevation: 10,
                           child: Padding(
                               padding: EdgeInsets.all(10.sp),
-                              child: Row(children: [
-                                Image(
-                                    image: NetworkImage(
-                                        'https://www.jiomart.com/images/product/420x420/490008332/closeup-ever-fresh-red'
-                                        '-hot-gel-toothpaste-150-g-pack-of-2-0-20201217.jpg'),
-                                    width: 50.sp,
-                                    height: 50.sp),
-                                Container(width: 15.sp),
-                                Expanded(
-                                    child: RichText(
-                                        maxLines: 4,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.left,
-                                        text: TextSpan(
-                                            text:
-                                                'Closeup Ever Fresh Red Hot Gel Toothpaste 150 g (Pack of 2) \n',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14.sp),
-                                            children: [
-                                              TextSpan(
-                                                  text:
-                                                      '₹ 100.00, Order Completed\n',
-                                                  style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      color: Colors.green,
-                                                      height: 2.sp)),
-                                              TextSpan(
-                                                  text:
-                                                      '20 Oct 2020, 11:54 PM',
-                                                  style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      color:
-                                                          Colors.blueGrey,
-                                                      height: 1.5.sp))
-                                            ])))
-                              ])));
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Sr.No. #$index"),
+                                    Text("Date - ${orders[index].createdAt}"),
+                                    Text(
+                                        "Order Total - \u20b9${orders[index].grandTotal}"),
+                                    Text(
+                                        "Status - ${orders[index].status[0].toUpperCase() + orders[index].status.substring(1)}"),
+                                    ExpansionTile(
+                                      title: Text("View Order"),
+                                      children: orders[index].items.map((item) {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("PRODUCT NAME : ${item.name}"),
+                                            Text("SKU : ${item.sku}"),
+                                            Text("PRICE : ${item.price}"),
+                                            Text(
+                                                "QTY : Ordered: ${item.qtyOrdered}"),
+                                            Text(
+                                                "SUBTOTAL : \u20b9${item.baseRowTotalInclTax}"),
+                                            (orders[index]
+                                                        .items
+                                                        .indexOf(item) ==
+                                                    (orders[index]
+                                                            .items
+                                                            .length -
+                                                        1))
+                                                ? SizedBox()
+                                                : Divider(color: Colors.grey)
+                                          ],
+                                        );
+                                      }).toList(),
+                                      tilePadding: EdgeInsets.zero,
+                                      childrenPadding:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      expandedCrossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      expandedAlignment: Alignment.centerLeft,
+                                    )
+                                  ])));
                     })
                 : Center(
                     child: CircularProgressIndicator(),
                   )
             : Center(child: Text("No orders found")));
+  }
+
+  Widget shrinkAble(
+      {Duration duration,
+      double height,
+      double width,
+      EdgeInsetsGeometry padding,
+      EdgeInsetsGeometry margin,
+      List<BoxShadow> boxShadow,
+      Widget child,
+      Color backGroundColor}) {
+    double initHeight = height, initWidth = width;
+    void onTap() {
+      setState(() {
+        height -= 10;
+        width -= 10;
+      });
+      Future.delayed(Duration(milliseconds: 100), () {
+        setState(() {
+          height = initHeight;
+          width = initWidth;
+        });
+      });
+    }
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        height: height,
+        width: width,
+        alignment: Alignment.center,
+        padding: padding,
+        margin: margin,
+        decoration: BoxDecoration(
+          color: backGroundColor ?? Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: boxShadow ??
+              [BoxShadow(color: Colors.grey.shade600, blurRadius: 5)],
+        ),
+        child: child,
+      ),
+    );
   }
 }
