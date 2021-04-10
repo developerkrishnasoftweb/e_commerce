@@ -65,6 +65,7 @@ class _MyOrdersState extends State<MyOrders> {
                                         "Order Total - \u20b9${orders[index].grandTotal}"),
                                     Text(
                                         "Status - ${orders[index].status[0].toUpperCase() + orders[index].status.substring(1)}"),
+                                    SizedBox(height: 5),
                                     ExpansionTile(
                                       title: Text("View Order"),
                                       children: orders[index].items.map((item) {
@@ -74,7 +75,7 @@ class _MyOrdersState extends State<MyOrders> {
                                           children: [
                                             Text("PRODUCT NAME : ${item.name}"),
                                             Text("SKU : ${item.sku}"),
-                                            Text("PRICE : ${item.price}"),
+                                            Text("PRICE : \u20b9${item.price}"),
                                             Text(
                                                 "QTY : Ordered: ${item.qtyOrdered}"),
                                             Text(
