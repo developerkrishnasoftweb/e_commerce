@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
             toolbarHeight: 50.sp,
-            title: Text("Pal",
+            title: Text("Pal Shoppie",
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
             elevation: 0,
             actions: [
@@ -536,24 +536,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   offerListWithCategories() {
-    List<String> titles = [
-      "Top deals for you",
-      "Best deals for you",
-      "Exclusive deals for you"
-    ];
     List<Banners> banners = [
       topDealsBanners,
       bestDealsBanners,
       exclusiveDealsBanners
     ];
-
-    List<Color> colors = [
-      Colors.blueAccent,
-      Colors.deepOrangeAccent[100],
-      Colors.yellow[200],
-      Colors.greenAccent[100],
-      Colors.deepPurple[200]
-    ];
+    //
+    // List<Color> colors = [
+    //   Colors.blueAccent,
+    //   Colors.deepOrangeAccent[100],
+    //   Colors.yellow[200],
+    //   Colors.greenAccent[100],
+    //   Colors.deepPurple[200]
+    // ];
 
     return ListView.builder(
         itemCount: offers.data.length,
@@ -567,16 +562,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
+                        index < banners.length ? Padding(
                             padding: EdgeInsets.only(left: 10.sp),
-                            child: Text(titles[index],
+                            child: Text(offers.data[index].title,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontSize: 15.sp,
-                                    fontWeight: FontWeight.bold))),
-                        freeHomeDeliverySlider(banners[index ~/ 3].data),
+                                    fontWeight: FontWeight.bold))) : SizedBox(),
+                        index < banners.length ? freeHomeDeliverySlider(banners[index].data) : SizedBox(),
                         Container(
                             color: Color(
                                 int.parse(offers.data[index].backgroundColor)),
