@@ -247,7 +247,7 @@ class _AddAddressState extends State<AddAddress> {
         }
       };
       await ApiService.generateToken(
-              {"username": userDetails.email, "password": "Abc@123456"},
+              {"username": userdata.email, "password": userdata.password},
               getToken: true)
           .then((value) async {
         if (value.status) {

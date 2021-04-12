@@ -239,6 +239,7 @@ class ApiService {
   static Future<ResponseData> register(Map<String, dynamic> body) async {
     final response = await http.post(URLS.REGISTER,
         body: jsonEncode(body), headers: {"Content-Type": "application/json"});
+    print(jsonEncode(body));
     if (response.statusCode == 200) {
       return ResponseData(
           status: true,
